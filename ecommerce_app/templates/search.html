@@ -1,19 +1,22 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Search{% endblock %}
 
 {% block content %}
-    <section>
-        <h2>Ítem buscado: {{ query }}</h2>
-        <h4>Coincidencias encontradas {{ resultados }}</h4>
-    </section>
     <main>
-        {% for producto in productos %}
-        <div class="card">
-            <image src="../static/{{ producto.image }}" alt="{{ item.name }}">
-            <p>{{ producto.name }}</p>
-            <p>${{ producto.price }}</p>
+        <div class="texto-principal-main">
+            <h2>Producto buscado: {{ query }}</h2>
+            <h3>Coincidencias encontradas {{ resultados }}</h3>
         </div>
-        {% endfor %}
+        <div class="cards-container">
+            {% for producto in productos %}
+                <div class="card">
+                    <image src="../static/{{ producto.image }}" alt="{{ producto.name }}">
+                    <p>{{ producto.name }}</p>
+                    <p>${{ producto.price }}</p>
+                </div>
+            {% endfor %}
+        </div>
     </main>
 {% endblock %}

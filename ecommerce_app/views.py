@@ -9,9 +9,9 @@ def base(request):
 
 
 def home(request):
-    items = Product.objects.all()
+    productos = Product.objects.all()
     categories = Product.objects.values('category').distinct().order_by('category')
-    return render(request, 'home.html', {'items': items, 'categories': categories})
+    return render(request, 'home.html', {'productos': productos, 'categories': categories})
 
 
 def search(request):
