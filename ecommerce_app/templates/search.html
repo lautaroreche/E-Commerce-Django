@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+    <section>
+        <h2>Ítem buscado: {{ query }}</h2>
+        <h4>Coincidencias encontradas {{ resultados }}</h4>
+    </section>
+    <main>
+        {% for producto in productos %}
+        <div class="card">
+            <image src="../static/{{ producto.image }}" alt="{{ item.name }}">
+            <p>{{ producto.name }}</p>
+            <p>${{ producto.price }}</p>
+        </div>
+        {% endfor %}
+    </main>
+{% endblock %}

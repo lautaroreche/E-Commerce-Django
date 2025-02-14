@@ -1,15 +1,19 @@
 {% extends 'base.html' %}
 
-{% block title %}Prueba{% endblock %}
+{% block title %}E-Commerce Django{% endblock %}
 
 {% block content %}
-    <main>
+    <section>
         <h1>E-Commerce Django</h1>
-        <ul>
-            {% for item in items %}
-                <li class="prueba">{{ item.name }}</li>
-            {% endfor %}
-        </ul>
+    </section>
+    <main>
+        {% for item in items %}
+            <div class="card">
+                <image src="../static/{{ item.image }}" alt="{{ item.name }}">
+                <p>{{ item.name }}</p>
+                <p>${{ item.price }}</p>
+            </div>
+        {% endfor %}
     </main>
 {% endblock %}
 

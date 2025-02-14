@@ -40,9 +40,10 @@ nav ul li, footer ul li {
     color: #eee;
 }
 
-.buscador-menu {
+.buscador-menu form {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 1px;
 }
 
@@ -54,14 +55,18 @@ nav ul li, footer ul li {
     color: #333;
 }
 
+input:focus, button:focus {
+    outline: none;
+}
+
 i {
     cursor: pointer;
-    font-size: 26px;
+    font-size: 27px;
     color: #eee;
 }
 
 .buscador-menu i {
-    padding: 6px;
+    padding: 5px;
 }
 
 .buscador-menu i, .email-newsletter i {
@@ -74,6 +79,11 @@ i {
     border-radius: 4px;
 }
 
+button {
+    border: none;
+    border-radius: 4px;
+}
+
 .iconos-menu {
     display: flex;
     margin-right: 20px;
@@ -82,8 +92,23 @@ i {
     width: 150px;
 }
 
-.prueba {
-    color: red;
+main {
+    margin: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+h1 {
+    margin: 20px;
+    text-align: center;
+}
+
+.card img {
+    width: 300px;
+    height: 300px;
 }
 
 footer {
