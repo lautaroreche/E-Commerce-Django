@@ -1,0 +1,146 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #333;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+
+header {
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 150px;
+    background-color: #092e20;
+    border-bottom: 1px solid #999;
+}
+
+header img {
+    width: 150px;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+nav ul {
+    display: flex;
+    gap: 30px;
+}
+
+nav ul li, footer ul li {
+    list-style: none;
+    font-size: 17px;
+    font-weight: 500;
+    color: #eee;
+}
+
+.buscador-menu {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+}
+
+.buscador-menu input {
+    padding-left: 10px;
+    width: 600px;
+    height: 40px;
+    font-size: 18px;
+    color: #333;
+}
+
+i {
+    cursor: pointer;
+    font-size: 26px;
+    color: #eee;
+}
+
+.buscador-menu i {
+    padding: 6px;
+}
+
+.buscador-menu i, .email-newsletter i {
+    color: #333;
+}
+
+.buscador-menu input, .buscador-menu i, .email-newsletter input, .email-newsletter i {
+    background-color: #eee;
+    border: 1px solid #333;
+    border-radius: 4px;
+}
+
+.iconos-menu {
+    display: flex;
+    margin-right: 20px;
+    justify-content: right;
+    gap: 20px;
+    width: 150px;
+}
+
+.prueba {
+    color: red;
+}
+
+footer {
+    padding: 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: top;
+    background-color: #777;
+}
+
+footer div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+h3 {
+    color: #eee;
+}
+
+.iconos-redes-sociales {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+hr {
+    width: 110%;
+    border: 1px solid #999;
+    margin: 3px 0;
+
+}
+
+.categorias ul {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.email-newsletter {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2px;
+}
+
+.email-newsletter input {
+    padding-left: 10px;
+    width: 300px;
+    height: 35px;
+    font-size: 17px;
+}
+
+.email-newsletter i {
+    padding: 4px;
+    font-size: 25px;
+    background-color: #eee;
+}

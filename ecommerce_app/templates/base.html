@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}E-Commerce Django{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+</head>
+<body>
+    <header>
+        <img src="{% static 'images/logo.png' %}" alt="Logo">
+        <nav>
+            <div class="buscador-menu">
+                <input type="text" placeholder="Busca un producto">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <div>
+                <ul>
+                    {% for categorie in categories %}
+                        <li>{{ categorie.category }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </nav>
+        <div class="iconos-menu">
+            <i class="fa-solid fa-user-large"></i>
+            <i class="fa-solid fa-cart-shopping"></i>
+        </div>
+    </header>
+    {% block content %}{% endblock %}
+    <footer>
+        <div class="redes-sociales">
+            <h3>Redes sociales</h3>
+            <hr>
+            <div class="iconos-redes-sociales">
+                <i class="fa-brands fa-instagram"></i>
+                <i class="fa-brands fa-x-twitter"></i>
+                <i class="fa-brands fa-facebook"></i>
+            </div>
+        </div>
+        <div>
+            <h3>Categorías</h3>
+            <hr>
+            <div class="categorias">
+                <ul>
+                    {% for categorie in categories %}
+                        <li>{{ categorie.category }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        <div>
+            <h3>Recibe nuestro newsletter</h3>
+            <hr>
+            <div class="email-newsletter">
+                <input type="text" placeholder="Escribe tu email">
+                <i class="fa-solid fa-envelope"></i>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

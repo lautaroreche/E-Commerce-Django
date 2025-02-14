@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Prueba{% endblock %}
+
+{% block content %}
+    <main>
+        <h1>E-Commerce Django</h1>
+        <ul>
+            {% for item in items %}
+                <li class="prueba">{{ item.name }}</li>
+            {% endfor %}
+        </ul>
+    </main>
+{% endblock %}
+
