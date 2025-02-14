@@ -10,12 +10,17 @@
         </div>
         <div class="cards-container">
             {% for producto in productos %}
-            <div class="card">
-                <image src="../static/{{ producto.image }}" alt="{{ producto.name }}">
-                <p>{{ producto.name }}</p>
-                <p>${{ producto.price }}</p>
-            </div>
-        {% endfor %}
+                <div class="card">
+                    <image src="../static/{{ producto.image }}" alt="{{ producto.name }}">
+                        <hr class="divisor-card">
+                        <p>{{ producto.name }}</p>
+                        <div class="final-card">
+                            <i class="fa-solid fa-minus"></i>
+                            <p>$ {{ producto.price|floatformat:0 }}</p>
+                            <i class="fa-solid fa-plus"></i>
+                        </div>
+                </div>
+            {% endfor %}
         </div>
     </main>
 {% endblock %}
