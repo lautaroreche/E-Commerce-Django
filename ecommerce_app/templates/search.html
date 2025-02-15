@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Search{% endblock %}
+{% block title %}Buscar un producto{% endblock %}
 
 {% block content %}
     <main>
         <div class="texto-principal-main">
-            <h2>Producto buscado: {{ query }}</h2>
-            <h3>Coincidencias encontradas: {{ resultados }}</h3>
+            <h2>Producto buscado: {{ query|lower|capfirst }}</h2>
         </div>
         <div class="cards-container">
             {% for producto in productos %}

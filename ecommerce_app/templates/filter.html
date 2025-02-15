@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Filter{% endblock %}
+{% block title %}{{ category }}{% endblock %}
 
 {% block content %}
     <main>
         <div class="texto-principal-main">
-            <h2>Categoría buscada: {{ category }}</h2>
-            <h3>Coincidencias encontradas: {{ resultados }}</h3>
+            <h2>Sección de {{ category }}</h2>
         </div>
         <div class="cards-container">
             {% for producto in productos %}
