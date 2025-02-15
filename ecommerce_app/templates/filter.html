@@ -1,12 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}E-Commerce Django{% endblock %}
+{% block title %}Filter{% endblock %}
 
 {% block content %}
     <main>
         <div class="texto-principal-main">
-            <h1>E-Commerce Django</h1>
+            <h2>Categoría buscada: {{ category }}</h2>
+            <h3>Coincidencias encontradas: {{ resultados }}</h3>
         </div>
         <div class="cards-container">
             {% for producto in productos %}
@@ -22,6 +23,6 @@
                 </div>
             {% endfor %}
         </div>
+
     </main>
 {% endblock %}
-

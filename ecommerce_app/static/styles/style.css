@@ -21,6 +21,10 @@ header img {
     width: 150px;
 }
 
+a {
+    text-decoration: none;
+}
+
 nav {
     display: flex;
     flex-direction: column;
@@ -61,7 +65,7 @@ input:focus, button:focus {
 
 i {
     cursor: pointer;
-    font-size: 27px;
+    font-size: 28px;
     color: #eee;
 }
 
@@ -165,6 +169,7 @@ h1, h2, h3 {
     font-size: 22px;
     width: 35px;
     text-align: center;
+    border: 1px solid #999;
 }
 
 .fa-minus {
@@ -176,7 +181,7 @@ h1, h2, h3 {
 }
 
 footer {
-    padding: 20px;
+    padding: 40px;
     display: flex;
     justify-content: space-around;
     align-items: top;
@@ -192,6 +197,7 @@ footer div {
 }
 
 h4 {
+    font-size: 23px;
     color: #eee;
 }
 
