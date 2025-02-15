@@ -10,7 +10,9 @@
 </head>
 <body>
     <header>
-        <img src="{% static 'images/logo.png' %}" alt="Logo">
+        <a href="/home/">
+            <img src="{% static 'images/logo.png' %}" alt="Logo">
+        </a>
         <nav>
             <div class="buscador-menu">
                 <form action="/search/" method="POST">
@@ -23,16 +25,24 @@
             </div>
             <div>
                 <ul>
-                    <a href=""><li>Todos</li></a>
+                    <a href="/home/">
+                        <li>Todos</li>
+                    </a>
                     {% for categorie in categories %}
-                        <li>{{ categorie.category }}</li>
+                        <a href="/filter/{{ categorie.category }}">
+                            <li>{{ categorie.category }}</li>
+                        </a>
                     {% endfor %}
                 </ul>
             </div>
         </nav>
         <div class="iconos-menu">
-            <i class="fa-solid fa-user-large"></i>
-            <i class="fa-solid fa-cart-shopping"></i>
+            <a href="/account/">
+                <i class="fa-solid fa-user-large"></i>
+            </a>
+            <a href="/cart/">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </a>
         </div>
     </header>
     {% block content %}{% endblock %}
@@ -41,9 +51,15 @@
             <h4>Redes sociales</h4>
             <hr>
             <div class="iconos-redes-sociales">
-                <i class="fa-brands fa-instagram"></i>
-                <i class="fa-brands fa-x-twitter"></i>
-                <i class="fa-brands fa-facebook"></i>
+                <a href="https://www.instagram.com/" target="_blank">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://x.com/" target="_blank">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+                <a href="https://www.facebook.com/" target="_blank">
+                    <i class="fa-brands fa-facebook"></i>
+                </a>
             </div>
         </div>
         <div>
@@ -51,9 +67,13 @@
             <hr>
             <div class="categorias">
                 <ul>
-                    <li>Todos</li>
+                    <a href="/home/">
+                        <li>Todos</li>
+                    </a>
                     {% for categorie in categories %}
+                    <a href="/filter/{{ categorie.category }}">
                         <li>{{ categorie.category }}</li>
+                    </a>
                     {% endfor %}
                 </ul>
             </div>
