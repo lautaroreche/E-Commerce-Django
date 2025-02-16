@@ -41,8 +41,11 @@
             <a href="/account/">
                 <i class="fa-solid fa-user-large"></i>
             </a>
-            <a href="/cart/">
+            <a href="/cart/" class="cart_icon_amount">
                 <i class="fa-solid fa-cart-shopping"></i>
+                {% if total_cart_amount > 0 %}
+                    <p class="total_cart_amount">${{total_cart_amount}}</p>
+                {% endif %}
             </a>
         </div>
     </header>
