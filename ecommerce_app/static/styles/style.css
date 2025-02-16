@@ -104,7 +104,7 @@ button {
 }
 
 main {
-    margin: 60px 40px;
+    padding: 60px 40px;
     display: flex;
     flex-direction: column;
     gap: 40px;
@@ -132,7 +132,7 @@ h1, h2 {
     flex-wrap: wrap;
 }
 
-.card {
+.card-producto {
     padding: 10px;
     width: 270px;
     box-shadow: 0 0 15px #bbb;
@@ -140,12 +140,13 @@ h1, h2 {
 }
 
 .nombre-producto {
-    height: 50px;
+    margin-top: 15px;
+    height: 45px;
     font-size: 19px;
     font-weight: 500;
 }
 
-.card img {
+.card-producto img {
     width: 250px;
     height: 250px;
 }
@@ -204,7 +205,7 @@ footer div {
     width: 350px;
 }
 
-h4 {
+.title-footer {
     font-size: 23px;
     color: #eee;
 }
@@ -218,7 +219,7 @@ h4 {
 
 hr {
     margin: 3px 0;
-    width: 100%;
+    width: 90%;
     border: 1px solid #999;
 }
 
@@ -229,7 +230,7 @@ hr {
     gap: 10px;
 }
 
-.email-newsletter {
+.email-newsletter form {
     display: flex;
     justify-content: center;
     flex-direction: row;
@@ -239,7 +240,7 @@ hr {
 
 .email-newsletter input {
     padding-left: 10px;
-    width: 300px;
+    width: 250px;
     height: 35px;
     font-size: 17px;
 }
@@ -248,6 +249,77 @@ hr {
     padding: 4px;
     font-size: 25px;
     background-color: #eee;
+}
+
+.error-main, .congrats-main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card-message {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 600px;
+    height: 500px;
+    border-radius: 4px;
+}
+
+.card-message-error {
+    box-shadow: 0 0 15px #ff6961;
+}
+
+.card-message-congrats {
+    box-shadow: 0 0 15px #5cb85c;
+}
+
+.card-message h2 {
+    margin: 30px 0
+}
+
+.card-message-error hr {
+    border: 1px solid #ff6961;
+}
+
+.card-message-congrats hr {
+    border: 1px solid #5cb85c;
+}
+
+.card-message-detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 20px;
+    height: 300px;
+}
+
+.card-message-detail h3, .card-message-detail h4 {
+    color: #333;
+}
+
+.message-detail {
+    margin: 10px 0;
+}
+
+.boton-card-message {
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.boton-card-message-error {
+    background-color: #ff6961;
+    color: #eee;
+}
+
+.boton-card-message-congrats {
+    background-color: #96e196;
 }
 
 
@@ -263,6 +335,10 @@ hr {
 
 
 @media screen  and (max-width: 1300px) {
+    .email-newsletter input {
+        width: 200px;
+    }
+
     .buscador-menu input {
         width: 400px;
     }
@@ -303,6 +379,10 @@ hr {
         margin: 0;
         width: 70%;
     }
+
+    .email-newsletter input {
+        width: 300px;
+    }
 }
 
 
@@ -317,11 +397,7 @@ hr {
 }
 
 
-@media screen  and (max-width: 680px) {
-    .buscador-menu input {
-        width: 200px;
-    }
-
+@media screen  and (max-width: 780px) {
     nav ul {
         gap: 15px;
     }
@@ -332,7 +408,7 @@ hr {
 }
 
 
-@media screen  and (max-width: 680px) {
+@media screen  and (max-width: 700px) {
     .buscador-menu {
         display: none;
     }
@@ -346,9 +422,13 @@ hr {
         display: none;
     }
     
-
     nav ul li {
         font-size: 18px;
+    }
+
+    .card-message {
+        width: 400px;
+        height: 400px;
     }
 }
 

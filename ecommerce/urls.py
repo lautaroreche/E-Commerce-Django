@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from ecommerce_app.views import home, search, filter, account, cart, newsletter
+from ecommerce_app.views import home, search, filter, account, cart, newsletter, error, congrats
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,4 +26,6 @@ urlpatterns = [
     path('account/', account),
     path('cart/', cart),
     path('newsletter/', newsletter),
+    path('error/', error),
+    path('congrats/', congrats),
 ]

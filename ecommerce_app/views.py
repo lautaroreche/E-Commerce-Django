@@ -1,14 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.http import HttpResponse
+from django.contrib import messages
 import smtplib
 from email.mime.text import MIMEText
 from ecommerce.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_SENDER_NAME, EMAIL_SUBJECT
 from ecommerce_app.models import Product
 from ecommerce_app.forms import FormularioNewsletter
-
-
-
 
 
 def base(request):
@@ -32,16 +30,18 @@ def search(request):
     if request.method == "POST":
         nombre_producto = request.POST.get("nombre_producto", "").strip()
         if not nombre_producto:
-            return render(request, "error.html", {
-                "error": "No has introducido ningún artículo",
-                'categories': categories,
-            })
+            messages.error(request, "No has introducido ningún artículo")
+            messages.info(request, "Escribe el nombre de algún producto en la barra de búsqueda")
+            return redirect("/error/")
         if len(nombre_producto) > 20:
-            return render(request, "error.html", {
-                "error": "Texto de búsqueda demasiado largo. Por favor, introduce un texto más corto",
-                'categories': categories,
-            })
+            messages.error(request, "Nombre de producto demasiado largo")
+            messages.info(request, "Introduce un nombre de producto más corto")
+            return redirect("/error/")
         productos = Product.objects.filter(name__icontains=nombre_producto)
+        if not productos:
+            messages.error(request, f'No hay ningún producto similar a "{nombre_producto}"')
+            messages.info(request, "Intenta buscar el producto de otra forma, o busca otro producto")
+            return redirect("/error/")
         return render(request, "search.html", {
             "productos": productos,
             "resultados": len(productos),
@@ -55,10 +55,9 @@ def filter(request, category):
     productos = Product.objects.filter(category=category)
     categories = Product.objects.values('category').distinct().order_by('category')
     if not productos:
-        return render(request, "error.html", {
-            "error": "La categoría que acabas de buscar no existe",
-            'categories': categories,
-        })
+        messages.error(request, "La categoría que acabas de buscar no existe")
+        messages.info(request, "Intenta seleccionar otra categoría")
+        return redirect("/error/")
     return render(request, "filter.html", {
         "productos": productos,
         "resultados": len(productos),
@@ -97,17 +96,27 @@ def newsletter(request):
             with smtplib.SMTP_SSL(EMAIL_HOST, EMAIL_PORT) as server:
                 server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
                 server.sendmail(EMAIL_HOST_USER, email, msg.as_string())
-                return render(request, "congrats.html", {
-                    "mensaje": f"Te has suscripto a nuestro newsletter exitosamente {email}",
-                    "categories": categories,
-                })
+                messages.success(request, "Te has suscripto a nuestro newsletter exitosamente")
+                messages.info(request, "En breve recibirás un email de confirmación")
+                return redirect("/congrats/")
         except Exception as e:
-            return render(request, "error.html", {
-                "error": f"Hay un error inesperado: {e}",
-                "categories": categories,
-            })
-        
+            messages.error(request, f"Error inesperado: {e}")
+            messages.info(request, "Intenta nuevamente en unos minutos")
+            return redirect("/error/")
+    messages.error(request, "El email ingresado no es válido")
+    messages.info(request, "Ingresa un email válido")
+    return redirect("/error/")
+
+
+def error(request):
+    categories = Product.objects.values('category').distinct().order_by('category')
     return render(request, "error.html", {
-        "error": "El email ingresado no es válido, intenta nuevamente",
+        "categories": categories,
+    })
+
+
+def congrats(request):
+    categories = Product.objects.values('category').distinct().order_by('category')
+    return render(request, "congrats.html", {
         "categories": categories,
     })

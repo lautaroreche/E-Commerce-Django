@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load static %}
 
 {% block title %}{{ category }}{% endblock %}
 
@@ -8,20 +7,6 @@
         <div class="texto-principal-main">
             <h2>Sección de {{ category }}</h2>
         </div>
-        <div class="cards-container">
-            {% for producto in productos %}
-                <div class="card">
-                    <img src="{% static producto.image %}" alt="{{ producto.name }}">
-                    <hr class="divisor-card">
-                    <p>{{ producto.name }}</p>
-                    <div class="final-card">
-                        <i class="fa-solid fa-minus"></i>
-                        <p>$ {{ producto.price|floatformat:0 }}</p>
-                        <i class="fa-solid fa-plus"></i>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
-
+        {% include 'product_cards.html' %}
     </main>
 {% endblock %}

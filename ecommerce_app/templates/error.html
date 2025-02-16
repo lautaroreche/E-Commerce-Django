@@ -4,7 +4,25 @@
 {% block title %}Error{% endblock %}
 
 {% block content %}
-    <main>
-        <h2>{{ error }}</h2>
+    <main class="error-main">
+        <div class="card-message card-message-error">
+            <h2>Error</h2>
+            <hr>
+            <div class="card-message-detail">
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                        <h2 class="message-detail">{{ message }}</h2>
+                    {% endif %}
+                {% endfor %}
+                {% for message in messages %}
+                    {% if message.tags == 'info' %}
+                        <h3>{{ message }}</h3>
+                    {% endif %}
+                {% endfor %}
+                <a href="/home/" class="boton-card-message boton-card-message-error">
+                    Volver al inicio
+                </a>
+            </div>
+        </div>
     </main>
 {% endblock %}

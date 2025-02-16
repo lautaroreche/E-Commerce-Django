@@ -4,7 +4,25 @@
 {% block title %}Congrats{% endblock %}
 
 {% block content %}
-    <main>
-        <h2>{{ mensaje }}</h2>
+    <main class="congrats-main">
+        <div class="card-message card-message-congrats">
+            <h2>Congrats</h2>
+            <hr>
+            <div class="card-message-detail">
+                {% for message in messages %}
+                    {% if message.tags == 'success' %}
+                        <h2 class="message-detail">{{ message }}</h2>
+                    {% endif %}
+                {% endfor %}
+                {% for message in messages %}
+                    {% if message.tags == 'info' %}
+                        <h3>{{ message }}</h3>
+                    {% endif %}
+                {% endfor %}
+                <a href="/home/" class="boton-card-message boton-card-message-congrats">
+                    Volver al inicio
+                </a>
+            </div>
+        </div>
     </main>
 {% endblock %}

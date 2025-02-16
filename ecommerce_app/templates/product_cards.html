@@ -1,0 +1,15 @@
+{% load static %}
+<div class="cards-container">
+    {% for producto in productos %}
+        <div class="card-producto">
+            <img src="{% static producto.image %}" alt="{{ producto.name }}">
+            <hr class="divisor-card">
+            <p class="nombre-producto">{{ producto.name }}</p>
+            <div class="final-card">
+                <i class="fa-solid fa-minus"></i>
+                <p>$ {{ producto.price|floatformat:0 }}</p>
+                <i class="fa-solid fa-plus"></i>
+            </div>
+        </div>
+    {% endfor %}
+</div>
