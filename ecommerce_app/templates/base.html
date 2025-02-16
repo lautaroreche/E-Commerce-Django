@@ -86,8 +86,13 @@
             <h4>Recibe nuestro newsletter</h4>
             <hr>
             <div class="email-newsletter">
-                <input type="text" placeholder="Escribe tu email">
-                <i class="fa-solid fa-envelope"></i>
+                <form action="/newsletter/" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="email" placeholder="Escribe tu email">
+                    <button type="submit">
+                        <i class="fa-solid fa-envelope"></i>
+                    </button>
+                </form>
             </div>
         </div>
     </footer>

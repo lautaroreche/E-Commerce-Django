@@ -1,6 +1,14 @@
 from django.shortcuts import render
-from ecommerce_app.models import Product
+from django.template.loader import render_to_string
 from django.http import HttpResponse
+import smtplib
+from email.mime.text import MIMEText
+from ecommerce.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_SENDER_NAME, EMAIL_SUBJECT
+from ecommerce_app.models import Product
+from ecommerce_app.forms import FormularioNewsletter
+
+
+
 
 
 def base(request):
@@ -69,5 +77,37 @@ def account(request):
 def cart(request):
     categories = Product.objects.values('category').distinct().order_by('category')
     return render(request, 'cart.html', {
+        "categories": categories,
+    })
+
+
+def newsletter(request):
+    categories = Product.objects.values('category').distinct().order_by('category')
+    form = FormularioNewsletter(request.POST)
+    if form.is_valid():
+        email = form.cleaned_data["email"]
+
+        html_content = render_to_string("newsletter_message.html")
+        msg = MIMEText(html_content, "html")
+        msg["Subject"] = EMAIL_SUBJECT
+        msg["From"] = f"{EMAIL_SENDER_NAME} <{EMAIL_HOST_USER}>"
+        msg["To"] = email
+
+        try:
+            with smtplib.SMTP_SSL(EMAIL_HOST, EMAIL_PORT) as server:
+                server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
+                server.sendmail(EMAIL_HOST_USER, email, msg.as_string())
+                return render(request, "congrats.html", {
+                    "mensaje": f"Te has suscripto a nuestro newsletter exitosamente {email}",
+                    "categories": categories,
+                })
+        except Exception as e:
+            return render(request, "error.html", {
+                "error": f"Hay un error inesperado: {e}",
+                "categories": categories,
+            })
+        
+    return render(request, "error.html", {
+        "error": "El email ingresado no es válido, intenta nuevamente",
         "categories": categories,
     })
