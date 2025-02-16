@@ -30,7 +30,7 @@ def search(request):
     if request.method == "POST":
         nombre_producto = request.POST.get("nombre_producto", "").strip()
         if not nombre_producto:
-            messages.error(request, "No has introducido ningún artículo")
+            messages.error(request, "No has buscado ningún producto")
             messages.info(request, "Escribe el nombre de algún producto en la barra de búsqueda")
             return redirect("/error/")
         if len(nombre_producto) > 20:

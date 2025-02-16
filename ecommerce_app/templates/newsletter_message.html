@@ -7,7 +7,7 @@
     <title>Newsletter</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif, Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
@@ -15,17 +15,27 @@
         .container {
             max-width: 600px;
             margin: auto;
-            background: #ffffff;
+            background: #eee;
             padding: 20px;
-            border-radius: 10px;
+            border-radius: 4px;
+            box-shadow: 0 0 15px #74acdf;
         }
         .header {
             text-align: center;
-            padding: 20px 0;
+            padding: 10px 0;
+        }
+        hr {
+            margin: 3px 0;
+            width: 100%;
+            border: 1px solid #74acdf;
         }
         .content {
             text-align: left;
             color: #333;
+        }
+        .content a {
+            color: white;
+            text-decoration: none;
         }
         .button {
             display: block;
@@ -36,12 +46,17 @@
             color: white;
             text-align: center;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 4px;
+        }
+        .container hr {
+            margin: 3px 0;
+            width: 90%;
+            border: 1px solid #74acdf;
         }
         .footer {
             text-align: center;
             font-size: 12px;
-            color: #666;
+            color: #777;
             margin-top: 20px;
         }
     </style>
@@ -49,12 +64,13 @@
 <body>
     <div class="container">
         <div class="header">
-            <h2>¡Bienvenido a nuestro Newsletter!</h2>
+            <h2>¡Bienvenido al newsletter de Punta!</h2>
         </div>
+        <hr>
         <div class="content">
             <p>Nos alegra mucho tenerte con nosotros.</p>
             <p>Te avisaremos cada vez que sumemos nuevos productos, o cuando tengamos promociones especiales.</p>
-            <a href="#" class="button">Ir al sitio web de Punta</a>
+            <a href="#" class="button">Ir al sitio web</a>
         </div>
         <div class="footer">
             <p>&copy; 2025 Punta. Todos los derechos reservados.</p>
