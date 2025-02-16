@@ -110,13 +110,6 @@ main {
     gap: 40px;
 }
 
-.cards-container {
-    display: flex;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
-}
-
 .texto-principal-main {
     margin: 10px 0;
 }
@@ -132,14 +125,24 @@ h1, h2 {
     text-align: center;
 }
 
+.cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
+}
+
 .card {
     padding: 10px;
+    width: 270px;
     box-shadow: 0 0 15px #bbb;
     text-align: center;
 }
 
-.card p {
-    font-size: 23px;
+.nombre-producto {
+    height: 50px;
+    font-size: 19px;
+    font-weight: 500;
 }
 
 .card img {
@@ -159,12 +162,13 @@ h1, h2 {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    padding: 10px;
+    margin: 0 0 10px 0;
 }
 
-.final-card  p {
+.final-card p {
     font-size: 22px;
     font-weight: 600;
+    text-align: end;
 }
 
 .fa-minus, .fa-plus {
