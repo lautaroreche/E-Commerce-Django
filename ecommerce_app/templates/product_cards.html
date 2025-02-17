@@ -6,7 +6,7 @@
             <hr>
             <p class="nombre-producto">{{ producto.name }}</p>
             <div class="final-card">
-                <a href="{% url 'remove' producto.id %}" class="remove-cart">
+                <a href="{% url 'decrement' producto.id %}" class="decrement-cart">
                     <i class="fa-solid fa-minus"></i>
                 </a>
                 <p>${{ producto.price|floatformat:0 }}</p>

@@ -5,12 +5,37 @@
 
 {% block content %}
     <main>
-        {% if request.session.cart.items %}
-            {% for key, value in request.session.cart.items %}
-                <p>
-                    {{value.name}} - ${{value.price}} - Cantidad: {{value.quantity}}
-                </p>
-            {% endfor %}
-        {% endif  %}
+        <h2>Carrito</h2>
+        <div class="cards-container-cart">
+            {% if request.session.cart.items %}
+                {% for id, producto in request.session.cart.items %}
+                    <div class="card-producto-cart">
+                        <img src="{% static producto.image %}" alt="{{ producto.name }}">
+                        <div class="detalle-producto-cart">
+                            <p class="nombre-producto">{{ producto.name }}</p>
+                            <div class="info-cantidad-cart">
+                                <a href="{% url 'decrement' id %}" class="decrement-cart">
+                                    <i class="fa-solid fa-minus"></i>
+                                </a>
+                                <p>{{ producto.quantity }}</p>
+                                <a href="{% url 'add' id %}" class="add-cart">
+                                    <i class="fa-solid fa-plus"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="subtotal_cart">
+                            {% for id_subtotal, subtotal in subtotal_dict.items %}
+                                {% if id_subtotal == id %}
+                                    <p>${{ subtotal }}</p>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div>
+                            <i class="fa-solid fa-trash-can"></i>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endif  %}
+        </div>
     </main>
 {% endblock %}
