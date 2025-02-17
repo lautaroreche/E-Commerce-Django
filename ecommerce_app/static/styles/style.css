@@ -172,8 +172,16 @@ hr {
 }
 
 .final-card p {
-    font-size: 20px;
+    font-size: 21px;
     font-weight: 600;
+}
+
+.final-card:has(.add-cart:focus-within) p {
+    color: #008f39;
+}
+
+.final-card:has(.remove-cart:focus-within) p {
+    color: #ff0000;
 }
 
 .fa-minus, .fa-plus {

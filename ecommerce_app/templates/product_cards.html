@@ -6,9 +6,13 @@
             <hr>
             <p class="nombre-producto">{{ producto.name }}</p>
             <div class="final-card">
-                <i class="fa-solid fa-minus"></i>
+                <a href="{% url 'remove' producto.id %}" class="remove-cart">
+                    <i class="fa-solid fa-minus"></i>
+                </a>
                 <p>${{ producto.price|floatformat:0 }}</p>
-                <i class="fa-solid fa-plus"></i>
+                <a href="{% url 'add' producto.id %}" class="add-cart">
+                    <i class="fa-solid fa-plus"></i>
+                </a>
             </div>
         </div>
     {% endfor %}

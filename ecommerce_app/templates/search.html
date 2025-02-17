@@ -5,7 +5,7 @@
 {% block content %}
     <main>
         <div>
-            <h2>Producto buscado: {{ query|lower|capfirst }}</h2>
+            <h2>Producto buscado: {{ query }}</h2>
         </div>
         {% include 'product_cards.html' %}
     </main>

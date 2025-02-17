@@ -17,15 +17,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from ecommerce_app.views import home, search, filter, account, cart, newsletter, error, congrats
+from cart.views import add, remove, decrement, clear
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/', home),
-    path('search/', search),
-    path('filter/<str:category>/', filter),
-    path('account/', account),
-    path('cart/', cart),
-    path('newsletter/', newsletter),
-    path('error/', error),
-    path('congrats/', congrats),
+    path('home/', home, name='home'),
+    path('search/', search, name='search'),
+    path('filter/<str:category>/', filter, name='filter'),
+    path('account/', account, name='account'),
+    path('cart/', cart, name='cart'),
+    path('newsletter/', newsletter, name='newsletter'),
+    path('error/', error, name='error'),
+    path('congrats/', congrats, name='congrats'),
+    path('add/<int:product_id>/', add, name='add'),
+    path('remove/<int:product_id>/', remove, name='remove'),
+    path('decrement/<int:product_id>/', decrement, name='decrement'),
+    path('clear/', clear, name='clear'),
 ]

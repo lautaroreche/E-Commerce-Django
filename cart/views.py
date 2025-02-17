@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from cart import Cart
+from django.http import HttpResponse
 from ecommerce_app.models import Product
+from .cart import Cart
 
 
 def add(request, product_id):

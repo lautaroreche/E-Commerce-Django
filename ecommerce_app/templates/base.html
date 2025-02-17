@@ -11,12 +11,12 @@
 </head>
 <body>
     <header>
-        <a href="/home/">
+        <a href="{% url 'home' %}">
             <img src="{% static 'images/punta.png' %}" alt="Logo">
         </a>
         <nav>
             <div class="buscador-menu">
-                <form action="/search/" method="POST">
+                <form action="{% url 'search' %}" method="POST">
                     {% csrf_token %}
                     <input type="text" name="nombre_producto" placeholder="Busca un producto">
                     <button type="submit">
@@ -26,11 +26,11 @@
             </div>
             <div>
                 <ul>
-                    <a href="/home/">
+                    <a href="{% url 'home' %}">
                         <li>Todos</li>
                     </a>
                     {% for categorie in categories %}
-                        <a href="/filter/{{ categorie.category }}">
+                        <a href="{% url 'filter' categorie.category %}">
                             <li>{{ categorie.category }}</li>
                         </a>
                     {% endfor %}
@@ -38,10 +38,10 @@
             </div>
         </nav>
         <div class="iconos-menu">
-            <a href="/account/">
+            <a href="{% url 'account' %}">
                 <i class="fa-solid fa-user-large"></i>
             </a>
-            <a href="/cart/" class="cart_icon_amount">
+            <a href="{% url 'cart' %}" class="cart_icon_amount">
                 <i class="fa-solid fa-cart-shopping"></i>
                 {% if total_cart_amount > 0 %}
                     <p class="total_cart_amount">${{total_cart_amount}}</p>
@@ -71,11 +71,11 @@
             <hr>
             <div class="categorias">
                 <ul>
-                    <a href="/home/">
+                    <a href="{% url 'home' %}">
                         <li>Todos</li>
                     </a>
                     {% for categorie in categories %}
-                    <a href="/filter/{{ categorie.category }}">
+                    <a href="{% url 'filter' categorie.category %}">
                         <li>{{ categorie.category }}</li>
                     </a>
                     {% endfor %}
@@ -86,7 +86,7 @@
             <h3 class="title-footer">Recibe nuestro newsletter</h3>
             <hr>
             <div class="email-newsletter">
-                <form action="/newsletter/" method="POST">
+                <form action="{% url 'newsletter' %}" method="POST">
                     {% csrf_token %}
                     <input type="text" name="email" placeholder="Escribe tu email">
                     <button type="submit">

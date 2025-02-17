@@ -5,6 +5,12 @@
 
 {% block content %}
     <main>
-        
+        {% if request.session.cart.items %}
+            {% for key, value in request.session.cart.items %}
+                <p>
+                    {{value.name}} - ${{value.price}} - Cantidad: {{value.quantity}}
+                </p>
+            {% endfor %}
+        {% endif  %}
     </main>
 {% endblock %}
