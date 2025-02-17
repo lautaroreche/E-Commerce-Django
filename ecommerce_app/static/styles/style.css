@@ -104,18 +104,15 @@ button {
 }
 
 main {
-    padding: 60px 40px;
+    background-color: #fafafa;
+    padding: 40px;
     display: flex;
     flex-direction: column;
     gap: 40px;
 }
 
-.texto-principal-main {
-    margin: 10px 0;
-}
-
 h1 {
-    font-size: 40px;
+    font-size: 31px;
 }
 h2 {
     font-size: 30px;
@@ -128,55 +125,62 @@ h1, h2 {
 .cards-container {
     display: flex;
     justify-content: center;
-    gap: 50px;
+    gap: 40px;
     flex-wrap: wrap;
 }
 
 .card-producto {
     padding: 10px;
-    width: 270px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
     box-shadow: 0 0 15px #bbb;
     text-align: center;
 }
 
 .nombre-producto {
-    margin-top: 15px;
-    height: 45px;
-    font-size: 19px;
+    margin-top: 5px;
+    height: 40px;
+    font-size: 17px;
     font-weight: 500;
 }
 
 .card-producto img {
-    width: 250px;
-    height: 250px;
+    width: 180px;
+    height: 180px;
+}
+
+hr {
+    margin: 3px auto;
+    width: 90%;
+    border: 1px solid #999;
 }
 
 .card-producto hr {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
     border: 1px solid #ddd;
-    margin: 10px 0;
+    margin: 5px 0;
 }
 
 .final-card {
     display: flex;
+    flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
-    margin: 0 0 10px 0;
+    width: 100%;
 }
 
 .final-card p {
-    font-size: 22px;
+    font-size: 20px;
     font-weight: 600;
-    text-align: end;
 }
 
 .fa-minus, .fa-plus {
-    padding: 6px;
+    padding: 5px;
     border-radius: 50%;
-    font-size: 22px;
-    width: 35px;
+    font-size: 17px;
+    width: 30px;
     text-align: center;
     border: 1px solid #999;
 }
@@ -215,12 +219,6 @@ footer div {
     flex-direction: row;
     justify-content: center;
     gap: 20px;
-}
-
-hr {
-    margin: 3px 0;
-    width: 90%;
-    border: 1px solid #999;
 }
 
 .categorias ul {
@@ -381,7 +379,7 @@ hr {
     }
 
     hr {
-        margin: 0;
+        margin: 0 auto;
         width: 70%;
     }
 
