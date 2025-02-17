@@ -2,7 +2,10 @@
 <div class="cards-container">
     {% for producto in productos %}
         <div class="card-producto">
-            <img src="{% static producto.image %}" alt="{{ producto.name }}">
+            <div>
+                <img src="{% static producto.image %}" alt="{{ producto.name }}">
+                <i class="fa-regular fa-heart"></i>
+            </div>
             <hr>
             <p class="nombre-producto">{{ producto.name }}</p>
             <div class="final-card">

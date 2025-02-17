@@ -62,6 +62,6 @@ class Cart():
 
     def get_total(self):
         total = 0
-        for key, value in self.get_subtotal():
+        for key, value in self.get_subtotal().items():
             total += int(value)
         return total
