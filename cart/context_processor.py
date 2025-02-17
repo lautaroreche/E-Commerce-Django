@@ -3,5 +3,6 @@ def total_cart_amount(request):
     if request.user.is_authenticated:
         cart = request.session.get("cart", {})
         for item in cart.values():
-            total+=item["price"]*item["quantity"]
-    return {"total_cart_amount":total}
+            total += int(float(item["price"]) * item["quantity"])
+    print(total)
+    return {"total_cart_amount": total}

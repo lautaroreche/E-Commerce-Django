@@ -99,7 +99,7 @@ button {
 }
 
 .total_cart_amount {
-    font-size: 22px;
+    font-size: 17px;
     color: #eee;
 }
 
@@ -147,7 +147,7 @@ h1, h2 {
     font-weight: 500;
 }
 
-.card-producto div {
+.imagen-card-producto {
     position: relative;
     display: inline-block;
 }
@@ -557,8 +557,12 @@ footer div {
 
 .fa-heart {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 20px;
-    color: red;
+    top: 5px;
+    right: 5px;
+    font-size: 25px;
+    color: #bbb;
+}
+
+.fa-heart:active {
+    color: #ff0000;
 }
