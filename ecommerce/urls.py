@@ -16,22 +16,26 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from ecommerce_app.views import home, search, filter, account, cart, newsletter, error, congrats
-from cart.views import add, remove, decrement, clear
+from ecommerce_app.views import home, search, filter, account, cart, newsletter, error, congrats, favorites
+from cart.views import add_to_cart, remove_from_cart, decrement_product_from_cart, clear_cart
+from favorites.views import add_to_favorites, remove_from_favorites
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/', home, name='home'),
-    path('search/', search, name='search'),
-    path('filter/<str:category>/', filter, name='filter'),
-    path('account/', account, name='account'),
-    path('cart/', cart, name='cart'),
-    path('newsletter/', newsletter, name='newsletter'),
-    path('error/', error, name='error'),
-    path('congrats/', congrats, name='congrats'),
-    path('add/<int:product_id>/', add, name='add'),
-    path('remove/<int:product_id>/', remove, name='remove'),
-    path('decrement/<int:product_id>/', decrement, name='decrement'),
-    path('clear/', clear, name='clear'),
+    path('home/', home, name = 'home'),
+    path('search/', search, name = 'search'),
+    path('filter/<str:category>/', filter, name = 'filter'),
+    path('account/', account, name = 'account'),
+    path('cart/', cart, name = 'cart'),
+    path('newsletter/', newsletter, name = 'newsletter'),
+    path('error/', error, name = 'error'),
+    path('congrats/', congrats, name = 'congrats'),
+    path('add_to_cart/<int:product_id>/', add_to_cart, name = 'add_to_cart'),
+    path('remove_from_cart/<int:product_id>/', remove_from_cart, name = 'remove_from_cart'),
+    path('decrement_product_from_cart/<int:product_id>/', decrement_product_from_cart, name = 'decrement_product_from_cart'),
+    path('clear_cart/', clear_cart, name = 'clear_cart'),
+    path('favorites/', favorites, name = 'favorites'),
+    path('add_to_favorites/<int:product_id>/', add_to_favorites, name = 'add_to_favorites'),
+    path('remove_from_favorites/<int:product_id>/', remove_from_favorites, name = 'remove_from_favorites'),
 ]

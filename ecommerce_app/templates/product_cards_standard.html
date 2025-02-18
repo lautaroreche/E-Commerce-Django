@@ -4,16 +4,18 @@
         <div class="card-producto">
             <div class="imagen-card-producto">
                 <img src="{% static producto.image %}" alt="{{ producto.name }}">
-                <i class="fa-solid fa-heart"></i>
+                <a href="{% url 'add_to_favorites' producto.id %}">
+                    <i class="fa-solid fa-heart"></i>
+                </a>
             </div>
             <hr>
             <p class="nombre-producto">{{ producto.name }}</p>
             <div class="final-card">
-                <a href="{% url 'decrement' producto.id %}" class="decrement-cart">
+                <a href="{% url 'decrement_product_from_cart' producto.id %}" class="decrement-cart">
                     <i class="fa-solid fa-minus"></i>
                 </a>
                 <p>${{ producto.price|floatformat:0 }}</p>
-                <a href="{% url 'add' producto.id %}" class="add-cart">
+                <a href="{% url 'add_to_cart' producto.id %}" class="add-cart">
                     <i class="fa-solid fa-plus"></i>
                 </a>
             </div>

@@ -465,7 +465,7 @@ footer div {
 }
 
 
-.cards-container-cart {
+.cards-container-cart, .cards-container-list {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -473,14 +473,14 @@ footer div {
 }
 
 
-.cards-producto-cart {
+.cards-producto-cart, .cards-producto-list {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 15px;
 }
 
-.card-producto-cart {
+.card-producto-cart, .card-producto-list {
     padding: 5px;
     display: flex;
     flex-direction: row;
@@ -527,9 +527,10 @@ footer div {
     width: 80px;
 }
 
-.fa-trash-can {
+.fa-xmark {
     cursor: pointer;
     color: #ff0000;
+    font-size: 30px;
 }
 
 .subtotal-price {
@@ -537,7 +538,7 @@ footer div {
     font-weight: 500;
 }
 
-.trash {
+.xmark {
     width: 100px;
     text-align: center;
 }
@@ -555,7 +556,7 @@ footer div {
     width: 400px;
 }
 
-.fa-heart {
+.imagen-card-producto .fa-heart {
     position: absolute;
     top: 5px;
     right: 5px;
@@ -563,6 +564,6 @@ footer div {
     color: #bbb;
 }
 
-.fa-heart:active {
+.imagen-card-producto .fa-heart:active {
     color: #ff0000;
 }

@@ -1,0 +1,37 @@
+{% load static %}
+<div class="cards-producto-cart">
+    {% if request.session.cart.items %}
+        {% for id, producto in request.session.cart.items %}
+            <div class="card-producto-cart">
+                <img src="{% static producto.image %}" alt="{{ producto.name }}">
+                <div class="detalle-producto-cart">
+                    <p class="nombre-producto">{{ producto.name }}</p>
+                    <div class="info-cantidad-cart">
+                        <a href="{% url 'decrement_product_from_cart' id %}" class="decrement-cart">
+                            <i class="fa-solid fa-minus"></i>
+                        </a>
+                        <p>{{ producto.quantity }}</p>
+                        <a href="{% url 'add_to_cart' id %}" class="add-cart">
+                            <i class="fa-solid fa-plus"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="subtotal_cart">
+                    {% for id_subtotal, subtotal in subtotal_dict.items %}
+                        {% if id_subtotal == id %}
+                            <p class="subtotal-price">${{ subtotal|floatformat:0 }}</p>
+                        {% endif %}
+                    {% endfor %}
+                    {% if producto.quantity|stringformat:"s" > "1" %}
+                        <p class="subtotal-price-detail">(${{producto.price|floatformat:0}} x {{producto.quantity}})</p>
+                    {% endif %}
+                </div>
+                <div class="xmark">
+                    <a href="{% url 'remove_from_cart' id %}">
+                        <i class="fa-solid fa-xmark"></i>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif  %}
+</div>

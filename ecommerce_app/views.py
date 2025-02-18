@@ -7,6 +7,7 @@ from email.mime.text import MIMEText
 from ecommerce.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_SENDER_NAME, EMAIL_SUBJECT
 from ecommerce_app.models import Product
 from cart.cart import Cart
+from favorites.favorites import Favorites
 from ecommerce_app.forms import FormularioNewsletter
 
 
@@ -76,16 +77,22 @@ def account(request):
 
 def cart(request):
     categories = Product.objects.values('category').distinct().order_by('category')
-    cart = Cart(request)
+    cart_obj = Cart(request)
     return render(request, 'cart.html', {
         "categories": categories,
-        "subtotal_dict": cart.get_subtotal(),
-        "total": str(cart.get_total()),
+        "subtotal_dict": cart_obj.get_total_product(),
+        "total": str(cart_obj.get_total_cart()),
+    })
+
+
+def favorites(request):
+    categories = Product.objects.values('category').distinct().order_by('category')
+    return render(request, 'favorites.html', {
+        "categories": categories,
     })
 
 
 def newsletter(request):
-    categories = Product.objects.values('category').distinct().order_by('category')
     form = FormularioNewsletter(request.POST)
     if form.is_valid():
         email = form.cleaned_data["email"]

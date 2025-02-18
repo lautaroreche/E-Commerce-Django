@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'ecommerce_app',
     'cart',
+    'favorites',
 ]
 
 MIDDLEWARE = [

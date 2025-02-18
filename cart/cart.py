@@ -53,15 +53,15 @@ class Cart():
         self.session.modified = True
 
 
-    def get_subtotal(self):
+    def get_total_product(self):
         subtotal = {}
-        for key, item in self.cart.items():
-            subtotal[key] = float(item["price"]) * item["quantity"]
+        for key, value in self.cart.items():
+            subtotal[key] = float(value["price"]) * value["quantity"]
         return subtotal
 
 
-    def get_total(self):
+    def get_total_cart(self):
         total = 0
-        for key, value in self.get_subtotal().items():
+        for key, value in self.get_total_product().items():
             total += int(value)
         return total
