@@ -5,7 +5,11 @@
             <div class="imagen-card-producto">
                 <img src="{% static producto.image %}" alt="{{ producto.name }}">
                 <a href="{% url 'add_to_favorites' producto.id %}">
-                    <i class="fa-solid fa-heart"></i>
+                    {% if request.session.favorites and producto.id|stringformat:"s" in request.session.favorites %}
+                        <i class="fa-solid fa-heart fa-heart-favorite"></i>
+                    {% else %}
+                        <i class="fa-solid fa-heart"></i>
+                    {% endif %}
                 </a>
             </div>
             <hr>

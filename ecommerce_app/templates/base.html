@@ -41,6 +41,9 @@
             <a href="{% url 'account' %}">
                 <i class="fa-solid fa-user-large"></i>
             </a>
+            <a href="{% url 'favorites' %}">
+                <i class="fa-solid fa-heart"></i>
+            </a>
             <a href="{% url 'cart' %}" class="cart_icon_amount">
                 {% if total_cart_amount > 0 %}
                     <i class="fa-solid fa-cart-plus"></i>

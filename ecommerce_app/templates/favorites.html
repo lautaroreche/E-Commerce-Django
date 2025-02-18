@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Favorites{% endblock %}
+
+{% block content %}
+    <main>
+        <h2>Favorites</h2>
+        <div class="cards-container-favorites">
+            {% include 'product_cards_favorites.html' %}
+        </div>
+    </main>
+{% endblock %}

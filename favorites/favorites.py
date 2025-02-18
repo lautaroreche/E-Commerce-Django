@@ -14,14 +14,8 @@ class Favorites():
             self.favorites[product_id] = {
                 "name": product.name,
                 "price": str(product.price),
-                "quantity": 1,
                 "image": product.image.url,
             }
-        else:
-            for key, value in self.favorites.items():
-                if key == product_id:
-                    value["quantity"] += 1
-                    break
         self.save()
 
 

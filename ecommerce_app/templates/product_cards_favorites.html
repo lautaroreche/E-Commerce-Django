@@ -1,0 +1,26 @@
+{% load static %}
+<div class="cards-producto-favorites">
+    {% if request.session.favorites.items %}
+        {% for id, producto in request.session.favorites.items %}
+            <div class="card-producto-favorites">
+                <img src="{% static producto.image %}" alt="{{ producto.name }}">
+                <div class="detalle-producto-cart">
+                    <p class="nombre-producto">{{ producto.name }}</p>
+                    <div class="info-cantidad-cart">
+                        <a href="{% url 'add_to_cart' id %}" class="add-cart">
+                            <i class="fa-solid fa-plus"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="subtotal_cart">
+                    <p class="subtotal-price">${{ producto.price|floatformat:0 }}</p>
+                </div>
+                <div class="heart-crack">
+                    <a href="{% url 'remove_from_favorites' id %}">
+                        <i class="fa-solid fa-heart-crack"></i>
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif  %}
+</div>
