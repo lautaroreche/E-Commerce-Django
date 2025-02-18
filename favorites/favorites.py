@@ -16,6 +16,8 @@ class Favorites():
                 "price": str(product.price),
                 "image": product.image.url,
             }
+        else:
+            del self.favorites[product_id]
         self.save()
 
 
@@ -29,3 +31,8 @@ class Favorites():
         if product_id in self.favorites:
             del self.favorites[product_id]
             self.save()
+
+
+    def clear(self):
+        self.session["favorites"] = {}
+        self.session.modified = True

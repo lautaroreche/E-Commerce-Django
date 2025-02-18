@@ -4,11 +4,11 @@
 {% block title %}Congrats{% endblock %}
 
 {% block content %}
-    <main class="congrats-main">
-        <div class="card-message card-message-congrats">
+    <main class="flex-center">
+        <div class="card-message card-message-congrats flex-center flex-evenly flex-column">
             <h2>Congrats</h2>
             <hr>
-            <div class="card-message-detail">
+            <div class="card-message-detail flex-center flex-evenly flex-column">
                 {% for message in messages %}
                     {% if message.tags == 'success' %}
                         <h2 class="prueba">{{ message }}</h2>

@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from ecommerce_app.views import home, search, filter, account, cart, newsletter, error, congrats, favorites
 from cart.views import add_to_cart, remove_from_cart, decrement_product_from_cart, clear_cart
-from favorites.views import add_to_favorites, remove_from_favorites
+from favorites.views import add_to_favorites, remove_from_favorites, clear_favorites
 
 
 urlpatterns = [
@@ -38,4 +38,5 @@ urlpatterns = [
     path('favorites/', favorites, name = 'favorites'),
     path('add_to_favorites/<int:product_id>/', add_to_favorites, name = 'add_to_favorites'),
     path('remove_from_favorites/<int:product_id>/', remove_from_favorites, name = 'remove_from_favorites'),
+    path('clear_favorites/', clear_favorites, name = 'clear_favorites'),
 ]

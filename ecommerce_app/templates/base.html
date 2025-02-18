@@ -16,7 +16,7 @@
         </a>
         <nav>
             <div class="buscador-menu">
-                <form action="{% url 'search' %}" method="POST">
+                <form action="{% url 'search' %}" method="POST" class="flex-center">
                     {% csrf_token %}
                     <input type="text" name="nombre_producto" placeholder="Busca un producto">
                     <button type="submit">
@@ -37,7 +37,7 @@
                 </ul>
             </div>
         </nav>
-        <div class="iconos-menu">
+        <div class="iconos-menu flex-center">
             <a href="{% url 'account' %}">
                 <i class="fa-solid fa-user-large"></i>
             </a>
@@ -58,7 +58,7 @@
         <div class="redes-sociales">
             <h3 class="title-footer">Redes sociales</h3>
             <hr>
-            <div class="iconos-redes-sociales">
+            <div class="iconos-redes-sociales flex-center">
                 <a href="https://www.instagram.com/" target="_blank">
                     <i class="fa-brands fa-instagram"></i>
                 </a>
@@ -74,7 +74,7 @@
             <h3 class="title-footer">Categorías</h3>
             <hr>
             <div class="categorias">
-                <ul>
+                <ul class="flex-center">
                     <a href="{% url 'home' %}">
                         <li>Todos</li>
                     </a>
@@ -90,7 +90,7 @@
             <h3 class="title-footer">Recibe nuestro newsletter</h3>
             <hr>
             <div class="email-newsletter">
-                <form action="{% url 'newsletter' %}" method="POST">
+                <form action="{% url 'newsletter' %}" method="POST" class="flex-center">
                     {% csrf_token %}
                     <input type="text" name="email" placeholder="Escribe tu email">
                     <button type="submit">

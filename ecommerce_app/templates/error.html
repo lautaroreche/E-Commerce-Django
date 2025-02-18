@@ -4,11 +4,11 @@
 {% block title %}Error{% endblock %}
 
 {% block content %}
-    <main class="error-main">
-        <div class="card-message card-message-error">
+    <main class="flex-center">
+        <div class="card-message card-message-error flex-center flex-column flex-evenly">
             <h2>Error</h2>
             <hr>
-            <div class="card-message-detail">
+            <div class="card-message-detail flex-center flex-column flex-evenly">
                 {% for message in messages %}
                     {% if message.tags == 'error' %}
                         <h2 class="message-detail">{{ message }}</h2>

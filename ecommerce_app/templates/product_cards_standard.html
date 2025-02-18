@@ -1,7 +1,7 @@
 {% load static %}
-<div class="cards-container">
+<div class="cards-container flex-center">
     {% for producto in productos %}
-        <div class="card-producto">
+        <div class="card-producto flex-center">
             <div class="imagen-card-producto">
                 <img src="{% static producto.image %}" alt="{{ producto.name }}">
                 <a href="{% url 'add_to_favorites' producto.id %}">
@@ -14,7 +14,7 @@
             </div>
             <hr>
             <p class="nombre-producto">{{ producto.name }}</p>
-            <div class="final-card">
+            <div class="final-card flex-evenly">
                 <a href="{% url 'decrement_product_from_cart' producto.id %}" class="decrement-cart">
                     <i class="fa-solid fa-minus"></i>
                 </a>

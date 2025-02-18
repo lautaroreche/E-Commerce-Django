@@ -87,10 +87,8 @@ def cart(request):
 
 def favorites(request):
     categories = Product.objects.values('category').distinct().order_by('category')
-    cart_obj = Cart(request)
     return render(request, 'favorites.html', {
         "categories": categories,
-        "subtotal_dict": cart_obj.get_total_product(),
     })
 
 

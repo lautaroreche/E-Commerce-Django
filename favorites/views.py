@@ -16,3 +16,9 @@ def remove_from_favorites(request, product_id):
     product = Product.objects.get(id = product_id)
     favorites.remove(product)
     return redirect("/home/")
+
+
+def clear_favorites(request):
+    favorites = Favorites(request)
+    favorites.clear()
+    return redirect("/home/")
