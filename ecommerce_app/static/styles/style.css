@@ -116,8 +116,8 @@ button {
 }
 
 .iconos-menu {
-    gap: 20px;
-    width: 150px;
+    gap: 25px;
+    width: 160px;
 }
 
 .cart_icon_amount {
@@ -126,13 +126,14 @@ button {
 }
 
 main {
-    background-color: #fafafa;
     padding: 40px;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
+    justify-content: top;
+    align-items: center;
     gap: 40px;
+    min-height: 500px;
+    background-color: #fafafa;
 }
 
 h1 {
@@ -355,7 +356,7 @@ footer div {
     gap: 30px;
 }
 
-.cards-producto, .cards-producto {
+.cards-producto {
     flex-direction: column;
     gap: 15px;
 }
@@ -364,8 +365,8 @@ footer div {
     padding: 5px;
     display: flex;
     flex-direction: row;
-    align-items: center;
     justify-content: space-around;
+    align-items: center;
     width: 600px;
     box-shadow: 0 0 10px #bbb;
 }
@@ -415,8 +416,8 @@ footer div {
 .card-total-cart {
     padding: 5px;
     box-shadow: 0 0 10px #bbb;
-    width: 400px;
-    height: 200px;
+    width: 500px;
+    height: 250px;
 }
 
 .card-total-cart p:first-child {
@@ -440,29 +441,37 @@ footer div {
     color: var(--bad-color);
 }
 
-.clear-favorites, .clear-cart {
-    background-color: var(--bad-color);
-    border: 1px solid var(--border-dark-color);
-}
-
-.clear-favorites a, .clear-cart a {
+.add-all-favorites-to-cart, .clear-cart, .clear-favorites, .pay-cart {
+    gap: 15px;
     color: var(--light-color);
     width: 100%;
-    text-align: center;
+    border-radius: 4px;
 }
 
 .pay-cart {
-    width: 90%;
-    border: 1px solid var(--border-dark-color);
-    background-color: var(--good-color);
-    box-shadow: 0 0 10px #bbb;
+    width: 95%;
 }
 
-.pay-cart a {
+.add-all-favorites-to-cart a, .clear-favorites a, .clear-cart a, .pay-cart a {
     padding: 10px;
-    width: 90%;
-    color: var(--light-color);
+    border: 1px solid var(--border-dark-color);
+    box-shadow: 0 0 10px #bbb;
+    width: 100%;
     text-align: center;
+    border-radius: 4px;
+    color: var(--light-color);
+}
+
+.add-all-favorites-to-cart a, .pay-cart a {
+    background-color: var(--good-color);
+}
+
+.clear-favorites a, .clear-cart a {
+    background-color: var(--bad-color);
+}
+
+.add-all-favorites-to-cart .special {
+    background-color: var(--good-color);
 }
 
 

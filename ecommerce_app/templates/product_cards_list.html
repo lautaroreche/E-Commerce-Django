@@ -45,11 +45,11 @@
             </div>
         </div>
     {% endfor %}
-    <div class="card-producto-list flex-evenly 
+    <div class="flex-column  
         {% if is_cart %}
             clear-cart
         {% else %}
-            clear-favorites
+            add-all-favorites-to-cart clear-favorites
         {% endif %}
         ">
         {% if is_cart %}
@@ -57,6 +57,9 @@
                 Vaciar el carrito
             </a>
         {% else %}
+            <a href="{% url 'add_all_favorites_to_cart' %}" class="special">
+                Agregar todos al carrito
+            </a>
             <a href="{% url 'clear_favorites' %}">
                 Vaciar los favoritos
             </a>

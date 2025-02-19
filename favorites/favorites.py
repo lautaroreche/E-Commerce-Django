@@ -36,3 +36,7 @@ class Favorites():
     def clear(self):
         self.session["favorites"] = {}
         self.session.modified = True
+
+    
+    def get_all(self):
+        return self.favorites.items()
