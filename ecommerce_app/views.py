@@ -67,12 +67,6 @@ def filter(request, category):
     })
 
 
-def account(request):
-    return render(request, 'account.html', {
-        "categories": CATEGORIES,
-    })
-
-
 def cart(request):
     productos = request.session.get("cart", {})
     if len(productos) > 0:

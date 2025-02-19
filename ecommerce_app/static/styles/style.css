@@ -132,7 +132,7 @@ main {
     justify-content: top;
     align-items: center;
     gap: 40px;
-    min-height: 500px;
+    min-height: 450px;
     background-color: #fafafa;
 }
 
@@ -399,7 +399,7 @@ footer div {
     font-size: 25px;
 }
 
-.subtotal-price {
+.subtotal-price, .manage-cantidad-list p {
     font-size: 20px;
     font-weight: 500;
 }

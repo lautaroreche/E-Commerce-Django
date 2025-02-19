@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Feedback{% endblock %}
+{% block title %}Mensaje{% endblock %}
 
 {% block content %}
 <main>
@@ -16,15 +16,7 @@
         {% endif %}
     {% endfor %}
     flex-center flex-evenly flex-column">
-        {% for message in messages %}
-            {% if message.tags == 'success' %}
-                <h2>Success</h2>
-            {% elif message.tags == 'error' %}
-                <h2>Error</h2>
-            {% elif message.tags == 'warning' %}
-                <h2>Message</h2>
-            {% endif %}
-        {% endfor %}
+        <h2>Mensaje</h2>
         <hr>
         <div class="card-message-detail flex-center flex-evenly flex-column">
             {% for message in messages %}

@@ -7,10 +7,10 @@
             <div class="detalle-producto-list flex-column flex-evenly flex-center">
                 <p class="nombre-producto">{{ producto.name }}</p>
                 <div class="manage-cantidad-list flex-center flex-row flex-evenly">
-                    <a href="{% url 'decrement_from_cart' id %}" class="decrement-cart">
-                        <i class="fa-solid fa-minus"></i>
-                    </a>
                     {% if is_cart %}
+                        <a href="{% url 'decrement_from_cart' id %}" class="decrement-cart">
+                            <i class="fa-solid fa-minus"></i>
+                        </a>
                         <p>{{ producto.quantity }}</p>
                     {% endif %}
                     <a href="{% url 'add_to_cart' id %}" class="add-cart">
