@@ -4,10 +4,9 @@ from django.http import HttpResponse
 from django.contrib import messages
 import smtplib
 from email.mime.text import MIMEText
-from ecommerce.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_SENDER_NAME, EMAIL_SUBJECT
+from ecommerce.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_SENDER_NAME
 from ecommerce_app.models import Product
 from cart.cart import Cart
-from favorites.favorites import Favorites
 from ecommerce_app.forms import FormularioNewsletter
 
 
@@ -102,7 +101,7 @@ def newsletter(request):
         email = form.cleaned_data["email"]
         html_content = render_to_string("newsletter_message.html")
         msg = MIMEText(html_content, "html")
-        msg["Subject"] = EMAIL_SUBJECT
+        msg["Subject"] = "Ragusa - Productos argentinos"
         msg["From"] = f"{EMAIL_SENDER_NAME} <{EMAIL_HOST_USER}>"
         msg["To"] = email
         try:

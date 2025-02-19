@@ -30,7 +30,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, "../.env"))
 SECRET_KEY = 'django-insecure-$w%e^0i_rb&ol8mk#qr_g6xh20tk^--(o_cc#8+cxx7^b#y$3i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -141,6 +141,10 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 
 # Email settings
 EMAIL_HOST = env("EMAIL_HOST")
@@ -148,7 +152,6 @@ EMAIL_PORT = env("EMAIL_PORT")
 EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 EMAIL_SENDER_NAME = env("EMAIL_SENDER_NAME")
-EMAIL_SUBJECT = env("EMAIL_SUBJECT")
 
 
 STRIPE_PUBLIC_KEY = env('STRIPE_PUBLIC_KEY')
