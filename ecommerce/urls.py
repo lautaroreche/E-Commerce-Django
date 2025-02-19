@@ -22,6 +22,7 @@ from favorites.views import add_to_favorites, remove_from_favorites, clear_favor
 
 
 urlpatterns = [
+    path('', home, name = 'home'),
     path('admin/', admin.site.urls),
     path('home/', home, name = 'home'),
     path('search/', search, name = 'search'),
