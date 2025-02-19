@@ -1,5 +1,4 @@
 from django.shortcuts import redirect
-from django.http import HttpResponse
 from ecommerce_app.models import Product
 from .cart import Cart
 
@@ -18,7 +17,7 @@ def remove_from_cart(request, product_id):
     return redirect("/home/")
 
 
-def decrement_product_from_cart(request, product_id):
+def decrement_from_cart(request, product_id):
     cart = Cart(request)
     product = Product.objects.get(id = product_id)
     cart.decrement(product)

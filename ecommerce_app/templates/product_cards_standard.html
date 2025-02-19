@@ -15,7 +15,7 @@
             <hr>
             <p class="nombre-producto">{{ producto.name }}</p>
             <div class="final-card flex-evenly">
-                <a href="{% url 'decrement_product_from_cart' producto.id %}" class="decrement-cart">
+                <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart">
                     <i class="fa-solid fa-minus"></i>
                 </a>
                 <p>${{ producto.price|floatformat:0 }}</p>

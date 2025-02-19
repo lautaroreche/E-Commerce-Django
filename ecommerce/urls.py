@@ -16,8 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from ecommerce_app.views import home, search, filter, account, cart, newsletter, error, congrats, favorites
-from cart.views import add_to_cart, remove_from_cart, decrement_product_from_cart, clear_cart
+from ecommerce_app.views import home, search, filter, account, cart, newsletter, favorites, feedback
+from cart.views import add_to_cart, remove_from_cart, decrement_from_cart, clear_cart
 from favorites.views import add_to_favorites, remove_from_favorites, clear_favorites
 
 
@@ -29,14 +29,13 @@ urlpatterns = [
     path('account/', account, name = 'account'),
     path('cart/', cart, name = 'cart'),
     path('newsletter/', newsletter, name = 'newsletter'),
-    path('error/', error, name = 'error'),
-    path('congrats/', congrats, name = 'congrats'),
     path('add_to_cart/<int:product_id>/', add_to_cart, name = 'add_to_cart'),
     path('remove_from_cart/<int:product_id>/', remove_from_cart, name = 'remove_from_cart'),
-    path('decrement_product_from_cart/<int:product_id>/', decrement_product_from_cart, name = 'decrement_product_from_cart'),
+    path('decrement_from_cart/<int:product_id>/', decrement_from_cart, name = 'decrement_from_cart'),
     path('clear_cart/', clear_cart, name = 'clear_cart'),
     path('favorites/', favorites, name = 'favorites'),
     path('add_to_favorites/<int:product_id>/', add_to_favorites, name = 'add_to_favorites'),
     path('remove_from_favorites/<int:product_id>/', remove_from_favorites, name = 'remove_from_favorites'),
     path('clear_favorites/', clear_favorites, name = 'clear_favorites'),
+    path('feedback/', feedback, name = 'feedback'),
 ]

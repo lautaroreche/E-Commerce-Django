@@ -3,7 +3,10 @@
     --dark-color: #333;
     --light-color: #eee;
     --bad-color: #ff0000;
+    --warning-color: #ffe150;
     --good-color: #008f39;
+    --border-dark-color: #999;
+    --border-light-color: #ddd;
 }
 
 * {
@@ -103,7 +106,7 @@ i {
 
 .buscador-menu input, .buscador-menu i, .email-newsletter input, .email-newsletter i {
     background-color: var(--light-color);
-    border: 1px solid #777;
+    border: 1px solid var(--border-dark-color);
     border-radius: 4px;
 }
 
@@ -122,15 +125,12 @@ button {
     gap: 3px;
 }
 
-.total_cart_amount {
-    font-size: 17px;
-    color: var(--light-color);
-}
-
 main {
     background-color: #fafafa;
     padding: 40px;
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
     gap: 40px;
 }
@@ -180,11 +180,11 @@ h1, h2 {
 hr {
     margin: 3px auto;
     width: 90%;
-    border: 1px solid #999;
+    border: 1px solid var(--border-dark-color);
 }
 
 .card-producto hr {
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-light-color);
     margin: 5px 0;
 }
 
@@ -213,7 +213,7 @@ hr {
     font-size: 17px;
     width: 30px;
     text-align: center;
-    border: 1px solid #999;
+    border: 1px solid var(--border-dark-color);
 }
 
 .fa-minus {
@@ -264,7 +264,7 @@ footer div {
     padding-left: 10px;
     width: 250px;
     height: 35px;
-    font-size: 17px;
+    font-size: 16px;
 }
 
 .email-newsletter i {
@@ -274,6 +274,7 @@ footer div {
 }
 
 .card-message {
+    margin: 50px;
     padding: 10px;
     width: 500px;
     height: 400px;
@@ -284,8 +285,12 @@ footer div {
     box-shadow: 0 0 15px var(--bad-color);;
 }
 
-.card-message-congrats {
+.card-message-success {
     box-shadow: 0 0 15px var(--good-color);
+}
+
+.card-message-warning {
+    box-shadow: 0 0 15px var(--main-color);
 }
 
 .card-message h2 {
@@ -296,8 +301,12 @@ footer div {
     border: 1px solid var(--bad-color);
 }
 
-.card-message-congrats hr {
+.card-message-success hr {
     border: 1px solid var(--good-color);
+}
+
+.card-message-warning hr {
+    border: 1px solid var(--main-color);
 }
 
 .card-message-detail {
@@ -324,30 +333,34 @@ footer div {
     font-size: 20px;
     font-weight: 500;
     cursor: pointer;
+    color: var(--light-color);
 }
 
 .boton-card-message-error {
     background-color: var(--bad-color);
-    color: var(--light-color);
 }
 
-.boton-card-message-congrats {
+.boton-card-message-success {
     background-color: var(--good-color);
 }
 
-.cards-container-cart, .cards-container-favorites {
+.boton-card-message-warning {
+    background-color: var(--main-color);
+}
+
+.cards-container-list {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    align-items: start;
     gap: 30px;
 }
 
-.cards-producto-cart, .cards-producto-favorites {
+.cards-producto, .cards-producto {
     flex-direction: column;
     gap: 15px;
 }
 
-.card-producto-cart, .card-producto-favorites {
+.card-producto-list {
     padding: 5px;
     display: flex;
     flex-direction: row;
@@ -357,22 +370,22 @@ footer div {
     box-shadow: 0 0 10px #bbb;
 }
 
-.card-producto-cart img, .card-producto-favorites img {
+.card-producto-list img {
     width: 80px;
     height: 80px;
 }
 
-.info-cantidad-cart {
+.manage-cantidad-list {
     flex-direction: row;
     align-items: center;
     width: 50%;
 }
 
-.detalle-producto-cart {
+.detalle-producto-list {
     width: 260px;
 }
 
-.detalle-producto-cart .nombre-producto {
+.detalle-producto-list .nombre-producto {
     margin: 0;
     width: 100%;
     height: 30px;
@@ -401,9 +414,18 @@ footer div {
 
 .card-total-cart {
     padding: 5px;
-    align-items: start;
     box-shadow: 0 0 10px #bbb;
     width: 400px;
+    height: 200px;
+}
+
+.card-total-cart p:first-child {
+    font-size: 25px;
+}
+
+.final-cart-price {
+    font-size: 40px;
+    font-weight: 600;
 }
 
 .imagen-card-producto .fa-heart {
@@ -420,6 +442,7 @@ footer div {
 
 .clear-favorites, .clear-cart {
     background-color: var(--bad-color);
+    border: 1px solid var(--border-dark-color);
 }
 
 .clear-favorites a, .clear-cart a {
@@ -427,6 +450,21 @@ footer div {
     width: 100%;
     text-align: center;
 }
+
+.pay-cart {
+    width: 90%;
+    border: 1px solid var(--border-dark-color);
+    background-color: var(--good-color);
+    box-shadow: 0 0 10px #bbb;
+}
+
+.pay-cart a {
+    padding: 10px;
+    width: 90%;
+    color: var(--light-color);
+    text-align: center;
+}
+
 
 @media screen  and (max-width: 1400px) {
     header {

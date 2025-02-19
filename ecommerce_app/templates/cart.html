@@ -6,17 +6,16 @@
 {% block content %}
     <main>
         <h2>Carrito</h2>
-        <div class="cards-container-cart">
-            {% include 'product_cards_cart.html' %}
-            <div class="card-total-cart flex-evenly">
-                <p>TOTAL</p>
-                <p>${{ total|floatformat:0 }}</p>
-                <a href="">
-                    IR A PAGAR
-                </a>
-                <a href="{% url 'clear_cart' %}">
-                    <p>Vaciar carrito!!!</p>
-                </a>
+        <div class="cards-container-list">
+            {% include 'product_cards_list.html' %}
+            <div class="card-total-cart flex-center flex-evenly flex-column">
+                <p>Total a pagar</p>
+                <p class="final-cart-price">${{ total|floatformat:0 }}</p>
+                <div class="flex-evenly pay-cart">
+                    <a href="">
+                        Ir a pagar
+                    </a>
+                </div>
             </div>
         </div>
     </main>

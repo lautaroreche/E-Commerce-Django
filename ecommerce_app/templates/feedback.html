@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Feedback{% endblock %}
+
+{% block content %}
+<main>
+    <div class="card-message 
+    {% for message in messages %}
+        {% if message.tags == 'success' %}
+            card-message-success
+        {% elif message.tags == 'error' %}
+            card-message-error
+        {% elif message.tags == 'warning' %}
+            card-message-warning
+        {% endif %}
+    {% endfor %}
+    flex-center flex-evenly flex-column">
+        {% for message in messages %}
+            {% if message.tags == 'success' %}
+                <h2>Success</h2>
+            {% elif message.tags == 'error' %}
+                <h2>Error</h2>
+            {% elif message.tags == 'warning' %}
+                <h2>Message</h2>
+            {% endif %}
+        {% endfor %}
+        <hr>
+        <div class="card-message-detail flex-center flex-evenly flex-column">
+            {% for message in messages %}
+                {% if message.tags in 'success error warning' %}
+                    <h2>{{ message }}</h2>
+                {% elif message.tags == 'info' %}
+                    <h3>{{ message }}</h3>
+                {% endif %}
+            {% endfor %}
+            <a href="/home/" class="boton-card-message
+                {% for message in messages %}
+                    {% if message.tags == 'success' %}
+                        boton-card-message-success
+                    {% elif message.tags == 'error' %}
+                        boton-card-message-error
+                    {% elif message.tags == 'warning' %}
+                        boton-card-message-warning{% endif %}
+                {% endfor %}">
+                Volver al inicio
+            </a>
+        </div>
+    </div>
+</main>
+{% endblock %}

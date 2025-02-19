@@ -11,123 +11,123 @@ from favorites.favorites import Favorites
 from ecommerce_app.forms import FormularioNewsletter
 
 
+CATEGORIES = Product.objects.values('category').distinct().order_by('category')
+
+
 def base(request):
-    categories = Product.objects.values('category').distinct().order_by('category')
     return render(request, 'base.html', {
-        "categories": categories,
+        "categories": CATEGORIES,
     })
 
 
 def home(request):
     productos = Product.objects.all()
-    categories = Product.objects.values('category').distinct().order_by('category')
     return render(request, 'home.html', {
         "productos": productos,
-        "categories": categories,
+        "categories": CATEGORIES,
     })
 
 
 def search(request):
-    categories = Product.objects.values('category').distinct().order_by('category')
     if request.method == "POST":
         nombre_producto = request.POST.get("nombre_producto", "").strip()
         if not nombre_producto:
             messages.error(request, "No has buscado ningún producto")
             messages.info(request, "Escribe el nombre de algún producto en la barra de búsqueda")
-            return redirect("/error/")
+            return redirect("/feedback/")
         if len(nombre_producto) > 20:
             messages.error(request, "Nombre de producto demasiado largo")
             messages.info(request, "Introduce un nombre de producto más corto")
-            return redirect("/error/")
+            return redirect("/feedback/")
         productos = Product.objects.filter(name__icontains=nombre_producto)
         if not productos:
             messages.error(request, f'No hay ningún producto similar a "{nombre_producto}"')
             messages.info(request, "Intenta buscar el producto de otra forma, o busca otro producto")
-            return redirect("/error/")
+            return redirect("/feedback/")
         return render(request, "search.html", {
             "productos": productos,
             "resultados": len(productos),
             "query": nombre_producto,
-            "categories": categories,
+            "categories": CATEGORIES,
         })
     return HttpResponse("Método no permitido")
 
 
 def filter(request, category):
     productos = Product.objects.filter(category=category)
-    categories = Product.objects.values('category').distinct().order_by('category')
     if not productos:
         messages.error(request, "La categoría que acabas de buscar no existe")
         messages.info(request, "Intenta seleccionar otra categoría")
-        return redirect("/error/")
+        return redirect("/feedback/")
     return render(request, "filter.html", {
         "productos": productos,
         "resultados": len(productos),
         "category": category,
-        "categories": categories,
+        "categories": CATEGORIES,
     })
 
 
 def account(request):
-    categories = Product.objects.values('category').distinct().order_by('category')
     return render(request, 'account.html', {
-        "categories": categories,
+        "categories": CATEGORIES,
     })
 
 
 def cart(request):
-    categories = Product.objects.values('category').distinct().order_by('category')
-    cart_obj = Cart(request)
-    return render(request, 'cart.html', {
-        "categories": categories,
-        "subtotal_dict": cart_obj.get_total_product(),
-        "total": str(cart_obj.get_total_cart()),
-    })
+    productos = request.session.get("cart", {})
+    if len(productos) > 0:
+        cart_obj = Cart(request)
+        return render(request, 'cart.html', {
+            "categories": CATEGORIES,
+            "productos": productos.items(),
+            "is_cart": True,
+            "subtotal_dict": cart_obj.get_total_product(),
+            "total": str(cart_obj.get_total_cart()),
+        })
+    messages.warning(request, "No tienes ningún producto en el carrito")
+    messages.info(request, "Haz click en el símbolo + de color verde  que se encuentra en el producto para que aparezca aquí")
+    return redirect("/feedback/")
 
 
 def favorites(request):
-    categories = Product.objects.values('category').distinct().order_by('category')
-    return render(request, 'favorites.html', {
-        "categories": categories,
-    })
+    productos = request.session.get("favorites", {})
+    if len(productos) > 0:
+        return render(request, 'favorites.html', {
+            "categories": CATEGORIES,
+            "productos": productos.items(),
+            "is_cart": False,
+        })
+    messages.warning(request, "No tienes ningún producto marcado como favorito")
+    messages.info(request, "Haz click en el corazón que se encuentra en la imagen del producto para que aparezca aquí")
+    return redirect("/feedback/")
 
 
 def newsletter(request):
     form = FormularioNewsletter(request.POST)
     if form.is_valid():
         email = form.cleaned_data["email"]
-
         html_content = render_to_string("newsletter_message.html")
         msg = MIMEText(html_content, "html")
         msg["Subject"] = EMAIL_SUBJECT
         msg["From"] = f"{EMAIL_SENDER_NAME} <{EMAIL_HOST_USER}>"
         msg["To"] = email
-
         try:
             with smtplib.SMTP_SSL(EMAIL_HOST, EMAIL_PORT) as server:
                 server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
                 server.sendmail(EMAIL_HOST_USER, email, msg.as_string())
                 messages.success(request, "Te has suscripto a nuestro newsletter exitosamente")
                 messages.info(request, "En breve recibirás un email de confirmación")
-                return redirect("/congrats/")
+                return redirect("/feedback/")
         except Exception as e:
             messages.error(request, f"Error inesperado: {e}")
             messages.info(request, "Intenta nuevamente en unos minutos")
-            return redirect("/error/")
+            return redirect("/feedback/")
     messages.error(request, "El email ingresado no es válido")
     messages.info(request, "Ingresa un email válido")
-    return redirect("/error/")
+    return redirect("/feedback/")
 
 
-def error(request):
-    categories = Product.objects.values('category').distinct().order_by('category')
-    return render(request, "error.html", {
-        "categories": categories,
-    })
-
-
-def congrats(request):
-    categories = Product.objects.values('category').distinct().order_by('category')
-    return render(request, "congrats.html", {
-        "categories": categories,
+def feedback(request):
+    return render(request, "feedback.html", {
+        "categories": CATEGORIES,
     })
