@@ -3,7 +3,7 @@
     {% for producto in productos %}
         <div class="card-producto flex-center">
             <div class="imagen-card-producto">
-                <img src="{% media producto.image %}" alt="{{ producto.name }}">
+                <img src="{% producto.image.url %}" alt="{{ producto.name }}">
                 <a href="{% url 'add_to_favorites' producto.id %}">
                     {% if request.session.favorites and producto.id|stringformat:"s" in request.session.favorites %}
                         <i class="fa-solid fa-heart fa-heart-favorite"></i>
