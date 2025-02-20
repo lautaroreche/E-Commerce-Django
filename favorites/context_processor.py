@@ -1,3 +1,3 @@
 def has_favorites(request):
     favorites = request.session.get("favorites", [])
-    return bool(favorites)
+    return {"has_favorites": bool(favorites)}
