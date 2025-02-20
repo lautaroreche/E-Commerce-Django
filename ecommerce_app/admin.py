@@ -1,5 +1,9 @@
 from django.contrib import admin
 from ecommerce_app.models import Product, User, Order, Review, Payment, Shipping
+from django.contrib.sessions.models import Session
+
+
+admin.site.register(Session)
 
 
 class ProductAdmin(admin.ModelAdmin):
