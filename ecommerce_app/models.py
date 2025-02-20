@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Product(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.CharField(max_length=300)
@@ -14,6 +15,7 @@ class Product(models.Model):
 
 
 class User(models.Model):
+    id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.CharField(max_length=30)
@@ -30,6 +32,7 @@ class User(models.Model):
 
 
 class Order(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     products = models.ManyToManyField(Product, related_name='products')
     total = models.DecimalField(max_digits=10, decimal_places=2)
@@ -42,6 +45,7 @@ class Order(models.Model):
 
 
 class Review(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     rating = models.IntegerField()
@@ -53,6 +57,7 @@ class Review(models.Model):
 
 
 class Payment(models.Model):
+    id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     payment_method = models.CharField(max_length=20)
@@ -65,6 +70,8 @@ class Payment(models.Model):
 
 
 class Shipping(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     address = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now_add=True)

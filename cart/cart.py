@@ -1,3 +1,6 @@
+from ecommerce_app.models import Product
+
+
 class Cart():
     def __init__(self, request):
         self.request = request
@@ -8,15 +11,11 @@ class Cart():
         self.cart = cart
 
 
-    def add(self, product):
-        print(product)
-        product_id = str(product.id)
+    def add(self, product_id):
+        product_id = str(product_id)
         if product_id not in self.cart:
             self.cart[product_id] = {
-                "name": product.name,
-                "price": str(product.price),
                 "quantity": 1,
-                "image": product.image.url,
             }
         else:
             for key, value in self.cart.items():
@@ -31,20 +30,21 @@ class Cart():
         self.session.modified = True
 
 
-    def remove(self, product):
-        product_id = str(product.id)
+    def remove(self, product_id):
+        product_id = str(product_id)
         if product_id in self.cart:
             del self.cart[product_id]
             self.save()
 
 
-    def decrement(self, product):
+    def decrement(self, product_id):
+        product_id = str(product_id)
         for key, value in self.cart.items():
-            if key == str(product.id):
+            if key == product_id:
                 if value["quantity"] > 1:
                     value["quantity"] -= 1
                 else:
-                    self.remove(product)
+                    self.remove(product_id)
                 break
         self.save()
 
@@ -55,14 +55,19 @@ class Cart():
 
 
     def get_total_product(self):
+        products = Product.objects.filter(id__in=self.cart.keys())
         subtotal = {}
         for key, value in self.cart.items():
-            subtotal[key] = float(value["price"]) * value["quantity"]
+            for product in products:
+                if product.id == key:
+                    subtotal[key] = float(product.price) * value["quantity"]
+                    break
         return subtotal
 
 
     def get_total_cart(self):
         total = 0
-        for key, value in self.get_total_product().items():
-            total += int(value)
+        for key, value in self.cart.items():
+            total += float(Product.objects.get(id=key).price) * value["quantity"]
         return total
+    

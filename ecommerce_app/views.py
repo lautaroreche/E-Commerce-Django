@@ -69,7 +69,7 @@ def filter(request, category):
 def cart(request):
     productos_cart = request.session.get("cart", {}).keys()
     productos = Product.objects.filter(id__in=productos_cart)
-    if len(productos) > 0:
+    if productos:
         cart_obj = Cart(request)
         return render(request, 'cart.html', {
             "categories": CATEGORIES,
@@ -84,9 +84,9 @@ def cart(request):
 
 
 def favorites(request):
-    productos_favoritos = request.session.get("favorites", {}).keys()
+    productos_favoritos = request.session.get("favorites", [])
     productos = Product.objects.filter(id__in=productos_favoritos)
-    if len(productos) > 0:
+    if productos:
         return render(request, 'favorites.html', {
             "categories": CATEGORIES,
             "productos": productos,
