@@ -11,7 +11,7 @@
                         <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart">
                             <i class="fa-solid fa-minus"></i>
                         </a>
-                        {% for producto_cart, cantidad in productos_cart %}
+                        {% for producto_cart, cantidad in productos_cart.items %}
                             {% if producto_cart == producto.id %}
                                 <p>{{ cantidad.quantity }}</p>
                             {% endif %}
@@ -29,9 +29,13 @@
                             <p class="subtotal-price">${{ subtotal|floatformat:0 }}</p>
                         {% endif %}
                     {% endfor %}
-                    {% if producto.quantity|stringformat:"s" > "1" %}
-                        <p class="subtotal-price-detail">(${{producto.price|floatformat:0}} x {{producto.quantity}})</p>
-                    {% endif %}
+                    {% for producto_cart, cantidad in productos_cart.items %}
+                        {% if producto_cart == producto.id %}
+                            {% if cantidad.quantity|stringformat:"s" > "1" %}
+                                <p class="subtotal-price-detail">(${{producto.price|floatformat:0}} x {{cantidad.quantity}})</p>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 {% else %}
                     <p class="subtotal-price">${{ producto.price|floatformat:0 }}</p>
                 {% endif %}
