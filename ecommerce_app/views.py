@@ -67,13 +67,14 @@ def filter(request, category):
 
 
 def cart(request):
-    productos_cart = request.session.get("cart", {}).keys()
-    productos = Product.objects.filter(id__in=productos_cart)
+    productos_cart = request.session.get("cart", {})
+    productos = Product.objects.filter(id__in=productos_cart.keys())
     if productos:
         cart_obj = Cart(request)
         return render(request, 'cart.html', {
             "categories": CATEGORIES,
             "productos": productos,
+            "productos_cart": productos_cart,
             "is_cart": True,
             "subtotal_dict": cart_obj.get_total_product(),
             "total": str(cart_obj.get_total_cart()),

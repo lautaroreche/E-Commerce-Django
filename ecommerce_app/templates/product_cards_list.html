@@ -11,7 +11,11 @@
                         <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart">
                             <i class="fa-solid fa-minus"></i>
                         </a>
-                        <p>{{ producto.quantity }}</p>
+                        {% for producto_cart, cantidad in productos_cart %}
+                            {% if producto_cart == producto.id %}
+                                <p>{{ cantidad.quantity }}</p>
+                            {% endif %}
+                        {% endfor %}
                     {% endif %}
                     <a href="{% url 'add_to_cart' producto.id %}" class="add-cart">
                         <i class="fa-solid fa-plus"></i>
