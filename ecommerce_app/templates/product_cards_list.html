@@ -11,9 +11,9 @@
                         <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart">
                             <i class="fa-solid fa-minus"></i>
                         </a>
-                        {% for producto_cart, cantidad in productos_cart.items %}
-                            {% if producto_cart == producto.id %}
-                                <p>{{ cantidad.quantity }}</p>
+                        {% for key, value in productos_cart.items %}
+                            {% if key == producto.id|stringformat:"s" %}
+                                <p>{{ value.quantity }}</p>
                             {% endif %}
                         {% endfor %}
                     {% endif %}
@@ -24,17 +24,15 @@
             </div>
             <div>
                 {% if is_cart %}
-                    {% for id_subtotal, subtotal in subtotal_dict.items %}
-                        <p>ID SUBTOTAL: {{id_subtotal}}</p>
-                        <p>SUBTOTAL: {{subtotal}}</p>
-                        {% if id_subtotal == producto.id %}
-                            <p class="subtotal-price">${{ subtotal|floatformat:0 }}</p>
+                    {% for key, value in subtotal_dict.items %}
+                        {% if key == producto.id|stringformat:"s" %}
+                            <p class="subtotal-price">${{ value|floatformat:0 }}</p>
                         {% endif %}
                     {% endfor %}
-                    {% for producto_cart, cantidad in productos_cart.items %}
-                        {% if producto_cart == producto.id %}
-                            {% if cantidad.quantity|stringformat:"s" > "1" %}
-                                <p class="subtotal-price-detail">(${{producto.price|floatformat:0}} x {{cantidad.quantity}})</p>
+                    {% for key, value in productos_cart.items %}
+                        {% if key == producto.id|stringformat:"s" %}
+                            {% if value.quantity > 1 %}
+                                <p class="subtotal-price-detail">(${{producto.price|floatformat:0}} x {{value.quantity}})</p>
                             {% endif %}
                         {% endif %}
                     {% endfor %}

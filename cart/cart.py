@@ -59,7 +59,7 @@ class Cart():
         subtotal = {}
         for key, value in self.cart.items():
             for product in products:
-                if product.id == key:
+                if product.id == int(key):
                     subtotal[key] = float(product.price) * value["quantity"]
                     break
         return subtotal
