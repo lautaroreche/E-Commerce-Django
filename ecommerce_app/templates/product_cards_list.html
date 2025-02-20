@@ -3,7 +3,6 @@
 <div class="cards-producto flex-center">
     {% for id, producto in productos %}
         <div class="card-producto-list flex-evenly">
-            <p>{{ producto.image }}</p>
             <img src="{% static producto.image %}" alt="{{ producto.name }}">
             <div class="detalle-producto-list flex-column flex-evenly flex-center">
                 <p class="nombre-producto">{{ producto.name }}</p>
