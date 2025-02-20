@@ -47,7 +47,7 @@
                 {% endif %}
             </a>
             <a href="{% url 'cart' %}" class="cart_icon_amount">
-                {% if total_cart_amount > 0 %}
+                {% if has_cart > 0 %}
                     <i class="fa-solid fa-cart-plus"></i>
                 {% else %}
                     <i class="fa-solid fa-cart-shopping"></i>
