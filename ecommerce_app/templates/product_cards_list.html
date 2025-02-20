@@ -1,22 +1,19 @@
 {% load static %}
 
 <div class="cards-producto flex-center">
-    {% for id, producto in productos %}
-        <p>Productos: {{ productos }}</p>
-        <p>Producto: {{ producto }}</p>
-        <p>ID: {{ id }}</p>
+    {% for producto in productos %}
         <div class="card-producto-list flex-evenly">
             <img src="{{ producto.image.url }}" alt="{{ producto.name }}">
             <div class="detalle-producto-list flex-column flex-evenly flex-center">
                 <p class="nombre-producto">{{ producto.name }}</p>
                 <div class="manage-cantidad-list flex-center flex-row flex-evenly">
                     {% if is_cart %}
-                        <a href="{% url 'decrement_from_cart' id %}" class="decrement-cart">
+                        <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart">
                             <i class="fa-solid fa-minus"></i>
                         </a>
                         <p>{{ producto.quantity }}</p>
                     {% endif %}
-                    <a href="{% url 'add_to_cart' id %}" class="add-cart">
+                    <a href="{% url 'add_to_cart' producto.id %}" class="add-cart">
                         <i class="fa-solid fa-plus"></i>
                     </a>
                 </div>
@@ -24,7 +21,7 @@
             <div>
                 {% if is_cart %}
                     {% for id_subtotal, subtotal in subtotal_dict.items %}
-                        {% if id_subtotal == id %}
+                        {% if id_subtotal == producto.id %}
                             <p class="subtotal-price">${{ subtotal|floatformat:0 }}</p>
                         {% endif %}
                     {% endfor %}
@@ -37,11 +34,11 @@
             </div>
             <div class="xmark">
                 {% if is_cart %}
-                    <a href="{% url 'remove_from_cart' id %}">
+                    <a href="{% url 'remove_from_cart' producto.id %}">
                         <i class="fa-solid fa-xmark"></i>
                     </a>
                 {% else %}
-                    <a href="{% url 'remove_from_favorites' id %}">
+                    <a href="{% url 'remove_from_favorites' producto.id %}">
                         <i class="fa-solid fa-xmark"></i>
                     </a>
                 {% endif %}

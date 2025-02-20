@@ -67,12 +67,13 @@ def filter(request, category):
 
 
 def cart(request):
-    productos = request.session.get("cart", {})
+    productos_cart = request.session.get("cart", {}).keys()
+    productos = Product.objects.filter(id__in=productos_cart)
     if len(productos) > 0:
         cart_obj = Cart(request)
         return render(request, 'cart.html', {
             "categories": CATEGORIES,
-            "productos": productos.items(),
+            "productos": productos,
             "is_cart": True,
             "subtotal_dict": cart_obj.get_total_product(),
             "total": str(cart_obj.get_total_cart()),
@@ -83,11 +84,12 @@ def cart(request):
 
 
 def favorites(request):
-    productos = request.session.get("favorites", {})
+    productos_favoritos = request.session.get("favorites", {}).keys()
+    productos = Product.objects.filter(id__in=productos_favoritos)
     if len(productos) > 0:
         return render(request, 'favorites.html', {
             "categories": CATEGORIES,
-            "productos": productos.items(),
+            "productos": productos,
             "is_cart": False,
         })
     messages.warning(request, "No tienes ningún producto marcado como favorito")
