@@ -1,6 +1,8 @@
 {% load static %}
 <div class="cards-container flex-center">
     {% for producto in productos %}
+        <p>Productos: {{ productos }}</p>
+        <p>Producto: {{ producto }}</p>
         <div class="card-producto flex-center">
             <div class="imagen-card-producto">
                 <img src="{{ producto.image.url }}" alt="{{ producto.name }}">
