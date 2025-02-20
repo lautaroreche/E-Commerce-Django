@@ -68,6 +68,7 @@ class Cart():
     def get_total_cart(self):
         total = 0
         for key, value in self.cart.items():
+            key = int(key)
             total += float(Product.objects.get(id=key).price) * value["quantity"]
         return total
     
