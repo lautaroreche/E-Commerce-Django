@@ -24,6 +24,8 @@
             </div>
             <div>
                 {% if is_cart %}
+                    <p>Subtotal dict: {{subtotal_dict}}</p>
+                    <p>Subtotal dict items: {{subtotal_dict.items}}</p>
                     {% for id_subtotal, subtotal in subtotal_dict.items %}
                         {% if id_subtotal == producto.id %}
                             <p class="subtotal-price">${{ subtotal|floatformat:0 }}</p>
