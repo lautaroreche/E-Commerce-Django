@@ -19,6 +19,8 @@ from django.urls import path
 from ecommerce_app.views import home, search, filter, cart, newsletter, favorites, feedback
 from cart.views import add_to_cart, remove_from_cart, decrement_from_cart, clear_cart
 from favorites.views import add_to_favorites, remove_from_favorites, clear_favorites, add_all_favorites_to_cart
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -40,3 +42,7 @@ urlpatterns = [
     path('feedback/', feedback, name = 'feedback'),
     path('add_all_favorites_to_cart/', add_all_favorites_to_cart, name = 'add_all_favorites_to_cart'),
 ]
+
+# Solo en desarrollo, para servir archivos de medios
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
