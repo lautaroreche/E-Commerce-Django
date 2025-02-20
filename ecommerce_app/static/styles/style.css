@@ -1,5 +1,6 @@
 :root {
-    --main-color: #74acdf;
+    --main-color: #6cace4;
+    --secondary-color: #ffb81c;
     --dark-color: #333;
     --light-color: #eee;
     --bad-color: #ff0000;
@@ -72,6 +73,11 @@ nav ul li, footer ul li {
     font-size: 17px;
     font-weight: 500;
     color: var(--light-color);
+    transition: color 0.1s;
+}
+
+nav ul li:active, footer ul li:active {
+    color:  var(--secondary-color);
 }
 
 .buscador-menu form {
@@ -120,9 +126,12 @@ button {
     width: 160px;
 }
 
-.cart_icon_amount {
-    display: flex;
-    gap: 3px;
+.fa-heart-circle-plus, .fa-heart, .fa-cart-plus, .fa-cart-shopping {
+    transition: color 0.1s;
+}
+
+.fa-heart-circle-plus:active, .fa-heart:active, .fa-cart-plus:active, .fa-cart-shopping:active {
+    color: var(--secondary-color);
 }
 
 main {
@@ -251,6 +260,14 @@ footer div {
     gap: 20px;
 }
 
+.fa-instagram:active, .fa-facebook:active {
+    transition: color 0.1s;
+}
+
+.fa-instagram:active, .fa-facebook:active, .fa-twitter:active {
+    color: var(--secondary-color);
+}
+
 .categorias ul {
     flex-direction: column;
     gap: 10px;
@@ -275,7 +292,6 @@ footer div {
 }
 
 .card-message {
-    margin: 50px;
     padding: 10px;
     width: 500px;
     height: 400px;

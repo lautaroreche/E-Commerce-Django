@@ -5,7 +5,12 @@
         <div class="card-producto flex-center">
             <div class="imagen-card-producto">
                 <img src="{{ producto.image.url }}" alt="{{ producto.name }}">
-                <a href="{% url 'manage_favorites' producto.id %}">
+                <a href="{% url 'manage_favorites' producto.id %}" title="
+                {% if producto.id in request.session.favorites %}
+                    Eliminar de favoritos
+                {% else %}
+                    Agregar a favoritos
+                {% endif %}">
                     {% if producto.id in request.session.favorites %}
                         <i class="fa-solid fa-heart fa-heart-favorite"></i>
                     {% else %}
@@ -16,11 +21,11 @@
             <hr>
             <p class="nombre-producto">{{ producto.name }}</p>
             <div class="final-card flex-evenly">
-                <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart">
+                <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart" title="Restar del carrito">
                     <i class="fa-solid fa-minus"></i>
                 </a>
                 <p>${{ producto.price|floatformat:0 }}</p>
-                <a href="{% url 'add_to_cart' producto.id %}" class="add-cart">
+                <a href="{% url 'add_to_cart' producto.id %}" class="add-cart" title="Agregar al carrito">
                     <i class="fa-solid fa-plus"></i>
                 </a>
             </div>

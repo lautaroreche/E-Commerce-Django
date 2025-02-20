@@ -8,7 +8,7 @@
                 <p class="nombre-producto">{{ producto.name }}</p>
                 <div class="manage-cantidad-list flex-center flex-row flex-evenly">
                     {% if is_cart %}
-                        <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart">
+                        <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart" title="Restar del carrito">
                             <i class="fa-solid fa-minus"></i>
                         </a>
                         {% for key, value in productos_cart.items %}
@@ -17,7 +17,7 @@
                             {% endif %}
                         {% endfor %}
                     {% endif %}
-                    <a href="{% url 'add_to_cart' producto.id %}" class="add-cart">
+                    <a href="{% url 'add_to_cart' producto.id %}" class="add-cart" title="Agregar al carrito">
                         <i class="fa-solid fa-plus"></i>
                     </a>
                 </div>
@@ -42,11 +42,16 @@
             </div>
             <div class="xmark">
                 {% if is_cart %}
-                    <a href="{% url 'remove_from_cart' producto.id %}">
+                    <a href="{% url 'remove_from_cart' producto.id %}" title="Eliminar del carrito">
                         <i class="fa-solid fa-xmark"></i>
                     </a>
                 {% else %}
-                    <a href="{% url 'manage_favorites' producto.id %}">
+                    <a href="{% url 'manage_favorites' producto.id %}" title="
+                    {% if producto.id in request.session.favorites %}
+                        Eliminar de favoritos
+                    {% else %}
+                        Agregar a favoritos
+                    {% endif %}">
                         <i class="fa-solid fa-xmark"></i>
                     </a>
                 {% endif %}
@@ -61,14 +66,14 @@
         {% endif %}
         ">
         {% if is_cart %}
-            <a href="{% url 'clear_cart' %}">
+            <a href="{% url 'clear_cart' %}" title="Vaciar el carrito">
                 Vaciar el carrito
             </a>
         {% else %}
-            <a href="{% url 'add_all_favorites_to_cart' %}" class="special">
+            <a href="{% url 'add_all_favorites_to_cart' %}" class="special" title="Agregar todos al carrito">
                 Agregar todos al carrito
             </a>
-            <a href="{% url 'clear_favorites' %}">
+            <a href="{% url 'clear_favorites' %}" title="Vaciar los favoritos">
                 Vaciar los favoritos
             </a>
         {% endif %}
