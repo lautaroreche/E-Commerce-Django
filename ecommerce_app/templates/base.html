@@ -41,7 +41,7 @@
         <div class="container-usuario flex-column">
             <div class="datos-sesion flex-column">
                 {% if user.is_authenticated %}
-                    <p>Bienvenido, {{ user.username }}!</p>
+                    <p>Bienvenido, {{ user.first_name }}!</p>
                     <form method="POST" action="{% url 'logout' %}">
                         {% csrf_token %}
                         <button type="submit" class="boton-logout">Cerrar sesión</button>
