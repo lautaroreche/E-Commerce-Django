@@ -128,7 +128,11 @@ button {
     border-radius: 4px;
 }
 
-.container-iconos-menu {
+.container-usuario {
+    gap: 15px;
+}
+
+.iconos-usuario {
     gap: 25px;
     width: 160px;
 }
@@ -139,6 +143,32 @@ button {
 
 .fa-heart-circle-plus:active, .fa-heart:active, .fa-cart-plus:active, .fa-cart-shopping:active {
     color: var(--secondary-color);
+}
+
+.boton-logout {
+    cursor: pointer;
+    background-color: var(--main-color);
+}
+
+.datos-sesion {
+    gap: 5px;
+    text-align: right;
+}
+
+.datos-sesion a {
+    text-align: center;
+    font-weight: 500;
+}
+
+.datos-sesion p, .datos-sesion a {
+    color: var(--light-color);
+    font-size: 17px;
+    font-weight: 500;
+}
+
+.boton-logout {
+    color: var(--light-color);
+    font-size: 16px;
 }
 
 main {
@@ -611,7 +641,7 @@ footer div {
         align-items: center;
     }
     
-    nav ul li {
+    nav ul li, footer ul li {
         font-size: 18px;
     }
 
@@ -636,7 +666,7 @@ footer div {
     }
 
     .card-message {
-        width: 450px;
+        width: 400px;
     }
 
     footer div {

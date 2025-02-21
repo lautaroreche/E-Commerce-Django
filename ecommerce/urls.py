@@ -16,14 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from ecommerce_app.views import home, search, filter, cart, newsletter, favorites, feedback
+from ecommerce_app.views import home, search, filter, cart, newsletter, favorites, feedback, custom_logout
 from cart.views import add_to_cart, remove_from_cart, decrement_from_cart, clear_cart
 from favorites.views import manage_favorites, clear_favorites, add_all_favorites_to_cart
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib.auth import views
 
 
 urlpatterns = [
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('logout/', custom_logout, name='logout'),
     path('', home, name = 'home'),
     path('admin/', admin.site.urls),
     path('home/', home, name = 'home'),

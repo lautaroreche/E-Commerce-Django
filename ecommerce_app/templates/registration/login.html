@@ -1,0 +1,28 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login > Ragusa</title>
+    <link rel="stylesheet" href="{% static 'styles/login.css' %}">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+</head>
+<body>
+    <main class="main-login">
+        <img src="{% static 'images/ragusa.png' %}" alt="Logo">
+        <vr>
+        <div class="container-login">
+            <h2>LOGIN</h2>
+            <hr>
+            <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                <input type="text" name="username" placeholder="Nombre de usuario">
+                <input type="password" name="password" placeholder="Contraseña">
+                <button type="submit">Iniciar sesión</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>

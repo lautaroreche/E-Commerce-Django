@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.http import HttpResponse
 from django.contrib import messages
+from django.contrib.auth import logout
 import smtplib
 from email.mime.text import MIMEText
 from ecommerce.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_SENDER_NAME
@@ -132,6 +133,15 @@ def newsletter(request):
 
 
 def feedback(request):
-    return render(request, "feedback.html", {
-        "categories": CATEGORIES,
-    })
+    storage = messages.get_messages(request)
+    if any(storage):
+        return render(request, "feedback.html", {
+            "categories": CATEGORIES,
+        })
+    return redirect("/")
+
+
+def custom_logout(request):
+    if request.method == "POST":
+        logout(request)
+    return redirect('/')
