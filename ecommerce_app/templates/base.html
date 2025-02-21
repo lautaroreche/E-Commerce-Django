@@ -59,7 +59,7 @@
     <footer>
         <div class="redes-sociales">
             <h3 class="title-footer">Redes sociales</h3>
-            <hr>
+            <hr class="w90">
             <div class="iconos-redes-sociales flex-center">
                 <a href="https://www.instagram.com/" target="_blank" title="Red social Instagram">
                     <i class="fa-brands fa-instagram"></i>
@@ -71,7 +71,7 @@
         </div>
         <div>
             <h3 class="title-footer">Categorías</h3>
-            <hr>
+            <hr class="w90">
             <div class="categorias">
                 <ul class="flex-center">
                     <a href="{% url 'home' %}" title="Todos los productos">
@@ -87,7 +87,7 @@
         </div>
         <div>
             <h3 class="title-footer">Recibe nuestro newsletter</h3>
-            <hr>
+            <hr class="w90">
             <div class="email-newsletter">
                 <form action="{% url 'newsletter' %}" method="POST" class="flex-center">
                     {% csrf_token %}
