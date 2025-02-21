@@ -6,29 +6,38 @@
             <div class="imagen-card-producto">
                 <img src="{{ producto.image.url }}" alt="{{ producto.name }}">
                 <a href="{% url 'manage_favorites' producto.id %}" title="
-                {% if producto.id in request.session.favorites %}
-                    Eliminar de favoritos
-                {% else %}
-                    Agregar a favoritos
-                {% endif %}">
-                    {% if producto.id in request.session.favorites %}
+                {% if producto.id in productos_favoritos %}Eliminar de favoritos{% else %}Agregar a favoritos{% endif %}">
+                    {% if producto.id in productos_favoritos %}
                         <i class="fa-solid fa-heart fa-heart-favorite"></i>
                     {% else %}
                         <i class="fa-solid fa-heart"></i>
                     {% endif %}
                 </a>
             </div>
-            <hr>
+            <hr class="w90">
             <p class="nombre-producto">{{ producto.name }}</p>
-            <div class="final-card flex-evenly">
-                <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart" title="Restar del carrito">
-                    <i class="fa-solid fa-minus"></i>
-                </a>
-                <p>${{ producto.price|floatformat:0 }}</p>
-                <a href="{% url 'add_to_cart' producto.id %}" class="add-cart" title="Agregar al carrito">
-                    <i class="fa-solid fa-plus"></i>
-                </a>
-            </div>
+            <p class="precio-producto">${{ producto.price|floatformat:0 }}</p>
+            {% if producto.id in productos_cart %}
+                <div class="final-card flex-row flex-center flex-evenly">
+                    <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart" title="Restar del carrito">
+                        <i class="fa-solid fa-minus"></i>
+                    </a>
+                    {% for key, value in request.session.cart.items %}
+                        {% if key == producto.id|stringformat:"s" %}
+                            <p>{{ value.quantity }}</p>
+                        {% endif %}
+                    {% endfor %}
+                    <a href="{% url 'add_to_cart' producto.id %}" class="add-cart" title="Agregar al carrito">
+                        <i class="fa-solid fa-plus"></i>
+                    </a>
+                </div>
+            {% else %}
+                <div class="flex-evenly pay-cart">
+                    <a href="{% url 'add_to_cart' producto.id %}" title="Agregar al carrito" class="add-to-cart w100">
+                        Agregar al carrito
+                    </a>
+                </div>
+            {% endif %}
         </div>
     {% endfor %}
 </div>

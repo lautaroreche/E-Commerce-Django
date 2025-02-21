@@ -39,11 +39,18 @@
     flex-direction: row;
 }
 
+.w100 {
+    width: 100%;
+}
+
+.w90 {
+    width: 100%;
+}
+
 header {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    width: 100%;
     background-color: var(--main-color);
     border-bottom: 1px solid #888;
 }
@@ -121,7 +128,7 @@ button {
     border-radius: 4px;
 }
 
-.iconos-menu {
+.container-iconos-menu {
     gap: 25px;
     width: 160px;
 }
@@ -164,15 +171,14 @@ h1, h2 {
 .card-producto {
     padding: 10px;
     flex-direction: column;
-    width: 200px;
+    width: 230px;
     box-shadow: 0 0 15px #bbb;
     text-align: center;
+    gap: 5px;
 }
 
 .nombre-producto {
-    margin-top: 5px;
-    height: 40px;
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 500;
 }
 
@@ -189,7 +195,6 @@ h1, h2 {
 
 hr {
     margin: 3px auto;
-    width: 90%;
     border: 1px solid var(--border-dark-color);
 }
 
@@ -198,17 +203,16 @@ hr {
     margin: 5px 0;
 }
 
-.final-card {
-    flex-direction: row;
-    align-items: center;
+.precio-producto {
+    margin: 5px 0;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.add-to-cart {
     width: 100%;
 }
-
-.final-card p {
-    font-size: 21px;
-    font-weight: 600;
-}
-
+/*
 .final-card:has(.add-cart:focus-within) p {
     color: var(--good-color);
 }
@@ -216,10 +220,19 @@ hr {
 .final-card:has(.decrement-cart:focus-within) p {
     color: var(--bad-color);
 }
+*/
+
+.prueba1 {
+    width: 100%;
+}
+
+.prueba2 {
+    width: 100%;
+    background-color: var(--good-color);
+}
 
 .fa-minus, .fa-plus {
     padding: 5px;
-    border-radius: 50%;
     font-size: 17px;
     width: 30px;
     text-align: center;
@@ -404,7 +417,6 @@ footer div {
 
 .detalle-producto-list .nombre-producto {
     margin: 0;
-    width: 100%;
     height: 30px;
     text-align: center;
     font-size: 16px;
@@ -457,7 +469,7 @@ footer div {
     color: var(--bad-color);
 }
 
-.add-all-favorites-to-cart, .clear-cart, .clear-favorites, .pay-cart {
+.add-to-cart, .add-all-favorites-to-cart, .clear-cart, .clear-favorites, .pay-cart {
     gap: 15px;
     color: var(--light-color);
     width: 100%;
@@ -472,7 +484,6 @@ footer div {
     padding: 10px;
     border: 1px solid var(--border-dark-color);
     box-shadow: 0 0 10px #bbb;
-    width: 100%;
     text-align: center;
     border-radius: 4px;
     color: var(--light-color);

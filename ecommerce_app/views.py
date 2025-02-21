@@ -7,6 +7,7 @@ from email.mime.text import MIMEText
 from ecommerce.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_SENDER_NAME
 from ecommerce_app.models import Product
 from cart.cart import Cart
+from favorites.favorites import Favorites
 from ecommerce_app.forms import FormularioNewsletter
 
 
@@ -21,9 +22,13 @@ def base(request):
 
 def home(request):
     productos = Product.objects.all()
+    favorites_obj = Favorites(request)
+    cart_obj = Cart(request)
     return render(request, 'home.html', {
         "productos": productos,
         "categories": CATEGORIES,
+        "productos_favoritos": favorites_obj.get_list_items(),
+        "productos_cart": cart_obj.get_list_items(),
     })
 
 
@@ -67,10 +72,10 @@ def filter(request, category):
 
 
 def cart(request):
-    productos_cart = request.session.get("cart", {})
-    productos = Product.objects.filter(id__in=productos_cart.keys())
+    cart_obj = Cart(request)
+    productos_cart = cart_obj.get_list_items()
+    productos = Product.objects.filter(id__in=productos_cart)
     if productos:
-        cart_obj = Cart(request)
         return render(request, 'cart.html', {
             "categories": CATEGORIES,
             "productos": productos,
@@ -85,12 +90,15 @@ def cart(request):
 
 
 def favorites(request):
-    productos_favoritos = request.session.get("favorites", [])
+    cart_obj = Cart(request)
+    favorites_obj = Favorites(request)
+    productos_favoritos = favorites_obj.get_list_items()
     productos = Product.objects.filter(id__in=productos_favoritos)
     if productos:
         return render(request, 'favorites.html', {
             "categories": CATEGORIES,
             "productos": productos,
+            "productos_cart": cart_obj.get_list_items(),
             "is_cart": False,
         })
     messages.warning(request, "No tienes ningún producto marcado como favorito")

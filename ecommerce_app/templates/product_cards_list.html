@@ -5,21 +5,29 @@
         <div class="card-producto-list flex-evenly">
             <img src="{{ producto.image.url }}" alt="{{ producto.name }}">
             <div class="detalle-producto-list flex-column flex-evenly flex-center">
-                <p class="nombre-producto">{{ producto.name }}</p>
+                <p class="nombre-producto w100">{{ producto.name }}</p>
                 <div class="manage-cantidad-list flex-center flex-row flex-evenly">
-                    {% if is_cart %}
-                        <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart" title="Restar del carrito">
-                            <i class="fa-solid fa-minus"></i>
-                        </a>
-                        {% for key, value in productos_cart.items %}
-                            {% if key == producto.id|stringformat:"s" %}
-                                <p>{{ value.quantity }}</p>
-                            {% endif %}
-                        {% endfor %}
+                    {% if producto.id in productos_cart %}
+                        <div class="final-card flex-row flex-center flex-evenly">
+                            <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart" title="Restar del carrito">
+                                <i class="fa-solid fa-minus"></i>
+                            </a>
+                            {% for key, value in request.session.cart.items %}
+                                {% if key == producto.id|stringformat:"s" %}
+                                    <p>{{ value.quantity }}</p>
+                                {% endif %}
+                            {% endfor %}
+                            <a href="{% url 'add_to_cart' producto.id %}" class="add-cart" title="Agregar al carrito">
+                                <i class="fa-solid fa-plus"></i>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="flex-evenly pay-cart">
+                            <a href="{% url 'add_to_cart' producto.id %}" title="Agregar al carrito" class="add-to-cart w100">
+                                Agregar al carrito
+                            </a>
+                        </div>
                     {% endif %}
-                    <a href="{% url 'add_to_cart' producto.id %}" class="add-cart" title="Agregar al carrito">
-                        <i class="fa-solid fa-plus"></i>
-                    </a>
                 </div>
             </div>
             <div>
@@ -46,27 +54,21 @@
                         <i class="fa-solid fa-xmark"></i>
                     </a>
                 {% else %}
-                    <a href="{% url 'manage_favorites' producto.id %}" title="
-                    {% if producto.id in request.session.favorites %}
-                        Eliminar de favoritos
-                    {% else %}
-                        Agregar a favoritos
-                    {% endif %}">
+                    <a href="{% url 'manage_favorites' producto.id %}" title="Eliminar de favoritos">
                         <i class="fa-solid fa-xmark"></i>
                     </a>
                 {% endif %}
             </div>
         </div>
     {% endfor %}
-    <div class="flex-column  
+    <div class="flex-column 
         {% if is_cart %}
             clear-cart
         {% else %}
             add-all-favorites-to-cart clear-favorites
-        {% endif %}
-        ">
+        {% endif %}">
         {% if is_cart %}
-            <a href="{% url 'clear_cart' %}" title="Vaciar el carrito">
+            <a href="{% url 'clear_cart' %}" title="Vaciar el carrito" class="w100">
                 Vaciar el carrito
             </a>
         {% else %}

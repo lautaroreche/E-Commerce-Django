@@ -24,3 +24,7 @@ class Favorites():
     def clear(self):
         self.session["favorites"] = []
         self.session.modified = True
+
+
+    def get_list_items(self):
+        return self.favorites
