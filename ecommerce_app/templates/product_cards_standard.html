@@ -15,7 +15,7 @@
                 </a>
             </div>
             <hr class="w90">
-            <p class="nombre-producto">{{ producto.name }}</p>
+            <p class="nombre-producto flex-center">{{ producto.name }}</p>
             <p class="precio-producto">${{ producto.price|floatformat:0 }}</p>
             {% if producto.id in productos_cart %}
                 <div class="final-card flex-row flex-center flex-evenly">

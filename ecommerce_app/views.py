@@ -75,7 +75,6 @@ def cart(request):
     cart_obj = Cart(request)
     productos_cart = cart_obj.get_list_items()
     productos = Product.objects.filter(id__in=productos_cart)
-    print(cart_obj.get_total_product())
     if productos:
         return render(request, 'cart.html', {
             "categories": CATEGORIES,
