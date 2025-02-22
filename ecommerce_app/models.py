@@ -34,10 +34,32 @@ class User(models.Model):
 class Payment(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    payment_method = models.CharField(max_length=20)
+    method = method = models.CharField(
+        max_length=20,
+        choices=[
+            ('Credit Card', 'Credit Card'),
+            ('Debit Card', 'Debit Card'),
+            ('Bank Transfer', 'Bank Transfer'),
+            ('Cash', 'Cash'),
+            ('Other', 'Other'),
+        ],
+        default='Credit Card'
+    )
+    detail = models.CharField(max_length=100, default='')
+    token = models.CharField(max_length=255, default='')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=20)
+    status = status = models.CharField(
+        max_length=20,
+        choices=[
+            ('Pending', 'Pending'),
+            ('Confirmed', 'Confirmed'),
+            ('Failed', 'Failed'),
+            ('Refunded', 'Refunded'),
+            ('Cancelled', 'Cancelled'),
+        ],
+        default='Pending'
+    )
     order = models.ForeignKey('Order', on_delete=models.CASCADE, related_name='payments')
 
     def __str__(self):
@@ -51,7 +73,17 @@ class Order(models.Model):
     total = models.DecimalField(max_digits=10, decimal_places=2)
     address = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(max_length=20)
+    status = models.CharField(
+        max_length=20,
+        choices=[
+            ('Pending', 'Pending'),
+            ('Paid', 'Paid'),
+            ('Shipped', 'Shipped'),
+            ('Delivered', 'Delivered'),
+            ('Cancelled', 'Cancelled')
+        ],
+        default='Pending'
+    )
     payment = models.ForeignKey(Payment, on_delete=models.CASCADE, related_name='orders')
 
     def __str__(self):

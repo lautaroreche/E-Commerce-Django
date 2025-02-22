@@ -25,8 +25,8 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'order', 'payment_method', 'amount', 'date', 'status', 'order')
-    search_fields = ('id', 'user', 'order', 'payment_method', 'amount', 'date', 'status', 'order')
+    list_display = ('id', 'user', 'order', 'method', 'detail', 'amount', 'date', 'status', 'order')
+    search_fields = ('id', 'user', 'order', 'method', 'detail', 'amount', 'date', 'status', 'order')
 
 
 admin.site.register(Product, ProductAdmin)
