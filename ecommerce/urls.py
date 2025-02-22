@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from ecommerce_app.views import home, search, filter, cart, newsletter, favorites, feedback, custom_logout
+from ecommerce_app.views import home, search, filter, cart, newsletter, favorites, feedback, custom_logout, checkout
 from cart.views import add_to_cart, remove_from_cart, decrement_from_cart, clear_cart
 from favorites.views import manage_favorites, clear_favorites, add_all_favorites_to_cart
 from django.conf import settings
@@ -43,6 +43,7 @@ urlpatterns = [
     path('clear_favorites/', clear_favorites, name = 'clear_favorites'),
     path('add_all_favorites_to_cart/', add_all_favorites_to_cart, name = 'add_all_favorites_to_cart'),
     path('feedback/', feedback, name = 'feedback'),
+    path('checkout/', checkout, name = 'checkout'),
 ]
 
 # Solo en desarrollo, para servir archivos de medios

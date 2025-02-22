@@ -108,6 +108,10 @@ def favorites(request):
 
 
 def newsletter(request):
+    # Redirect forzado ya que actualmente no se envían mails de newsletter
+    messages.warning(request, "Sección en pausa")
+    messages.info(request, "Actualmente no se envían mails de newsletter, pero te invitamos a seguir buscando productos")
+    return redirect("/feedback/")
     form = FormularioNewsletter(request.POST)
     if form.is_valid():
         email = form.cleaned_data["email"]
@@ -147,3 +151,9 @@ def custom_logout(request):
     if request.method == "POST":
         logout(request)
     return redirect('/')
+
+
+def checkout(request):
+    messages.warning(request, "Sección en construcción")
+    messages.info(request, "Estamos desarrollando esta sección así te esperamos nuevamente cuando esté finalizada")
+    return redirect("/feedback/")
