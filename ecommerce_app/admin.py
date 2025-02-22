@@ -1,5 +1,5 @@
 from django.contrib import admin
-from ecommerce_app.models import Product, User, Order, Payment
+from ecommerce_app.models import Product, User, Order, Payment, SuscriptorNewsletter
 from django.contrib.sessions.models import Session
 
 
@@ -29,7 +29,13 @@ class PaymentAdmin(admin.ModelAdmin):
     search_fields = ('id', 'user', 'order', 'method', 'detail', 'amount', 'date', 'status', 'order')
 
 
+class SuscriptorNewsletterAdmin(admin.ModelAdmin):
+    list_display = ('id', 'email')
+    search_fields = ('id', 'email')
+
+
 admin.site.register(Product, ProductAdmin)
 admin.site.register(User, UserAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Payment, PaymentAdmin)
+admin.site.register(SuscriptorNewsletter, SuscriptorNewsletterAdmin)

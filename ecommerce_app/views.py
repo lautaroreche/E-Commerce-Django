@@ -6,7 +6,7 @@ from django.contrib.auth import logout
 import smtplib
 from email.mime.text import MIMEText
 from ecommerce.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_SENDER_NAME
-from ecommerce_app.models import Product
+from ecommerce_app.models import Product, SuscriptorNewsletter
 from cart.cart import Cart
 from favorites.favorites import Favorites
 from ecommerce_app.forms import FormularioNewsletter
@@ -120,6 +120,8 @@ def newsletter(request):
             with smtplib.SMTP_SSL(EMAIL_HOST, EMAIL_PORT) as server:
                 server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
                 server.sendmail(EMAIL_HOST_USER, email, msg.as_string())
+                suscriptor_newsletter = SuscriptorNewsletter(email=email)
+                suscriptor_newsletter.save()
                 messages.success(request, "Te has suscripto a nuestro newsletter exitosamente")
                 messages.info(request, "En breve recibirás un email de confirmación")
                 return redirect("/feedback/")
