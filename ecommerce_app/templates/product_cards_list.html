@@ -2,7 +2,7 @@
 
 <div class="cards-producto flex-center">
     {% for producto in productos %}
-        <div class="card-producto-list flex-eveny">
+        <div class="card-producto-list flex-eveny {% if producto.id in productos_cart and not is_cart %}product-is-in-cart{% endif %}">
             <img src="{{ producto.image.url }}" alt="{{ producto.name }}">
             <div class="detalle-producto-carrito flex-column flex-evenly flex-center">
                 <p class="nombre-producto w100">{{ producto.name }}</p>

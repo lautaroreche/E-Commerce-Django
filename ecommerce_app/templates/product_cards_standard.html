@@ -2,7 +2,7 @@
 
 <div class="cards-container flex-center">
     {% for producto in productos %}
-        <div class="card-producto flex-center">
+        <div class="card-producto flex-center {% if producto.id in productos_cart %}product-is-in-cart{% endif %}">
             <div class="imagen-card-producto">
                 <img src="{{ producto.image.url }}" alt="{{ producto.name }}">
                 <a href="{% url 'manage_favorites' producto.id %}" title="
