@@ -41,13 +41,7 @@
         <div class="container-usuario flex-column">
             <div class="datos-sesion flex-column">
                 {% if user.is_authenticated %}
-                    <p>Bienvenido {{ user.first_name }}!</p>
-                    <form method="POST" action="{% url 'logout' %}">
-                        {% csrf_token %}
-                        <button type="submit" class="boton-logout">Cerrar sesión</button>
-                    </form>                
-                {% else %}
-                    <a href="{% url 'login' %}">Iniciar sesión</a>
+                    <p>Hola {{ user.first_name }}!</p>
                 {% endif %}
             </div>
             <div class="iconos-usuario flex-center">
@@ -65,6 +59,18 @@
                         <i class="fa-solid fa-cart-shopping"></i>
                     {% endif %}
                 </a>
+                {% if user.is_authenticated %}
+                    <form method="POST" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="boton-logout">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                        </button>
+                    </form>                
+                {% else %}
+                    <a href="{% url 'login' %}">
+                        <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                    </a>
+                {% endif %}
             </div>
         </div>
     </header>

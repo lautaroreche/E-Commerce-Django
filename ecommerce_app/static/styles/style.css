@@ -133,7 +133,8 @@ button {
 }
 
 .iconos-usuario {
-    gap: 25px;
+    gap: 20px;
+    justify-content: right;
     width: 160px;
 }
 
@@ -151,19 +152,13 @@ button {
 }
 
 .datos-sesion {
-    gap: 5px;
     text-align: right;
 }
 
-.datos-sesion a {
-    text-align: center;
-    font-weight: 500;
-}
-
-.datos-sesion p, .datos-sesion a {
+.datos-sesion p {
     color: var(--light-color);
-    font-size: 17px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 .boton-logout {
