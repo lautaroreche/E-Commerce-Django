@@ -88,3 +88,11 @@ class Order(models.Model):
 
     def __str__(self):
         return f"{self.id}"
+
+
+class SuscriptorNewsletter(models.Model):
+    id = models.AutoField(primary_key=True)
+    email = models.EmailField(max_length=100)
+
+    def __str__(self):
+        return f"{self.id} > {self.email}"
