@@ -57,7 +57,6 @@ def search(request):
     try:
         # Viene de redirect cuando se agrega producto a fav o cart, así que cargamos de nuevo la misma página
         nombre_producto = request.session.get('nombre_producto', '')
-        print(f"Nombre producto: {nombre_producto}")
         productos = Product.objects.filter(name__icontains=nombre_producto)
         cart_obj = Cart(request)
         productos_cart = cart_obj.get_list_items()
