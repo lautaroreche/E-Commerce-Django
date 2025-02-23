@@ -23,13 +23,15 @@ def base(request):
 
 def home(request):
     productos = Product.objects.all()
-    favorites_obj = Favorites(request)
     cart_obj = Cart(request)
+    productos_cart = cart_obj.get_list_items()
+    favorites_obj = Favorites(request)
+    productos_favoritos = favorites_obj.get_list_items()
     return render(request, 'home.html', {
-        "productos": productos,
         "categories": CATEGORIES,
-        "productos_favoritos": favorites_obj.get_list_items(),
-        "productos_cart": cart_obj.get_list_items(),
+        "productos": productos,
+        "productos_cart": productos_cart,
+        "productos_favoritos": productos_favoritos,
     })
 
 
@@ -49,13 +51,28 @@ def search(request):
             messages.error(request, f'No hay ningún producto similar a "{nombre_producto}"')
             messages.info(request, "Intenta buscar el producto de otra forma, o busca otro producto")
             return redirect("/feedback/")
+        # No cumple ningún caso mapeado así que es un redirect desde add fav o add cart, guardamos el nombre del producto para lo siguiente
+        request.session["nombre_producto"] = nombre_producto
+    
+    try:
+        # Viene de redirect cuando se agrega producto a fav o cart, así que cargamos de nuevo la misma página
+        nombre_producto = request.session.get('nombre_producto', '')
+        print(f"Nombre producto: {nombre_producto}")
+        productos = Product.objects.filter(name__icontains=nombre_producto)
+        cart_obj = Cart(request)
+        productos_cart = cart_obj.get_list_items()
+        favorites_obj = Favorites(request)
+        productos_favoritos = favorites_obj.get_list_items()
         return render(request, "search.html", {
+            "categories": CATEGORIES,
             "productos": productos,
+            "productos_cart": productos_cart,
+            "productos_favoritos": productos_favoritos,
             "resultados": len(productos),
             "query": nombre_producto,
-            "categories": CATEGORIES,
         })
-    return HttpResponse("Método no permitido")
+    except:
+        return redirect('/')
 
 
 def filter(request, category):
@@ -64,11 +81,17 @@ def filter(request, category):
         messages.error(request, "La categoría que acabas de buscar no existe")
         messages.info(request, "Intenta seleccionar otra categoría")
         return redirect("/feedback/")
+    cart_obj = Cart(request)
+    productos_cart = cart_obj.get_list_items()
+    favorites_obj = Favorites(request)
+    productos_favoritos = favorites_obj.get_list_items()
     return render(request, "filter.html", {
+        "categories": CATEGORIES,
         "productos": productos,
+        "productos_cart": productos_cart,
+        "productos_favoritos": productos_favoritos,
         "resultados": len(productos),
         "category": category,
-        "categories": CATEGORIES,
     })
 
 
@@ -92,6 +115,7 @@ def cart(request):
 
 def favorites(request):
     cart_obj = Cart(request)
+    productos_cart = cart_obj.get_list_items()
     favorites_obj = Favorites(request)
     productos_favoritos = favorites_obj.get_list_items()
     productos = Product.objects.filter(id__in=productos_favoritos)
@@ -99,7 +123,7 @@ def favorites(request):
         return render(request, 'favorites.html', {
             "categories": CATEGORIES,
             "productos": productos,
-            "productos_cart": cart_obj.get_list_items(),
+            "productos_cart": productos_cart,
             "is_cart": False,
         })
     messages.warning(request, "No tienes ningún producto marcado como favorito")
@@ -150,7 +174,9 @@ def feedback(request):
 def custom_logout(request):
     if request.method == "POST":
         logout(request)
-    return redirect('/')
+    messages.warning(request, "Has cerrado sesión")
+    messages.info(request, "Esperamos que vuelvas pronto")
+    return redirect("/feedback/")
 
 
 def checkout(request):
