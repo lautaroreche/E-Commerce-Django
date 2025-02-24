@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from ecommerce_app.views import home, search, filter, cart, newsletter, favorites, feedback, custom_logout, checkout
+from ecommerce_app.views import home, search, filter, cart, newsletter, favorites, feedback, custom_logout, checkout, detail
 from cart.views import add_to_cart, remove_from_cart, decrement_from_cart, clear_cart
 from favorites.views import manage_favorites, clear_favorites, add_all_favorites_to_cart
 from django.conf import settings
@@ -25,13 +25,14 @@ from django.contrib.auth import views
 
 
 urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', home, name = 'home'),
     path('login/', views.LoginView.as_view(), name='login'),
     path('logout/', custom_logout, name='logout'),
-    path('', home, name = 'home'),
-    path('admin/', admin.site.urls),
     path('home/', home, name = 'home'),
     path('search/', search, name = 'search'),
     path('filter/<str:category>/', filter, name = 'filter'),
+    path('detail/<int:product_id>/', detail, name = 'detail'),
     path('cart/', cart, name = 'cart'),
     path('newsletter/', newsletter, name = 'newsletter'),
     path('add_to_cart/<int:product_id>/', add_to_cart, name = 'add_to_cart'),

@@ -202,12 +202,18 @@ h1, h2 {
     gap: 5px;
 }
 
+.card-producto-detail {
+    padding: 10px;
+    box-shadow: 0 0 15px #bbb;
+    gap: 20px;
+}
+
 .nombre-producto {
     font-size: 16px;
     font-weight: 500;
 }
 
-.imagen-card-producto {
+.imagen-card-producto, .imagen-card-producto-detail {
     position: relative;
     display: inline-block;
 }
@@ -232,6 +238,12 @@ hr {
 .precio-producto {
     margin: 5px 0;
     font-size: 22px;
+    font-weight: 700;
+}
+
+.precio-producto-detail {
+    margin: 10px 0;
+    font-size: 30px;
     font-weight: 700;
 }
 
@@ -425,11 +437,21 @@ footer div {
     box-shadow: 0 0 10px #bbb;
 }
 
-.cards-container .product-is-in-cart, .cards-producto .product-is-in-cart {
+.cards-container .product-is-in-cart, .cards-producto .product-is-in-cart, .product-is-in-cart {
     box-shadow: 0 0 10px var(--good-color);
 }
 
-.card-producto-list img {
+.imagen-card-producto img {
+    width: 200px;
+    height: 200px;
+}
+
+.imagen-card-producto-detail img {
+    width: 400px;
+    height: 400px;
+}
+
+.card-producto-list a img {
     width: 80px;
     height: 80px;
 }
@@ -490,7 +512,7 @@ footer div {
     font-weight: 600;
 }
 
-.imagen-card-producto .fa-heart {
+.imagen-card-producto .fa-heart, .imagen-card-producto .fa-heart-favorite, .imagen-card-producto-detail .fa-heart, .imagen-card-producto-detail .fa-heart-favorite {
     position: absolute;
     top: 5px;
     right: 5px;
@@ -498,8 +520,17 @@ footer div {
     color: #bbb;
 }
 
-.imagen-card-producto .fa-heart:active, .imagen-card-producto .fa-heart-favorite {
+.imagen-card-producto .fa-heart:active, .imagen-card-producto .fa-heart-favorite, .imagen-card-producto-detail .fa-heart:active, .imagen-card-producto-detail .fa-heart-favorite {
     color: var(--bad-color);
+}
+
+.info-producto-detail {
+    padding: 20px;
+    padding-left: 40px;
+    border-left: 1px solid var(--border-dark-color);
+    height: 100%;
+    gap: 20px;
+    text-align: center;
 }
 
 .add-to-cart, .add-all-favorites-to-cart, .clear-cart, .clear-favorites, .pay-cart {

@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
-from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth import logout
 import smtplib
@@ -92,6 +91,24 @@ def filter(request, category):
         "resultados": len(productos),
         "category": category,
     })
+
+
+def detail(request, product_id):
+    producto = Product.objects.get(id=product_id)
+    if producto:
+        cart_obj = Cart(request)
+        productos_cart = cart_obj.get_list_items()
+        favorites_obj = Favorites(request)
+        productos_favoritos = favorites_obj.get_list_items()
+        return render(request, 'product_detail.html', {
+            "categories": CATEGORIES,
+            "producto": producto,
+            "productos_cart": productos_cart,
+            "productos_favoritos": productos_favoritos,
+        })
+    messages.error(request, f'No hay ningún producto similar a "{producto.name}"')
+    messages.info(request, "Intenta buscar el producto de otra forma, o busca otro producto")
+    return redirect("/feedback/")
 
 
 def cart(request):
