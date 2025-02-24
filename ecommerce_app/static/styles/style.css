@@ -643,6 +643,11 @@ footer div {
     .card-total-cart, .card-producto-list {
         width: 700px;
     }
+
+    .imagen-card-producto-detail img {
+        width: 250px;
+        height: 250px;
+    }
 }
 
 
@@ -683,6 +688,11 @@ footer div {
     .card-total-cart, .card-producto-list {
         width: 500px;
     }
+
+    .imagen-card-producto-detail img {
+        width: 200px;
+        height: 200px;
+    }
 }
 
 
@@ -693,6 +703,15 @@ footer div {
 
     .card-total-cart, .card-producto-list {
         width: 450px;
+    }
+
+    .card-producto-detail {
+        flex-direction: column;
+    }
+
+    .info-producto-detail {
+        padding: 20px;
+        border-left: none;
     }
 
     .card-message {
@@ -731,5 +750,17 @@ footer div {
 @media screen  and (max-width: 420px) {
     .card-total-cart, .card-producto-list {
         width: 350px;
+    }
+
+    main {
+        padding: 40px 5px;
+    }
+
+    .card-producto-detail {
+        padding: 0;
+    }
+
+    .info-producto-detail {
+        padding: 10px;
     }
 }
