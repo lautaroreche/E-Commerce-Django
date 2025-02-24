@@ -527,7 +527,7 @@ footer div {
 .info-producto-detail {
     padding: 20px;
     padding-left: 40px;
-    border-left: 1px solid var(--border-dark-color);
+    border-left: 1px solid var(--border-light-color);
     height: 100%;
     gap: 20px;
     text-align: center;
