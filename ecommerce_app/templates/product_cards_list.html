@@ -5,60 +5,62 @@
         <div class="card-producto-list flex-eveny {% if producto.id in productos_cart and not is_cart %}product-is-in-cart{% endif %}">
             <a href="{% url 'detail' producto.id %}" title="{{producto.name}}">
                 <img src="{{ producto.image.url }}" alt="{{ producto.name }}">
-                <div class="detalle-producto-carrito flex-column flex-evenly flex-center">
-                    <p class="nombre-producto w100">{{ producto.name }}</p>
-                    <div class="manage-cantidad-list flex-center flex-row flex-evenly">
-                        {% if producto.id in productos_cart %}
-                            <div class="final-card flex-row flex-center flex-evenly flex-evenly">
-                                <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart" title="Restar del carrito">
-                                    <i class="fa-solid fa-minus"></i>
-                                </a>
-                                {% for key, value in request.session.cart.items %}
-                                    {% if key == producto.id|stringformat:"s" %}
-                                        <p>{{ value.quantity }}</p>
-                                    {% endif %}
-                                {% endfor %}
-                                <a href="{% url 'add_to_cart' producto.id %}" class="add-cart" title="Agregar al carrito">
-                                    <i class="fa-solid fa-plus"></i>
-                                </a>
-                            </div>
-                        {% else %}
-                            <div class="flex-evenly add-to-cart w90">
-                                <a href="{% url 'add_to_cart' producto.id %}" title="Agregar al carrito" class="w100">
-                                    Agregar al carrito
-                                </a>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="detalle-precio-carrito">
-                    {% if is_cart %}
-                        {% for key, value in subtotal_dict.items %}
-                            {% if key == producto.id|stringformat:"s" %}
-                                <p class="subtotal-price">${{ value|floatformat:0 }}</p>
-                            {% endif %}
-                        {% endfor %}
-                        {% for key, value in request.session.cart.items %}
-                            {% if key == producto.id|stringformat:"s" and value.quantity > 1 %}
-                                <p class="subtotal-price-detail">(${{ producto.price|floatformat:0 }} x {{ value.quantity }})</p>    
-                            {% endif %}
-                        {% endfor %}
-                    {% else %}
-                        <p class="subtotal-price">${{ producto.price|floatformat:0 }}</p>
-                    {% endif %}
-                </div>
-                <div class="container-xmark">
-                    {% if is_cart %}
-                        <a href="{% url 'remove_from_cart' producto.id %}" title="Eliminar del carrito">
-                            <i class="fa-solid fa-xmark"></i>
-                        </a>
-                    {% else %}
-                        <a href="{% url 'manage_favorites' producto.id %}" title="Eliminar de favoritos">
-                            <i class="fa-solid fa-xmark"></i>
-                        </a>
-                    {% endif %}
-                </div>
             </a>
+            <div class="detalle-producto-carrito flex-column flex-evenly flex-center">
+                <a href="{% url 'detail' producto.id %}" title="{{producto.name}}">
+                    <p class="nombre-producto w100">{{ producto.name }}</p>
+                </a>
+                <div class="manage-cantidad-list flex-center flex-row flex-evenly">
+                    {% if producto.id in productos_cart %}
+                        <div class="final-card flex-row flex-center flex-evenly flex-evenly">
+                            <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart" title="Restar del carrito">
+                                <i class="fa-solid fa-minus"></i>
+                            </a>
+                            {% for key, value in request.session.cart.items %}
+                                {% if key == producto.id|stringformat:"s" %}
+                                    <p>{{ value.quantity }}</p>
+                                {% endif %}
+                            {% endfor %}
+                            <a href="{% url 'add_to_cart' producto.id %}" class="add-cart" title="Agregar al carrito">
+                                <i class="fa-solid fa-plus"></i>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="flex-evenly add-to-cart w90">
+                            <a href="{% url 'add_to_cart' producto.id %}" title="Agregar al carrito" class="w100">
+                                Agregar al carrito
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="detalle-precio-carrito">
+                {% if is_cart %}
+                    {% for key, value in subtotal_dict.items %}
+                        {% if key == producto.id|stringformat:"s" %}
+                            <p class="subtotal-price">${{ value|floatformat:0 }}</p>
+                        {% endif %}
+                    {% endfor %}
+                    {% for key, value in request.session.cart.items %}
+                        {% if key == producto.id|stringformat:"s" and value.quantity > 1 %}
+                            <p class="subtotal-price-detail">(${{ producto.price|floatformat:0 }} x {{ value.quantity }})</p>    
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <p class="subtotal-price">${{ producto.price|floatformat:0 }}</p>
+                {% endif %}
+            </div>
+            <div class="container-xmark">
+                {% if is_cart %}
+                    <a href="{% url 'remove_from_cart' producto.id %}" title="Eliminar del carrito">
+                        <i class="fa-solid fa-xmark"></i>
+                    </a>
+                {% else %}
+                    <a href="{% url 'manage_favorites' producto.id %}" title="Eliminar de favoritos">
+                        <i class="fa-solid fa-xmark"></i>
+                    </a>
+                {% endif %}
+            </div>
         </div>
     {% endfor %}
     <div class="flex-column w100 
