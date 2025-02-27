@@ -13,7 +13,7 @@
                 <div class="manage-cantidad-list flex-center flex-row flex-evenly">
                     {% if producto.id in productos_cart %}
                         <div class="final-card flex-row flex-center flex-evenly flex-evenly">
-                            <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart" title="Restar del carrito">
+                            <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart save-scroll" title="Restar del carrito">
                                 <i class="fa-solid fa-minus"></i>
                             </a>
                             {% for key, value in request.session.cart.items %}
@@ -21,13 +21,13 @@
                                     <p>{{ value.quantity }}</p>
                                 {% endif %}
                             {% endfor %}
-                            <a href="{% url 'add_to_cart' producto.id %}" class="add-cart" title="Agregar al carrito">
+                            <a href="{% url 'add_to_cart' producto.id %}" class="add-cart save-scroll" title="Agregar al carrito">
                                 <i class="fa-solid fa-plus"></i>
                             </a>
                         </div>
                     {% else %}
                         <div class="flex-evenly add-to-cart w90">
-                            <a href="{% url 'add_to_cart' producto.id %}" title="Agregar al carrito" class="w100">
+                            <a href="{% url 'add_to_cart' producto.id %}" title="Agregar al carrito" class="w100 save-scroll">
                                 Agregar al carrito
                             </a>
                         </div>
@@ -52,11 +52,11 @@
             </div>
             <div class="container-xmark">
                 {% if is_cart %}
-                    <a href="{% url 'remove_from_cart' producto.id %}" title="Eliminar del carrito">
+                    <a href="{% url 'remove_from_cart' producto.id %}" class="save-scroll" title="Eliminar del carrito">
                         <i class="fa-solid fa-xmark"></i>
                     </a>
                 {% else %}
-                    <a href="{% url 'manage_favorites' producto.id %}" title="Eliminar de favoritos">
+                    <a href="{% url 'manage_favorites' producto.id %}" class="save-scroll" title="Eliminar de favoritos">
                         <i class="fa-solid fa-xmark"></i>
                     </a>
                 {% endif %}
@@ -70,14 +70,14 @@
             add-all-favorites-to-cart clear-favorites
         {% endif %}">
         {% if is_cart %}
-            <a href="{% url 'clear_cart' %}" title="Vaciar el carrito" class="w100">
+            <a href="{% url 'clear_cart' %}" title="Vaciar el carrito" class="w100 save-scroll">
                 Vaciar el carrito
             </a>
         {% else %}
-            <a href="{% url 'add_all_favorites_to_cart' %}" class="add-all-favorites-important" title="Agregar todos al carrito">
+            <a href="{% url 'add_all_favorites_to_cart' %}" class="add-all-favorites-important save-scroll" title="Agregar todos al carrito">
                 Agregar todos al carrito
             </a>
-            <a href="{% url 'clear_favorites' %}" title="Vaciar los favoritos">
+            <a href="{% url 'clear_favorites' %}" class="save-scroll" title="Vaciar los favoritos">
                 Vaciar los favoritos
             </a>
         {% endif %}

@@ -85,10 +85,10 @@
             <h3 class="title-footer">Redes sociales</h3>
             <hr>
             <div class="iconos-redes-sociales flex-center">
-                <a href="https://www.instagram.com/" target="_blank" title="Red social Instagram">
+                <a href="https://www.instagram.com/" class="save-scroll" target="_blank" title="Red social Instagram">
                     <i class="fa-brands fa-instagram"></i>
                 </a>
-                <a href="https://www.facebook.com/" target="_blank" title="Red social Facebook">
+                <a href="https://www.facebook.com/" class="save-scroll" target="_blank" title="Red social Facebook">
                     <i class="fa-brands fa-facebook"></i>
                 </a>
             </div>
@@ -126,13 +126,13 @@
 
     <script>
         // Al hacer clic en cualquier enlace <a>, guardamos la posición del scroll
-        document.querySelectorAll('a').forEach(link => {
+        document.querySelectorAll('a.save-scroll').forEach(link => {
             link.addEventListener('click', function() {
                 localStorage.setItem('scrollPosition', window.scrollY);
             });
         });
     </script>
-    
+
     <script>
         // Restaurar la posición del scroll cuando se carga la página
         document.addEventListener('DOMContentLoaded', function() {
