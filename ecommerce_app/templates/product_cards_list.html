@@ -52,14 +52,14 @@
             add-all-favorites-to-cart clear-favorites
         {% endif %}">
         {% if is_cart %}
-            <a href="{% url 'clear_cart' %}" title="Vaciar el carrito" class="save-scroll box-shadow text-color-light">
+            <a href="{% url 'clear_cart' %}" title="Vaciar el carrito" class="save-scroll box-shadow border-radius text-color-light">
                 Vaciar el carrito
             </a>
         {% else %}
-            <a href="{% url 'add_all_favorites_to_cart' %}" class="add-all-favorites-important save-scroll box-shadow text-color-light" title="Agregar todos al carrito">
+            <a href="{% url 'add_all_favorites_to_cart' %}" class="add-all-favorites-important save-scroll box-shadow border-radius text-color-light" title="Agregar todos al carrito">
                 Agregar todos al carrito
             </a>
-            <a href="{% url 'clear_favorites' %}" class="save-scroll box-shadow text-color-light" title="Vaciar los favoritos">
+            <a href="{% url 'clear_favorites' %}" class="save-scroll box-shadow border-radius text-color-light" title="Vaciar los favoritos">
                 Vaciar los favoritos
             </a>
         {% endif %}
