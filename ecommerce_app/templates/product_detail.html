@@ -7,7 +7,7 @@
 {% block content %}
     <main>
         <h2>Detalle de producto</h2>
-        <div class="card-producto-detail flex-center flex-row {% if producto.id in productos_cart %}product-is-in-cart{% endif %}">
+        <div class="card-producto-detail box-shadow flex-center flex-row {% if producto.id in productos_cart %}product-is-in-cart{% endif %}">
             <div class="imagen-card-producto-detail">
                 <img src="{{ producto.image.url }}" alt="{{ producto.name }}">
                 <a href="{% url 'manage_favorites' producto.id %}" class="save-scroll" title="
@@ -24,27 +24,9 @@
                 <hr class="w90">
                 <p class="descripcion-producto">{{ producto.description }}</p>
                 <p class="precio-producto-detail">${{ producto.price|floatformat:0 }}</p>
-                {% if producto.id in productos_cart %}
-                <div class="final-card flex-row flex-center flex-evenly">
-                    <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart save-scroll" title="Restar del carrito">
-                        <i class="fa-solid fa-minus"></i>
-                    </a>
-                    {% for key, value in request.session.cart.items %}
-                        {% if key == producto.id|stringformat:"s" %}
-                            <p>{{ value.quantity }}</p>
-                        {% endif %}
-                    {% endfor %}
-                    <a href="{% url 'add_to_cart' producto.id %}" class="add-cart save-scroll" title="Agregar al carrito">
-                        <i class="fa-solid fa-plus"></i>
-                    </a>
-                </div>
-                {% else %}
-                    <div class="flex-evenly add-to-cart w90">
-                        <a href="{% url 'add_to_cart' producto.id %}" title="Agregar al carrito" class="w100 save-scroll">
-                            Agregar al carrito
-                        </a>
-                    </div>
-                {% endif %}
+                
+                {% include 'manage_cart_quantity.html' %}
+
             </div>
         </div>
     </main>

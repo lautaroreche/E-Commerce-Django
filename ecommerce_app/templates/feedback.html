@@ -6,7 +6,7 @@
 
 {% block content %}
 <main class="flex-center">
-    <div class="card-message 
+    <div class="card-message border-radius 
     {% for message in messages %}
         {% if message.tags == 'success' %}
             card-message-success
@@ -27,7 +27,7 @@
                     <h3>{{ message }}</h3>
                 {% endif %}
             {% endfor %}
-            <a href="/home/" class="boton-card-message
+            <a href="/home/" class="boton-card-message text-color-light border-radius 
                 {% for message in messages %}
                     {% if message.tags == 'success' %}
                         boton-card-message-success
