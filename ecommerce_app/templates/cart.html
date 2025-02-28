@@ -7,13 +7,13 @@
 {% block content %}
     <main>
         <h2>Carrito</h2>
-        <div class="cards-container-list">
+        <div class="cards-container-list flex-row">
             {% include 'product_cards_list.html' %}
-            <div class="card-total-cart flex-center flex-evenly flex-column">
+            <div class="card-total-cart box-shadow flex-center flex-evenly flex-column">
                 <p>Total a pagar</p>
                 <p class="final-cart-price">${{ total|floatformat:0 }}</p>
-                <div class="flex-evenly pay-cart">
-                    <a href="{% url 'checkout' %}" title="Link para ir a pagar" class="w90">
+                <div class="flex-evenly pay-cart text-color-light border-radius border-radius w100">
+                    <a href="{% url 'checkout' %}" title="Link para ir a pagar" class="w90 box-shadow text-color-light">
                         Ir a pagar
                     </a>
                 </div>

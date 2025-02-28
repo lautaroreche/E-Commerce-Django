@@ -1,0 +1,21 @@
+{% if producto.id in productos_cart %}
+    <div class="final-card flex-row flex-center flex-evenly">
+        <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart save-scroll" title="Restar del carrito">
+            <i class="fa-solid fa-minus border-radius text-color-light"></i>
+        </a>
+        {% for key, value in request.session.cart.items %}
+            {% if key == producto.id|stringformat:"s" %}
+                <p class="border-radius">{{ value.quantity }}</p>
+            {% endif %}
+        {% endfor %}
+        <a href="{% url 'add_to_cart' producto.id %}" class="add-cart save-scroll" title="Agregar al carrito">
+            <i class="fa-solid fa-plus border-radius text-color-light"></i>
+        </a>
+    </div>
+{% else %}
+    <div class="flex-evenly add-to-cart text-color-light border-radius w100">
+        <a href="{% url 'add_to_cart' producto.id %}" title="Agregar al carrito" class="w100 save-scroll box-shadow border-radius text-color-light">
+            Agregar al carrito
+        </a>
+    </div>
+{% endif %}
