@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.contrib import messages
-from django.contrib.auth import logout
+from django.contrib.auth import authenticate, login, logout
 import smtplib
 from email.mime.text import MIMEText
 from ecommerce.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_SENDER_NAME
@@ -185,6 +185,29 @@ def feedback(request):
             "categories": CATEGORIES,
         })
     return redirect("/")
+
+
+def custom_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        print(f"user: {user}")
+        if user is not None:
+            login(request, user)
+            return redirect("/")
+        else:
+            if username == "":
+                messages.error(request, 'Debes completar el nombre de usuario')
+            elif password == "":
+                messages.error(request, 'Debes completar la contraseña')
+            else:
+                messages.error(request, 'Nombre de usuario o contraseña incorrectos')
+    else:
+        for message in messages.get_messages(request):
+            pass
+
+    return render(request, 'registration/login.html')
 
 
 def custom_logout(request):

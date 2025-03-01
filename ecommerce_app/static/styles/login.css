@@ -4,6 +4,7 @@
     --dark-color: #333;
     --light-color: #eee;
     --border-light-color: #ddd;
+    --bad-color: #ff0000;
 }
 
 * {
@@ -27,7 +28,7 @@ img {
 }
 
 .container-login {
-    padding: 20px;
+    padding: 30px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -38,8 +39,15 @@ img {
     box-shadow: 0 0 25px var(--border-light-color);
 }
 
+.container-login p {
+    color: var(--bad-color);
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+}
+
 form {
-    margin-bottom: 40px;
+    margin-bottom: 60px;
     display: flex;
     flex-direction: column;
     gap: 15px;
