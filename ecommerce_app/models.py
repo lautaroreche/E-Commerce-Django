@@ -3,7 +3,6 @@ from cloudinary.models import CloudinaryField
 
 
 class Product(models.Model):
-    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=30)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.CharField(max_length=300)
@@ -15,27 +14,8 @@ class Product(models.Model):
         return f"{self.id} > {self.name}"
 
 
-class User(models.Model):
-    id = models.AutoField(primary_key=True)
-    first_name = models.CharField(max_length=30)
-    last_name = models.CharField(max_length=30)
-    email = models.CharField(max_length=30)
-    password = models.CharField(max_length=20)
-    phone = models.CharField(max_length=20)
-    address = models.CharField(max_length=100)
-    city = models.CharField(max_length=40)
-    state = models.CharField(max_length=40)
-    zip_code = models.CharField(max_length=10)
-    cart = models.ManyToManyField(Product, related_name='cart', blank=True)
-
-    def __str__(self):
-        return f"{self.id} > {self.first_name} {self.last_name}"
-
-
 class Payment(models.Model):
-    id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    method = method = models.CharField(
+    method = models.CharField(
         max_length=20,
         choices=[
             ('Credit Card', 'Credit Card'),
@@ -50,7 +30,7 @@ class Payment(models.Model):
     token = models.CharField(max_length=255, default='')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateTimeField(auto_now_add=True)
-    status = status = models.CharField(
+    status = models.CharField(
         max_length=20,
         choices=[
             ('Pending', 'Pending'),
@@ -68,9 +48,7 @@ class Payment(models.Model):
 
 
 class Order(models.Model):
-    id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    products = models.ManyToManyField(Product, related_name='orders')
+    products = models.TextField()
     total = models.DecimalField(max_digits=10, decimal_places=2)
     address = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now_add=True)
@@ -85,15 +63,14 @@ class Order(models.Model):
         ],
         default='Pending'
     )
-    payment = models.ForeignKey(Payment, on_delete=models.CASCADE, related_name='orders')
+    payment = models.ForeignKey(Payment, on_delete=models.CASCADE, related_name='orders', null=True, blank=True)
 
     def __str__(self):
         return f"{self.id}"
 
 
 class SuscriptorNewsletter(models.Model):
-    id = models.AutoField(primary_key=True)
-    email = models.EmailField(max_length=100)
+    email = models.EmailField(unique=True, max_length=100)
 
     def __str__(self):
         return f"{self.id} > {self.email}"

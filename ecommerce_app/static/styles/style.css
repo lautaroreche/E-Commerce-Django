@@ -143,30 +143,12 @@ button {
     width: 160px;
 }
 
-.fa-heart-circle-plus, .fa-heart, .fa-cart-plus, .fa-cart-shopping, .fa-screwdriver-wrench, .fa-arrow-right-from-bracket, .fa-arrow-right-to-bracket {
+.fa-heart-circle-plus, .fa-heart, .fa-cart-plus, .fa-cart-shopping {
     transition: color 0.1s;
 }
 
-.fa-heart-circle-plus:hover, .fa-heart:hover, .fa-cart-plus:hover, .fa-cart-shopping:hover, .fa-screwdriver-wrench:hover, .fa-arrow-right-from-bracket:hover, .fa-arrow-right-to-bracket:hover {
+.fa-heart-circle-plus:hover, .fa-heart:hover, .fa-cart-plus:hover, .fa-cart-shopping:hover {
     color: var(--secondary-color);
-}
-
-.boton-logout {
-    cursor: pointer;
-    background-color: var(--main-color);
-}
-
-.datos-sesion {
-    text-align: right;
-}
-
-.datos-sesion p {
-    font-size: 18px;
-    font-weight: 600;
-}
-
-.boton-logout {
-    font-size: 16px;
 }
 
 main {

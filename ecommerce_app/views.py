@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
 import smtplib
 from email.mime.text import MIMEText
 from ecommerce.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_SENDER_NAME
@@ -187,64 +186,22 @@ def feedback(request):
     return redirect("/")
 
 
-def custom_login(request):
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        print(f"user: {user}")
-        if user is not None:
-            login(request, user)
-            return redirect("/")
-        else:
-            if username == "":
-                messages.error(request, 'Debes completar el nombre de usuario')
-            elif password == "":
-                messages.error(request, 'Debes completar la contraseña')
-            else:
-                messages.error(request, 'Nombre de usuario o contraseña incorrectos')
-    else:
-        for message in messages.get_messages(request):
-            pass
-
-    return render(request, 'registration/login.html')
-
-
-def custom_logout(request):
-    if request.method == "POST":
-        logout(request)
-    messages.warning(request, "Has cerrado sesión")
-    messages.info(request, "Esperamos que vuelvas pronto")
-    return redirect("/feedback/")
-
-
 def checkout(request):
-    print(request.user)
-    order = Order.objects.create(
-        user = request.user,
-    )
-    print(order)
-    messages.warning(request, "Sección en construcción")
-    messages.info(request, "Estamos desarrollando esta sección así te esperamos nuevamente cuando esté finalizada")
-    return redirect("/feedback/")
-
-    """
-    order = Order.objects.create(
-        user = request.user,
-        products = models.ManyToManyField(Product, related_name='orders')
-        total = models.DecimalField(max_digits=10, decimal_places=2)
-        address = models.CharField(max_length=100)
-        date = models.DateTimeField(auto_now_add=True)
-        status = models.CharField(
-            max_length=20,
-            choices=[
-                ('Pending', 'Pending'),
-                ('Paid', 'Paid'),
-                ('Shipped', 'Shipped'),
-                ('Delivered', 'Delivered'),
-                ('Cancelled', 'Cancelled')
-            ],
-            default='Pending'
+    try:
+        cart_obj = Cart(request)
+        order = Order.objects.create(
+            products = "Productos",
+            total = cart_obj.get_total_cart(),
+            address = "Dirección de prueba 123",
+            payment = None,
         )
-        payment = models.ForeignKey(Payment, on_delete=models.CASCADE, related_name='orders')
-    """
+
+        messages.success(request, "Compra exitosa!")
+        messages.info(request, "En breve recibirás un email de confirmación")
+        return redirect("/feedback/")
+
+    except Exception as e:
+        print(e)
+        messages.error(request, "Error inesperado")
+        messages.info(request, "Intenta nuevamente en unos minutos")
+        return redirect("/feedback/")

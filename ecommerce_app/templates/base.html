@@ -39,17 +39,7 @@
             </div>
         </nav>
         <div class="container-usuario flex-column">
-            <div class="datos-sesion flex-column">
-                {% if user.is_authenticated %}
-                    <p class="text-color-light">Hola {{ user.first_name }}!</p>
-                {% endif %}
-            </div>
             <div class="iconos-usuario flex-center">
-                {% if user.is_authenticated %}
-                    <a href="{% url 'admin:index' %}">
-                        <i class="fa-solid fa-screwdriver-wrench text-color-light"></i>
-                    </a>
-                {% endif %}
                 <a href="{% url 'favorites' %}" title="Sección de favoritos">
                     {% if has_favorites %}
                         <i class="fa-solid fa-heart-circle-plus text-color-light"></i>
@@ -64,18 +54,6 @@
                         <i class="fa-solid fa-cart-shopping text-color-light"></i>
                     {% endif %}
                 </a>
-                {% if user.is_authenticated %}
-                    <form method="POST" action="{% url 'logout' %}">
-                        {% csrf_token %}
-                        <button type="submit" class="boton-logout text-color-light border-radius">
-                            <i class="fa-solid fa-arrow-right-from-bracket text-color-light"></i>
-                        </button>
-                    </form>                
-                {% else %}
-                    <a href="{% url 'login' %}">
-                        <i class="fa-solid fa-arrow-right-to-bracket text-color-light"></i>
-                    </a>
-                {% endif %}
             </div>
         </div>
     </header>
