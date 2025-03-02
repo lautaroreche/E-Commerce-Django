@@ -4,7 +4,7 @@ from django.contrib import messages
 import smtplib
 from email.mime.text import MIMEText
 from ecommerce.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_SENDER_NAME
-from ecommerce_app.models import Product, SuscriptorNewsletter, Order
+from ecommerce_app.models import Product, SuscriptorNewsletter, Order, OrderItem
 from cart.cart import Cart
 from favorites.favorites import Favorites
 from ecommerce_app.forms import FormularioNewsletter
@@ -189,17 +189,32 @@ def feedback(request):
 def checkout(request):
     try:
         cart_obj = Cart(request)
+        product_list = []
+        
         order = Order.objects.create(
-            products = "Productos",
             total = cart_obj.get_total_cart(),
             address = "Dirección de prueba 123",
             payment = None,
         )
 
+        for key, value in request.session["cart"].items():
+            product = Product.objects.get(id=key)
+            quantity = value["quantity"]
+            
+            OrderItem.objects.create(
+                order=order,
+                product=product,
+                quantity=quantity
+            )
+
+            product_list.append(product)
+
+        order.products.set(product_list)
+
+
         messages.success(request, "Compra exitosa!")
         messages.info(request, "En breve recibirás un email de confirmación")
         return redirect("/feedback/")
-
     except Exception as e:
         print(e)
         messages.error(request, "Error inesperado")

@@ -48,7 +48,7 @@ class Payment(models.Model):
 
 
 class Order(models.Model):
-    products = models.TextField()
+    products = models.ManyToManyField(Product, related_name='orders')
     total = models.DecimalField(max_digits=10, decimal_places=2)
     address = models.CharField(max_length=100)
     date = models.DateTimeField(auto_now_add=True)
@@ -68,6 +68,15 @@ class Order(models.Model):
     def __str__(self):
         return f"{self.id}"
 
+
+class OrderItem(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.name}"
+    
 
 class SuscriptorNewsletter(models.Model):
     email = models.EmailField(unique=True, max_length=100)

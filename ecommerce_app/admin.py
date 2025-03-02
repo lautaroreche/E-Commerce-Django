@@ -14,7 +14,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = ('status',)
     search_fields = ('id', 'products', 'total', 'address', 'date', 'status', 'payment')
     def get_products(self, obj):
-        return ", ".join([p.name for p in obj.products.all()])
+        return ", ".join([product.name for product in obj.products.all()])
     get_products.short_description = 'Products'
 
 
