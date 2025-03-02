@@ -5,7 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 import smtplib
 from email.mime.text import MIMEText
 from ecommerce.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_SENDER_NAME
-from ecommerce_app.models import Product, SuscriptorNewsletter
+from ecommerce_app.models import Product, SuscriptorNewsletter, Order
 from cart.cart import Cart
 from favorites.favorites import Favorites
 from ecommerce_app.forms import FormularioNewsletter
@@ -219,6 +219,32 @@ def custom_logout(request):
 
 
 def checkout(request):
+    print(request.user)
+    order = Order.objects.create(
+        user = request.user,
+    )
+    print(order)
     messages.warning(request, "Sección en construcción")
     messages.info(request, "Estamos desarrollando esta sección así te esperamos nuevamente cuando esté finalizada")
     return redirect("/feedback/")
+
+    """
+    order = Order.objects.create(
+        user = request.user,
+        products = models.ManyToManyField(Product, related_name='orders')
+        total = models.DecimalField(max_digits=10, decimal_places=2)
+        address = models.CharField(max_length=100)
+        date = models.DateTimeField(auto_now_add=True)
+        status = models.CharField(
+            max_length=20,
+            choices=[
+                ('Pending', 'Pending'),
+                ('Paid', 'Paid'),
+                ('Shipped', 'Shipped'),
+                ('Delivered', 'Delivered'),
+                ('Cancelled', 'Cancelled')
+            ],
+            default='Pending'
+        )
+        payment = models.ForeignKey(Payment, on_delete=models.CASCADE, related_name='orders')
+    """

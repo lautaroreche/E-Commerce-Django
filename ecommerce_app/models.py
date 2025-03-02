@@ -69,7 +69,7 @@ class Payment(models.Model):
 
 class Order(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     products = models.ManyToManyField(Product, related_name='orders')
     total = models.DecimalField(max_digits=10, decimal_places=2)
     address = models.CharField(max_length=100)
