@@ -10,12 +10,16 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('id', 'get_products', 'total', 'address', 'date', 'status', 'payment')
+    list_display = ('id', 'get_detail', 'total', 'address', 'date', 'status', 'payment')
     list_filter = ('status',)
     search_fields = ('id', 'products', 'total', 'address', 'date', 'status', 'payment')
-    def get_products(self, obj):
-        return ", ".join([product.name for product in obj.products.all()])
-    get_products.short_description = 'Products'
+
+    def get_detail(self, obj):
+        detail = []
+        for item in obj.orderitem_set.all():
+            detail.append(f"{item.quantity} {item.product.name}")
+        return ", ".join(detail)
+    get_detail.short_description = 'Detail'
 
 
 class PaymentAdmin(admin.ModelAdmin):
