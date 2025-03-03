@@ -25,7 +25,7 @@
                     {% endfor %}
                     {% for key, value in request.session.cart.items %}
                         {% if key == producto.id|stringformat:"s" and value.quantity > 1 %}
-                            <p class="subtotal-price-detail">(${{ producto.price|floatformat:0 }} x {{ value.quantity }})</p>    
+                            <p class="subtotal-price-detail">({{ value.quantity }} x ${{ producto.price|floatformat:0 }})</p>    
                         {% endif %}
                     {% endfor %}
                 {% else %}
