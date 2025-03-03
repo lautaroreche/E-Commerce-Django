@@ -211,6 +211,7 @@ def checkout(request):
 
         order.products.set(product_list)
 
+        cart_obj.clear()
 
         messages.success(request, "Compra exitosa!")
         messages.info(request, "En breve recibirás un email de confirmación")
