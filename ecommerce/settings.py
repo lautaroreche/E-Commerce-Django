@@ -119,21 +119,9 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-if env("DEBUG", default=False):
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': env("DB_NAME"),
-            'USER': env("DB_USER"),
-            'PASSWORD': env("DB_PASSWORD"),
-            'HOST': env("DB_HOST"),
-            'PORT': env("DB_PORT"),
-        }
-    }
-else:
-    DATABASES = {
-        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
-    }
+DATABASES = {
+    'default': dj_database_url.parse(os.getenv('DATABASE_URL'))
+}
 
 
 
