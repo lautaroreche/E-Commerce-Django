@@ -124,7 +124,7 @@ def cart(request):
             "total": str(cart_obj.get_total_cart()),
         })
     messages.warning(request, "No tienes ningún producto en el carrito")
-    messages.info(request, "Haz click en el símbolo + de color verde  que se encuentra en el producto para que aparezca aquí")
+    messages.info(request, "Haz click en el botón verde de Agregar al carrito o en el símbolo + que se encuentran en el producto para que aparezca aquí")
     return redirect("/feedback/")
 
 
@@ -148,8 +148,8 @@ def favorites(request):
 
 def newsletter(request):
     # Redirect forzado ya que actualmente no se envían mails de newsletter
-    messages.warning(request, "Sección en pausa")
-    messages.info(request, "Actualmente no se envían mails de newsletter, pero te invitamos a seguir buscando productos")
+    messages.warning(request, "Funcionalidad actualmente deshabilitada")
+    messages.info(request, "El envío de mails no está habilitado actualmente pero funciona al cargar las credenciales de una cuenta de mail")
     return redirect("/feedback/")
     form = FormularioNewsletter(request.POST)
     if form.is_valid():
@@ -212,9 +212,9 @@ def checkout(request):
         order.products.set(product_list)
 
         cart_obj.clear()
-
-        messages.success(request, "Compra exitosa!")
-        messages.info(request, "En breve recibirás un email de confirmación")
+    
+        messages.warning(request, "Funcionalidad actualmente deshabilitada")
+        messages.info(request, "El checkout no está habilitado actualmente ya que queda pendiente integrar la pasarela de pagos")
         return redirect("/feedback/")
     except Exception as e:
         print(e)
