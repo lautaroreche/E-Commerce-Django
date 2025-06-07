@@ -3,11 +3,12 @@ from django.template.loader import render_to_string
 from django.contrib import messages
 import smtplib
 from email.mime.text import MIMEText
-from ecommerce.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_SENDER_NAME
+from ecommerce.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_SENDER_NAME, BREVO_API_KEY
 from ecommerce_app.models import Product, SuscriptorNewsletter, Order, OrderItem
 from cart.cart import Cart
 from favorites.favorites import Favorites
 from ecommerce_app.forms import FormularioNewsletter
+import sib_api_v3_sdk
 
 
 CATEGORIES = Product.objects.values('category').distinct().order_by('category')
@@ -147,31 +148,37 @@ def favorites(request):
 
 
 def newsletter(request):
-    # Redirect forzado ya que actualmente no se envían mails de newsletter
-    messages.warning(request, "Funcionalidad actualmente deshabilitada")
-    messages.info(request, "El envío de mails no está habilitado actualmente pero funciona al cargar las credenciales de una cuenta de mail")
-    return redirect("/feedback/")
     form = FormularioNewsletter(request.POST)
     if form.is_valid():
-        email = form.cleaned_data["email"]
-        html_content = render_to_string("newsletter_message.html")
-        msg = MIMEText(html_content, "html")
-        msg["Subject"] = "Ragusa - Productos argentinos"
-        msg["From"] = f"{EMAIL_SENDER_NAME} <{EMAIL_HOST_USER}>"
-        msg["To"] = email
+        email_destino = form.cleaned_data["email"]
+        
+        configuration = sib_api_v3_sdk.Configuration()
+        configuration.api_key['api-key'] = BREVO_API_KEY
+        
+        api_client = sib_api_v3_sdk.ApiClient(configuration)
+        api_instance = sib_api_v3_sdk.TransactionalEmailsApi(api_client)
+        
+        # Renderizar el contenido HTML con contexto si es necesario, o vacío si no
+        html_content = render_to_string("newsletter_message.html", {})
+        
+        send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
+            to=[{"email": email_destino}],
+            sender={"name": "Ragusa - Ecommerce", "email": "lautaroreche1@gmail.com"},
+            subject="Gracias por suscribirte",
+            html_content=html_content,
+        )
+        
         try:
-            with smtplib.SMTP_SSL(EMAIL_HOST, EMAIL_PORT) as server:
-                server.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
-                server.sendmail(EMAIL_HOST_USER, email, msg.as_string())
-                suscriptor_newsletter = SuscriptorNewsletter(email=email)
-                suscriptor_newsletter.save()
-                messages.success(request, "Te has suscripto a nuestro newsletter exitosamente")
-                messages.info(request, "En breve recibirás un email de confirmación")
-                return redirect("/feedback/")
-        except Exception as e:
-            messages.error(request, f"Error inesperado: {e}")
-            messages.info(request, "Intenta nuevamente en unos minutos")
+            api_response = api_instance.send_transac_email(send_smtp_email)
+            print(api_response)
+            messages.success(request, "Te has suscripto a nuestro newsletter exitosamente")
+            messages.info(request, "En breve recibirás un email de confirmación")
             return redirect("/feedback/")
+        except ApiException as e:
+            messages.warning(request, "Error en el envío de email")
+            messages.info(request, "Intenta nuevamente más tarde")
+            return redirect("/feedback/")
+        
     messages.error(request, "El email ingresado no es válido")
     messages.info(request, "Ingresa un email válido")
     return redirect("/feedback/")
