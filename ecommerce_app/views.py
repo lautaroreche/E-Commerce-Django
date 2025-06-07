@@ -169,12 +169,11 @@ def newsletter(request):
         )
         
         try:
-            api_response = api_instance.send_transac_email(send_smtp_email)
-            print(api_response)
+            api_instance.send_transac_email(send_smtp_email)
             messages.success(request, "Te has suscripto a nuestro newsletter exitosamente")
             messages.info(request, "En breve recibirás un email de confirmación")
             return redirect("/feedback/")
-        except ApiException as e:
+        except:
             messages.warning(request, "Error en el envío de email")
             messages.info(request, "Intenta nuevamente más tarde")
             return redirect("/feedback/")
