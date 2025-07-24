@@ -30,7 +30,8 @@ environ.Env.read_env(os.path.join(BASE_DIR, "../.env"))
 cloudinary.config(
     cloud_name = env("CLOUD_NAME"),
     api_key = env("API_KEY"),
-    api_secret = env("API_SECRET")
+    api_secret = env("API_SECRET"),
+    secure = True,
 )
 
 # Quick-start development settings - unsuitable for production
@@ -66,7 +67,8 @@ INSTALLED_APPS = [
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.getenv('CLOUD_NAME'),
     'API_KEY': os.getenv('API_KEY'),
-    'API_SECRET': os.getenv('API_SECRET')
+    'API_SECRET': os.getenv('API_SECRET'),
+    'SECURE': True,
 }
 # Almacenamiento de archivos multimedia
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
