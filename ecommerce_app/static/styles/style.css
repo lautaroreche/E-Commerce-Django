@@ -86,6 +86,7 @@ nav ul {
 }
 
 nav ul li, footer ul li {
+    color: var(--light-color);
     list-style: none;
     font-size: 17px;
     font-weight: 500;
