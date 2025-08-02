@@ -1,0 +1,37 @@
+# Evitar archivos del entorno virtual
+venv/
+*.pyc
+*.pyo
+__pycache__/
+ENTORNOVIRTUAL
+
+# Evitar archivos de configuración local
+.env
+*.env
+*.sqlite3
+config/settings_local.py
+
+# Evitar archivos de logs y caché
+logfile
+*.log
+*.pot
+*.mo
+*.swp
+*.swo
+*.swn
+*.DS_Store
+
+# Evitar claves secretas de Django
+.env
+config/settings.pyc
+
+# Archivos de compilación y estáticos
+node_modules/
+
+# Archivos de dependencias
+Pipfile
+Pipfile.lock
+
+# Archivos de IDEs y editores de texto
+.vscode/
+.idea/
