@@ -1,7 +1,7 @@
 # Ragusa - E-Commerce 🌐  
 
 ## Description ℹ️
-This repository contains the code for a **web page built with Python, Django, PostgreSQL, HTML and CSS**.
+This repository contains the code for a **web page built with Python, Django, PostgreSQL, HTML and TailwindCSS**.
 
 ## Features ✨  
 - Clean and modern design.
