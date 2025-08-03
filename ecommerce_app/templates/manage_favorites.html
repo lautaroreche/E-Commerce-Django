@@ -1,0 +1,3 @@
+<a href="{% url 'manage_favorites' product.id %}" aria-label="Manage favorites button" class="p-1 save-scroll">
+    <i class="fa-solid fa-bookmark text-2xl {% if product.id in favorite_products %}text-yellow-300{% else %}text-gray-400{% endif %}"></i>
+</a>

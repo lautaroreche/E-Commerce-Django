@@ -1,5 +1,6 @@
 {% load static %}
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,125 +8,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'styles/style.css' %}">
-    <link preload rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4" defer></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header class="w100">
-        <a href="{% url 'home' %}" title="Logo de Ragusa">
-            <img src="{% static 'images/logo.webp' %}" alt="Logo">
-        </a>
-        <nav class="flex-column">
-            <div class="buscador-menu">
-                <form action="{% url 'search' %}" method="POST" class="flex-center">
-                    {% csrf_token %}
-                    <input type="text" name="nombre_producto" placeholder="Busca un producto" class="border-radius">
-                    <button type="submit" class="border-radius" aria-label="Buscar">
-                        <i class="fa-solid fa-magnifying-glass border-radius text-color-light"></i>
-                    </button>
-                </form>
-            </div>
-            <div>
-                <ul>
-                    <li>
-                        <a href="{% url 'home' %}" title="Todos los productos">
-                            <li class="text-color-light">Todos</li>
-                        </a>
-                    </li>
-                    {% for categorie in categories %}
-                        <li>
-                            <a href="{% url 'filter' categorie.category %}" title="Sección de {{ categorie.category }}">
-                                <li class="text-color-light">{{ categorie.category }}</li>
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </nav>
-        <div class="container-usuario flex-column">
-            <div class="iconos-usuario flex-center">
-                <a href="{% url 'favorites' %}" title="Sección de favoritos">
-                    {% if has_favorites %}
-                        <i class="fa-solid fa-heart-circle-plus text-color-light"></i>
-                    {% else %}
-                        <i class="fa-solid fa-heart text-color-light"></i>
-                    {% endif %}
-                </a>
-                <a href="{% url 'cart' %}" title="Sección de carrito">
-                    {% if has_cart > 0 %}
-                        <i class="fa-solid fa-cart-plus text-color-light"></i>
-                    {% else %}
-                        <i class="fa-solid fa-cart-shopping text-color-light"></i>
-                    {% endif %}
-                </a>
-            </div>
-        </div>
-    </header>
+    {% include 'header.html' %}
+
     {% block content %}{% endblock %}
-    <footer>
-        <div class="redes-sociales flex-column">
-            <h3 class="text-color-light">Redes sociales</h3>
-            <hr>
-            <div class="iconos-redes-sociales flex-center">
-                <a href="https://www.instagram.com/" class="save-scroll" target="_blank" title="Red social Instagram">
-                    <i class="fa-brands fa-instagram text-color-light"></i>
-                </a>
-                <a href="https://www.facebook.com/" class="save-scroll" target="_blank" title="Red social Facebook">
-                    <i class="fa-brands fa-facebook text-color-light"></i>
-                </a>
-            </div>
-        </div>
-        <div class="flex-column">
-            <h3 class="text-color-light">Categorías</h3>
-            <hr>
-            <div class="categorias">
-                <ul class="flex-center">
-                    <a href="{% url 'home' %}" title="Todos los productos">
-                        <li class="text-color-light">Todos</li>
-                    </a>
-                    {% for categorie in categories %}
-                    <a href="{% url 'filter' categorie.category %}" title="Sección de {{ categorie.category }}">
-                        <li class="text-color-light">{{ categorie.category }}</li>
-                    </a>
-                    {% endfor %}
-                </ul>
-            </div>
-        </div>
-        <div class="flex-column">
-            <h3 class="text-color-light">Recibe nuestro newsletter</h3>
-            <hr>
-            <div class="email-newsletter">
-                <form action="{% url 'newsletter' %}" method="POST" class="flex-center">
-                    {% csrf_token %}
-                    <input type="text" name="email" placeholder="Escribe tu email" class="border-radius">
-                    <button type="submit" class="border-radius" aria-label="Enviar">
-                        <i class="fa-solid fa-envelope border-radius text-color-light"></i>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </footer>
 
-    <script>
-        // Al hacer clic en cualquier enlace <a>, guardamos la posición del scroll
-        document.querySelectorAll('a.save-scroll').forEach(link => {
-            link.addEventListener('click', function() {
-                localStorage.setItem('scrollPosition', window.scrollY);
-            });
-        });
-    </script>
+    {% include 'footer.html' %}
 
-    <script>
-        // Restaurar la posición del scroll cuando se carga la página
-        document.addEventListener('DOMContentLoaded', function() {
-            const scrollPosition = localStorage.getItem('scrollPosition');
-            if (scrollPosition) {
-                window.scrollTo(0, parseInt(scrollPosition));
-                localStorage.removeItem('scrollPosition');  // Limpiar la posición guardada
-            }
-        });
-    </script>
-    
+    {% include 'messages.html' %}
 
+    {% include 'scripts.html' %}
 </body>
 </html>

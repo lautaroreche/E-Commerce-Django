@@ -1,0 +1,52 @@
+{% load static %}
+
+
+<header>
+    <div class="bg-gray-950">
+        <p class="p-1 text-white text-center font-semibold">Refer a friend and get € 50 after their first 3 purchases </p>
+    </div>
+    <nav class="flex-col border-b-1 border-black">
+        <div class="flex justify-between items-center px-4 py-2 bg-gray-800">
+            <a href="{% url 'home' %}" aria-label="Ragusa E-Commerce logo" class="md:min-w-40">
+                <img src="{% static 'images/logo.webp' %}" alt="Ragusa E-Commerce logo" class="w-24 md:w-36">
+            </a>
+            <form action="{% url 'search' %}" method="POST" class="hidden md:flex gap-1 bg-white rounded-lg">
+                {% csrf_token %}
+                <input type="text" name="input_text" placeholder="Search for a product" class="px-3 w-88 outline-none" maxlength="40" required>
+                <button type="submit" aria-label="Search button">
+                    <i class="fa-solid fa-magnifying-glass p-2 bg-[#76b9f0] text-white text-xl rounded-r-lg cursor-pointer hover:bg-blue-400"></i>
+                </button>
+            </form>
+            <div class="flex items-center justify-center gap-6 text-white md:min-w-40">
+                <a href="{% url 'favorites' %}" aria-label="Favorites section" class="save-scroll">
+                    <div class="flex flex-col justify-center items-center gap-1 {% if has_favorites %}text-yellow-300{% else %}hover:text-[#76b9f0]{% endif %}">
+                        <i class="fa-solid fa-bookmark text-2xl"></i>
+                        <p class="font-semibold">Favorites</p>
+                    </div>
+                </a>
+                <a href="{% url 'cart' %}" aria-label="Cart section" class="save-scroll">
+                    <div class="flex flex-col justify-center items-center gap-1 {% if has_cart %}text-yellow-300{% else %}hover:text-[#76b9f0]{% endif %}">
+                        <i class="fa-solid {% if has_cart > 0 %}fa-cart-plus{% else %}fa-cart-shopping{% endif %} text-2xl"></i>
+                        <p class="font-semibold">Cart</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="bg-gray-500 mx-auto">
+            <ul class="flex flex-col md:flex-row items-center justify-evenly gap-1 text-white font-semibold w-full p-2">
+                <li>
+                    <a href="{% url 'home' %}" aria-label="All products">
+                        <li class="text-color-light">All products</li>
+                    </a>
+                </li>
+                {% for categorie in categories %}
+                    <li>
+                        <a href="{% url 'filter_category' categorie.category|lower %}" aria-label="{{ categorie.category }} section">
+                            <li>{{ categorie.category }}</li>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </nav>
+</header>

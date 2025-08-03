@@ -16,35 +16,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from ecommerce_app.views import home, search, filter, cart, newsletter, favorites, feedback, checkout, detail
-from cart.views import add_to_cart, remove_from_cart, decrement_from_cart, clear_cart
-from favorites.views import manage_favorites, clear_favorites, add_all_favorites_to_cart
-from django.conf import settings
-from django.conf.urls.static import static
-from django.contrib.auth import views
+from ecommerce_app.views import home, search, filter_category, cart, newsletter, favorites, checkout, detail
+from cart.views import add_to_cart, remove_from_cart, decrement_from_cart
+from favorites.views import manage_favorites, add_all_favorites_to_cart
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home, name = 'home'),
-    path('home/', home, name = 'home'),
-    path('search/', search, name = 'search'),
-    path('filter/<str:category>/', filter, name = 'filter'),
-    path('detail/<int:product_id>/', detail, name = 'detail'),
-    path('cart/', cart, name = 'cart'),
-    path('newsletter/', newsletter, name = 'newsletter'),
-    path('add_to_cart/<int:product_id>/', add_to_cart, name = 'add_to_cart'),
-    path('remove_from_cart/<int:product_id>/', remove_from_cart, name = 'remove_from_cart'),
-    path('decrement_from_cart/<int:product_id>/', decrement_from_cart, name = 'decrement_from_cart'),
-    path('clear_cart/', clear_cart, name = 'clear_cart'),
-    path('favorites/', favorites, name = 'favorites'),
-    path('manage_favorites/<int:product_id>/', manage_favorites, name = 'manage_favorites'),
-    path('clear_favorites/', clear_favorites, name = 'clear_favorites'),
-    path('add_all_favorites_to_cart/', add_all_favorites_to_cart, name = 'add_all_favorites_to_cart'),
-    path('feedback/', feedback, name = 'feedback'),
-    path('checkout/', checkout, name = 'checkout'),
+    path('', home, name='home'),
+    path('search/', search, name='search'),
+    path('filter_category/<str:category>/', filter_category, name='filter_category'),
+    path('detail/<int:product_id>/', detail, name='detail'),
+    path('cart/', cart, name='cart'),
+    path('newsletter/', newsletter, name='newsletter'),
+    path('add_to_cart/<int:product_id>/', add_to_cart, name='add_to_cart'),
+    path('remove_from_cart/<int:product_id>/', remove_from_cart, name='remove_from_cart'),
+    path('decrement_from_cart/<int:product_id>/', decrement_from_cart, name='decrement_from_cart'),
+    path('favorites/', favorites, name='favorites'),
+    path('manage_favorites/<int:product_id>/', manage_favorites, name='manage_favorites'),
+    path('add_all_favorites_to_cart/', add_all_favorites_to_cart, name='add_all_favorites_to_cart'),
+    path('checkout/', checkout, name='checkout'),
 ]
-
-# Solo en desarrollo, para servir archivos de medios
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
