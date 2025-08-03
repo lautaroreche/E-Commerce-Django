@@ -3,26 +3,28 @@
 
 <div class="flex justify-center gap-8 m-8 flex-wrap">
     {% for product in products %}
-        <div class="w-full max-w-60 p-2 rounded-lg shadow-sm {% if product.id in cart_products %}shadow-green-300 border-1 border-green-300{% endif %}">
-            <div class="flex items-center {% if product.is_trend or product.is_top_of_category %}justify-between{% else%}justify-end{% endif %}">
+        <div class="w-64 p-3 rounded-lg shadow-sm bg-white {% if product.id in cart_products %}shadow-green-300 border-1 border-green-300{% endif %}">
+            <div class="flex items-center {% if product.is_trend or product.is_top_of_category %}justify-between{% else %}justify-end{% endif %}">
                 {% include 'manage_tags.html' %}
                 
                 {% include 'manage_favorites.html' %}
             </div>
-            <a href="{% url 'detail' product.id %}" aria-label="{{ product.name }}" class="flex justify-center items-center">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-40 object-cover">
+            <a href="{% url 'detail' product.id %}" aria-label="{{ product.name }}" class="flex justify-center">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-40">
             </a>
             <hr class="w-full my-3 text-gray-300">
-            <div class="flex flex-col justify-between gap-2 min-h-24">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-circle text-xs text-[#76b9f0]"></i>
-                    <p>{{ product.category }}</p>
+            <div class="flex flex-col justify-between min-h-32">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-circle text-xs text-[#76b9f0]"></i>
+                        <p>{{ product.category }}</p>
+                    </div>
+                    <a href="{% url 'detail' product.id %}" aria-label="{{ product.name }}">
+                        <p class="text-xl font-semibold leading-tight">{{ product.name|upper }}</p>
+                    </a>
                 </div>
-                <a href="{% url 'detail' product.id %}" aria-label="{{ product.name }}">
-                    <p class="text-xl font-semibold leading-tight">{{ product.name|upper }}</p>
-                </a>
                 <div class="flex items-center justify-between gap-3">
-                    <p class="text-xl">€ {{ product.price|floatformat:0 }}</p>
+                    <p class="text-xl font-semibold">€ {{ product.price|floatformat:0 }}</p>
 
                     {% include 'manage_cart_quantity.html' %}
                 </div>

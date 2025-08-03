@@ -5,44 +5,49 @@
 {% block title %}{{ product.name }} | Ragusa E-Commerce{% endblock %}
 
 {% block content %}
-    <main class="flex flex-col items-center justify-center gap-8 mx-4 md:mx-8 my-16">
+    <main class="px-2 md:px-8 py-12 bg-gray-100">
         <h2 class="text-2xl md:text-4xl font-semibold text-center">PRODUCT DETAIL</h2>
-        <div class="flex flex-col md:flex-row gap-8">
-            <div class="hidden md:flex flex-col gap-5 min-w-20">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-24 shadow-sm rounded-lg">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-24 shadow-sm rounded-lg">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-24 shadow-sm rounded-lg">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-24 shadow-sm rounded-lg">
+        <div class="flex flex-col items-center md:flex-row md:justify-center md:items-start gap-4 m-8">
+            <div class="hidden md:flex flex-col gap-4 min-w-20">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-20 shadow-sm rounded-lg {% if product.id in cart_products %}shadow-green-300 border-1 border-green-300{% endif %}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-20 shadow-sm rounded-lg {% if product.id in cart_products %}shadow-green-300 border-1 border-green-300{% endif %}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-20 shadow-sm rounded-lg {% if product.id in cart_products %}shadow-green-300 border-1 border-green-300{% endif %}">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-20 shadow-sm rounded-lg {% if product.id in cart_products %}shadow-green-300 border-1 border-green-300{% endif %}">
             </div>
-            <div class="p-2">
+            <div class="p-3 rounded-lg shadow-sm bg-white {% if product.id in cart_products %}shadow-green-300 border-1 border-green-300{% endif %}">
                 <div class="flex items-center {% if product.is_trend or product.is_top_of_category %}justify-between{% else%}justify-end{% endif %}">
                     {% include 'manage_tags.html' %}
                     
                     {% include 'manage_favorites.html' %}
                 </div>
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-52 mx-auto md:size-96 md:min-w-96">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full max-w-100 md:max-w-80 mx-auto object-contain">
             </div>
-            <div class="flex flex-col gap-1 md:gap-4 max-w-96">
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-circle text-xs text-[#76b9f0]"></i>
-                    <p>{{ product.category }}</p>
+            <div class="space-y-3 p-4 rounded-lg shadow-sm bg-white {% if product.id in cart_products %}shadow-green-300 border-1 border-green-300{% endif %}">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-circle text-xs text-[#76b9f0]"></i>
+                        <p>{{ product.category }}</p>
+                    </div>
+                    <a href="{% url 'detail' product.id %}" aria-label="{{ product.name }}">
+                        <h3 class="text-xl md:text-2xl font-semibold leading-tight">{{ product.name|upper }}</h3>
+                    </a>
+                    <p class="text-lg">{{ product.description }}</p>
                 </div>
-                <h3 class="text-xl md:text-3xl font-semibold">{{ product.name|upper }}</h3>
-                <p class="text-lg">{{ product.description }}</p>
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-circle text-xs text-green-300"></i>
-                    <p>In stock</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <i class="fa-solid fa-truck text-xs text-red-500"></i>
-                    <p>Free shipping from € 99</p>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-circle text-xs text-green-300"></i>
+                        <p>In stock</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-truck text-xs text-red-500"></i>
+                        <p>Free shipping from € 99</p>
+                    </div>
                 </div>
                 <div class="flex items-center justify-between gap-3">
-                    <p class="text-xl">€ {{ product.price|floatformat:0 }}</p>
+                    <p class="text-xl font-semibold">€ {{ product.price|floatformat:0 }}</p>
 
                     {% include 'manage_cart_quantity.html' %}
                 </div>
-
             </div>
         </div>
     </main>

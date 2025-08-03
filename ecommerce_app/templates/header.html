@@ -3,16 +3,17 @@
 
 <header>
     <div class="bg-gray-950">
-        <p class="p-1 text-white text-center font-semibold">Refer a friend and get € 50 after their first 3 purchases </p>
+        <p class="p-2 text-white text-center font-semibold">Refer a friend and get € 50 after their first 3 purchases </p>
     </div>
-    <nav class="flex-col border-b-1 border-black">
-        <div class="flex justify-between items-center px-4 py-2 bg-gray-800">
-            <a href="{% url 'home' %}" aria-label="Ragusa E-Commerce logo" class="md:min-w-40">
+    <nav class="flex-col">
+        <div class="flex justify-between items-center px-6 py-2 bg-gray-800">
+            <a href="{% url 'home' %}" aria-label="Ragusa E-Commerce logo" class="flex items-center gap-2 md:min-w-40">
                 <img src="{% static 'images/logo.webp' %}" alt="Ragusa E-Commerce logo" class="w-16">
+                <h1 class="hidden md:block font-semibold text-white">Ragusa<br>E-Commerce</h1>
             </a>
             <form action="{% url 'search' %}" method="POST" class="hidden md:flex gap-1 bg-white rounded-lg">
                 {% csrf_token %}
-                <input type="text" name="input_text" placeholder="Search for a product" class="px-3 w-88 outline-none" maxlength="40" required>
+                <input type="text" name="input_text" placeholder="Search for a product" class="px-3 md:w-72 lg:w-96 outline-none" maxlength="40" required>
                 <button type="submit" aria-label="Search button">
                     <i class="fa-solid fa-magnifying-glass p-2 bg-[#76b9f0] text-white text-xl rounded-r-lg cursor-pointer hover:bg-blue-400"></i>
                 </button>
@@ -32,8 +33,8 @@
                 </a>
             </div>
         </div>
-        <div class="bg-gray-500 mx-auto">
-            <ul class="flex flex-col md:flex-row items-center justify-evenly gap-1 text-white font-semibold w-full p-2">
+        <div class="bg-gray-500 mx-auto border-y-1 border-black">
+            <ul class="flex flex-col md:flex-row justify-center items-center gap-1 md:gap-4 text-white font-semibold w-full px-6 py-2">
                 <li>
                     <a href="{% url 'home' %}" aria-label="All products">
                         <li class="text-color-light">All products</li>
