@@ -1,12 +1,16 @@
 {% extends 'base.html' %}
 
-{% block title %}Buscar un producto{% endblock %}
+
+{% block title %}Search | Ragusa E-Commerce{% endblock %}
 
 {% block content %}
-    <main>
-        <div>
-            <h2>Producto buscado: {{ query }}</h2>
-        </div>
-        {% include 'product_cards_standard.html' %}
+    <main class="flex flex-col items-center justify-center gap-8 mx-4 md:mx-8 my-16">
+        <h2 class="text-2xl md:text-4xl font-semibold text-center">RESULTS FOR: "{{ query }}"</h2>
+        
+        {% include 'product_cards.html' %}
+
+        {% include 'trending.html' %}
+
+        {% include 'top_of_category.html' %}
     </main>
 {% endblock %}

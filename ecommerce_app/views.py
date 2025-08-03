@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.contrib import messages
-import smtplib
+from django.db.models import Q
 from email.mime.text import MIMEText
 from ecommerce.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_SENDER_NAME, BREVO_API_KEY
-from ecommerce_app.models import Product, SuscriptorNewsletter, Order, OrderItem
+from ecommerce_app.models import Product, SuscriptorNewsletter
 from cart.cart import Cart
 from favorites.favorites import Favorites
 from ecommerce_app.forms import FormularioNewsletter
@@ -13,141 +13,151 @@ import sib_api_v3_sdk
 
 CATEGORIES = Product.objects.values('category').distinct().order_by('category')
 
+TRENDING_PRODUCTS = Product.objects.filter(is_trend=True)
 
-def base(request):
-    return render(request, 'base.html', {
-        "categories": CATEGORIES,
-    })
+TOP_OF_CATEGORY_PRODUCTS = Product.objects.filter(is_top_of_category=True)
+
+
+def get_cart_products(request):
+    cart_obj = Cart(request)
+    cart_products = cart_obj.get_list_items()
+    return cart_products
+
+def get_favorite_products(request):
+    favorites_obj = Favorites(request)
+    favorite_products = favorites_obj.get_list_items()
+    return favorite_products
+
+def order_by_criteria(products):
+    ordered_list = sorted(products, key=lambda p: p.name)
+    return ordered_list
+
 
 
 def home(request):
-    productos = Product.objects.all()
-    cart_obj = Cart(request)
-    productos_cart = cart_obj.get_list_items()
-    favorites_obj = Favorites(request)
-    productos_favoritos = favorites_obj.get_list_items()
+    products = Product.objects.all()
+
     return render(request, 'home.html', {
         "categories": CATEGORIES,
-        "productos": productos,
-        "productos_cart": productos_cart,
-        "productos_favoritos": productos_favoritos,
+        "products": order_by_criteria(products),
+        "cart_products": get_cart_products(request),
+        "favorite_products": get_favorite_products(request),
+        "trending_products": TRENDING_PRODUCTS,
+        "top_of_category_products": TOP_OF_CATEGORY_PRODUCTS,
     })
 
 
 def search(request):
     if request.method == "POST":
-        nombre_producto = request.POST.get("nombre_producto", "").strip()
-        if not nombre_producto:
-            messages.error(request, "No has buscado ningún producto")
-            messages.info(request, "Escribe el nombre de algún producto en la barra de búsqueda")
-            return redirect("/feedback/")
-        if len(nombre_producto) > 20:
-            messages.error(request, "Nombre de producto demasiado largo")
-            messages.info(request, "Introduce un nombre de producto más corto")
-            return redirect("/feedback/")
-        productos = Product.objects.filter(name__icontains=nombre_producto)
-        if not productos:
-            messages.error(request, f'No hay ningún producto similar a "{nombre_producto}"')
-            messages.info(request, "Intenta buscar el producto de otra forma, o busca otro producto")
-            return redirect("/feedback/")
-        # No cumple ningún caso mapeado así que es un redirect desde add fav o add cart, guardamos el nombre del producto para lo siguiente
-        request.session["nombre_producto"] = nombre_producto
+        referrer = request.META.get('HTTP_REFERER', '/')
+        input_text = request.POST.get("input_text", "").strip()
+
+        if not input_text:
+            messages.error(request, "You have not searched for any product. Try writing something")
+            return redirect(referrer)
+        
+        if len(input_text) > 40:
+            messages.error(request, "Product name too long. Try a shorter one")
+            return redirect(referrer)
+        
+        products = Product.objects.filter(Q(name__icontains=input_text) | Q(description__icontains=input_text) | Q(category__icontains=input_text))
+        if not products:
+            messages.error(request, f'There is no product similar to "{input_text}". Try searching for the product in another way')
+            return redirect(referrer)
+        
+        request.session["input_text"] = input_text
     
-    try:
-        # Viene de redirect cuando se agrega producto a fav o cart, así que cargamos de nuevo la misma página
-        nombre_producto = request.session.get('nombre_producto', '')
-        productos = Product.objects.filter(name__icontains=nombre_producto)
-        cart_obj = Cart(request)
-        productos_cart = cart_obj.get_list_items()
-        favorites_obj = Favorites(request)
-        productos_favoritos = favorites_obj.get_list_items()
-        return render(request, "search.html", {
-            "categories": CATEGORIES,
-            "productos": productos,
-            "productos_cart": productos_cart,
-            "productos_favoritos": productos_favoritos,
-            "resultados": len(productos),
-            "query": nombre_producto,
-        })
-    except:
-        return redirect('/')
+    input_text = request.session.get('input_text', '')
+    products = Product.objects.filter(Q(name__icontains=input_text) | Q(description__icontains=input_text) | Q(category__icontains=input_text))
+    
+    return render(request, "search.html", {
+        "categories": CATEGORIES,
+        "products": order_by_criteria(products),
+        "cart_products": get_cart_products(request),
+        "favorite_products": get_favorite_products(request),
+        "trending_products": TRENDING_PRODUCTS,
+        "top_of_category_products": TOP_OF_CATEGORY_PRODUCTS,
+        "query": input_text,
+    })
 
 
-def filter(request, category):
-    productos = Product.objects.filter(category=category)
-    if not productos:
-        messages.error(request, "La categoría que acabas de buscar no existe")
-        messages.info(request, "Intenta seleccionar otra categoría")
-        return redirect("/feedback/")
-    cart_obj = Cart(request)
-    productos_cart = cart_obj.get_list_items()
-    favorites_obj = Favorites(request)
-    productos_favoritos = favorites_obj.get_list_items()
+def filter_category(request, category):
+    referrer = request.META.get('HTTP_REFERER', '/')
+    products = Product.objects.filter(category=category.capitalize())
+
+    if not products:
+        messages.error(request, "The category you just searched for does not exist. Try selecting one of the existing categories")
+        return redirect(referrer)
+    
     return render(request, "filter.html", {
         "categories": CATEGORIES,
-        "productos": productos,
-        "productos_cart": productos_cart,
-        "productos_favoritos": productos_favoritos,
-        "resultados": len(productos),
+        "products": order_by_criteria(products),
+        "cart_products": get_cart_products(request),
+        "favorite_products": get_favorite_products(request),
+        "trending_products": TRENDING_PRODUCTS,
+        "top_of_category_products": TOP_OF_CATEGORY_PRODUCTS,
         "category": category,
     })
 
 
 def detail(request, product_id):
-    producto = Product.objects.get(id=product_id)
-    if producto:
-        cart_obj = Cart(request)
-        productos_cart = cart_obj.get_list_items()
-        favorites_obj = Favorites(request)
-        productos_favoritos = favorites_obj.get_list_items()
-        return render(request, 'product_detail.html', {
-            "categories": CATEGORIES,
-            "producto": producto,
-            "productos_cart": productos_cart,
-            "productos_favoritos": productos_favoritos,
-        })
-    messages.error(request, f'No hay ningún producto similar a "{producto.name}"')
-    messages.info(request, "Intenta buscar el producto de otra forma, o busca otro producto")
-    return redirect("/feedback/")
+    referrer = request.META.get('HTTP_REFERER', '/')
+    product = Product.objects.get(id=product_id)
+
+    if not product:
+        messages.error(request, "The product you are looking for does not exist. Try searching for the product in another way")
+        return redirect(referrer)
+
+    return render(request, 'product_detail.html', {
+        "categories": CATEGORIES,
+        "product": product,
+        "cart_products": get_cart_products(request),
+        "favorite_products": get_favorite_products(request),
+        "trending_products": TRENDING_PRODUCTS,
+        "top_of_category_products": TOP_OF_CATEGORY_PRODUCTS,
+    })
 
 
 def cart(request):
     cart_obj = Cart(request)
-    productos_cart = cart_obj.get_list_items()
-    productos = Product.objects.filter(id__in=productos_cart)
-    if productos:
-        return render(request, 'cart.html', {
-            "categories": CATEGORIES,
-            "productos": productos,
-            "productos_cart": productos_cart,
-            "is_cart": True,
-            "subtotal_dict": cart_obj.get_total_product(),
-            "total": str(cart_obj.get_total_cart()),
-        })
-    messages.warning(request, "No tienes ningún producto en el carrito")
-    messages.info(request, "Haz click en el botón verde de Agregar al carrito o en el símbolo + que se encuentran en el producto para que aparezca aquí")
-    return redirect("/feedback/")
+    cart_products = get_cart_products(request)
+    products = Product.objects.filter(id__in=cart_products)
+
+    if not products:
+        messages.warning(request, "You do not have any products in your cart yet. Try adding a product")
+        return redirect(home)
+
+    return render(request, 'cart.html', {
+        "categories": CATEGORIES,
+        "products": order_by_criteria(products),
+        "cart_products": get_cart_products(request),
+        "trending_products": TRENDING_PRODUCTS,
+        "top_of_category_products": TOP_OF_CATEGORY_PRODUCTS,
+        "is_cart": True,
+        "subtotal_dict": cart_obj.get_total_product(),
+        "total": str(cart_obj.get_total_cart()),
+    })
 
 
 def favorites(request):
-    cart_obj = Cart(request)
-    productos_cart = cart_obj.get_list_items()
-    favorites_obj = Favorites(request)
-    productos_favoritos = favorites_obj.get_list_items()
-    productos = Product.objects.filter(id__in=productos_favoritos)
-    if productos:
-        return render(request, 'favorites.html', {
-            "categories": CATEGORIES,
-            "productos": productos,
-            "productos_cart": productos_cart,
-            "is_cart": False,
-        })
-    messages.warning(request, "No tienes ningún producto marcado como favorito")
-    messages.info(request, "Haz click en el corazón que se encuentra en la imagen del producto para que aparezca aquí")
-    return redirect("/feedback/")
+    favorite_products = get_favorite_products(request)
+    products = Product.objects.filter(id__in=favorite_products)
+
+    if not products:
+        messages.warning(request, "You do not have any products selected as favorites yet. Try adding a product")
+        return redirect(home)
+
+    return render(request, 'favorites.html', {
+        "categories": CATEGORIES,
+        "products": order_by_criteria(products),
+        "cart_products": get_cart_products(request),
+        "trending_products": TRENDING_PRODUCTS,
+        "top_of_category_products": TOP_OF_CATEGORY_PRODUCTS,
+    })
 
 
 def newsletter(request):
+    referrer = request.META.get('HTTP_REFERER', '/')
     form = FormularioNewsletter(request.POST)
     if form.is_valid():
         email_destino = form.cleaned_data["email"]
@@ -158,72 +168,29 @@ def newsletter(request):
         api_client = sib_api_v3_sdk.ApiClient(configuration)
         api_instance = sib_api_v3_sdk.TransactionalEmailsApi(api_client)
         
-        # Renderizar el contenido HTML con contexto si es necesario, o vacío si no
+        # Render the HTML content with context if necessary, or empty if not
         html_content = render_to_string("newsletter_message.html", {})
         
         send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
             to=[{"email": email_destino}],
-            sender={"name": "Ragusa - Ecommerce", "email": "lautaroreche1@gmail.com"},
-            subject="Gracias por suscribirte",
+            sender={"name": "Ragusa E-commerce", "email": "lautaroreche1@gmail.com"},
+            subject="Thank you for subscribing",
             html_content=html_content,
         )
         
         try:
             api_instance.send_transac_email(send_smtp_email)
-            messages.success(request, "Te has suscripto a nuestro newsletter exitosamente")
-            messages.info(request, "En breve recibirás un email de confirmación")
-            return redirect("/feedback/")
-        except:
-            messages.warning(request, "Error en el envío de email")
-            messages.info(request, "Intenta nuevamente más tarde")
-            return redirect("/feedback/")
+            messages.success(request, "You have subscribed to our newsletter successfully. Soon you will receive a confirmation email")
+        except Exception:
+            messages.error(request, "Error sending email. Try again later")
         
-    messages.error(request, "El email ingresado no es válido")
-    messages.info(request, "Ingresa un email válido")
-    return redirect("/feedback/")
-
-
-def feedback(request):
-    storage = messages.get_messages(request)
-    if any(storage):
-        return render(request, "feedback.html", {
-            "categories": CATEGORIES,
-        })
-    return redirect("/")
+        return redirect(referrer)
+        
+    messages.error(request, "The entered email is not valid. Try to enter a valid email")
+    return redirect(referrer)
 
 
 def checkout(request):
-    try:
-        cart_obj = Cart(request)
-        product_list = []
-        
-        order = Order.objects.create(
-            total = cart_obj.get_total_cart(),
-            address = "Dirección de prueba 123",
-            payment = None,
-        )
-
-        for key, value in request.session["cart"].items():
-            product = Product.objects.get(id=key)
-            quantity = value["quantity"]
-            
-            OrderItem.objects.create(
-                order=order,
-                product=product,
-                quantity=quantity
-            )
-
-            product_list.append(product)
-
-        order.products.set(product_list)
-
-        cart_obj.clear()
-    
-        messages.warning(request, "Funcionalidad actualmente deshabilitada")
-        messages.info(request, "El checkout no está habilitado actualmente ya que queda pendiente integrar la pasarela de pagos")
-        return redirect("/feedback/")
-    except Exception as e:
-        print(e)
-        messages.error(request, "Error inesperado")
-        messages.info(request, "Intenta nuevamente en unos minutos")
-        return redirect("/feedback/")
+    referrer = request.META.get('HTTP_REFERER', '/')
+    messages.warning(request, "This section is under construction")
+    return redirect(referrer)

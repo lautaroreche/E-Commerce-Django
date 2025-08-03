@@ -1,0 +1,6 @@
+{% if product.is_trend or product.is_top_of_category %}
+    <div class="flex items-center gap-1 py-1 px-2 font-semibold shadow-sm rounded-lg {% if product.is_top_of_category %} text-blue-600 bg-blue-200{% elif product.is_trend %}text-red-600 bg-red-200{% endif %}">
+        <i class="fa-solid {% if product.is_top_of_category %}fa-medal{% elif product.is_trend %}fa-fire{% endif %}"></i>
+        <p class="text-xs">{% if product.is_top_of_category %}Top of his category{% elif product.is_trend %}Trending{% endif %}</p>
+    </div>
+{% endif %}

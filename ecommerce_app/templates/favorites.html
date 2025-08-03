@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
 
-{% load static %}
 
-{% block title %}Favoritos{% endblock %}
+{% block title %}Favorites | Ragusa E-commerce{% endblock %}
 
 {% block content %}
-    <main>
-        <h2>Favoritos</h2>
-        <div>
-            {% include 'product_cards_list.html' %}
-        </div>
+    <main class="flex flex-col items-center justify-center gap-8 mx-4 md:mx-8 my-16">
+        <h2 class="text-2xl md:text-4xl font-semibold text-center">FAVORITES</h2>
+
+        {% include 'product_list.html' %}
+
+        {% include 'trending.html' %}
+
+        {% include 'top_of_category.html' %}
     </main>
 {% endblock %}

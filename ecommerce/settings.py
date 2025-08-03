@@ -111,6 +111,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'cart.context_processor.has_cart',
                 'favorites.context_processor.has_favorites',
+                'ecommerce_app.context_processors.current_year',
             ],
         },
     },

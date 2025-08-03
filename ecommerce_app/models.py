@@ -3,12 +3,17 @@ from cloudinary.models import CloudinaryField
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=40)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    description = models.CharField(max_length=300)
-    image = CloudinaryField('image', resource_type='image')
-    category = models.CharField(max_length=30)
-    stock = models.IntegerField()
+    description = models.CharField(max_length=400)
+    category = models.CharField(max_length=40)
+    is_top_of_category = models.BooleanField(("Top of his category"), default=False)
+    is_trend = models.BooleanField(("Trend"), default=False)
+    image = CloudinaryField(("Image 1"), resource_type='image')
+    image2 = CloudinaryField(("Image 2"), resource_type='image', blank=True, null=True)
+    image3 = CloudinaryField(("Image 3"), resource_type='image', blank=True, null=True)
+    image4 = CloudinaryField(("Image 4"), resource_type='image', blank=True, null=True)
+    image5 = CloudinaryField(("Image 5"), resource_type='image', blank=True, null=True)
 
     def __str__(self):
         return f"{self.id} > {self.name}"

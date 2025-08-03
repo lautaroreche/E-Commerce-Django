@@ -9,12 +9,6 @@ def manage_favorites(request, product_id):
     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 
-def clear_favorites(request):
-    favorites = Favorites(request)
-    favorites.clear()
-    return redirect(request.META.get('HTTP_REFERER', '/'))
-
-
 def add_all_favorites_to_cart(request):
     favorites = Favorites(request)
     cart = Cart(request)

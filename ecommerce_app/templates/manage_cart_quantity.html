@@ -1,21 +1,21 @@
-{% if producto.id in productos_cart %}
-    <div class="final-card flex-row flex-center flex-evenly">
-        <a href="{% url 'decrement_from_cart' producto.id %}" class="decrement-cart save-scroll" title="Restar del carrito">
-            <i class="fa-solid fa-minus border-radius text-color-light"></i>
+{% if product.id in cart_products %}
+    <div class="flex items-center flex-between gap-1">
+        <a href="{% url 'decrement_from_cart' product.id %}" aria-label="Decrement from cart" class="bg-red-300 shadow-sm rounded-lg save-scroll">
+            <i class="fa-solid fa-minus p-2"></i>
         </a>
-        {% for key, value in request.session.cart.items %}
-            {% if key == producto.id|stringformat:"s" %}
-                <p class="border-radius">{{ value.quantity }}</p>
-            {% endif %}
-        {% endfor %}
-        <a href="{% url 'add_to_cart' producto.id %}" class="add-cart save-scroll" title="Agregar al carrito">
-            <i class="fa-solid fa-plus border-radius text-color-light"></i>
+        <div class="min-w-5">
+            {% for key, value in request.session.cart.items %}
+                {% if key == product.id|stringformat:"s" %}
+                    <p class="text-lg text-center">{{ value.quantity }}</p>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <a href="{% url 'add_to_cart' product.id %}" aria-label="Add to cart" class="bg-green-300 shadow-sm rounded-lg save-scroll">
+            <i class="fa-solid fa-plus p-2"></i>
         </a>
     </div>
 {% else %}
-    <div class="flex-evenly add-to-cart text-color-light border-radius w100">
-        <a href="{% url 'add_to_cart' producto.id %}" title="Agregar al carrito" class="w100 save-scroll box-shadow border-radius text-color-light">
-            Agregar al carrito
-        </a>
-    </div>
+    <a href="{% url 'add_to_cart' product.id %}" aria-label="Add to cart" class="bg-green-300 shadow-sm rounded-lg save-scroll">
+        <i class="fa-solid fa-cart-shopping p-2"></i>
+    </a>
 {% endif %}
