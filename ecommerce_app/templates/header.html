@@ -8,7 +8,7 @@
     <nav class="flex-col border-b-1 border-black">
         <div class="flex justify-between items-center px-4 py-2 bg-gray-800">
             <a href="{% url 'home' %}" aria-label="Ragusa E-Commerce logo" class="md:min-w-40">
-                <img src="{% static 'images/logo.webp' %}" alt="Ragusa E-Commerce logo" class="w-24 md:w-36">
+                <img src="{% static 'images/logo.webp' %}" alt="Ragusa E-Commerce logo" class="w-16">
             </a>
             <form action="{% url 'search' %}" method="POST" class="hidden md:flex gap-1 bg-white rounded-lg">
                 {% csrf_token %}
