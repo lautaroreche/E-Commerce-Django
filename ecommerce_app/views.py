@@ -82,8 +82,9 @@ def search(request):
 
 
 def filter_category(request, category):
+    category = category.capitalize()
     referrer = request.META.get('HTTP_REFERER', '/')
-    products = Product.objects.filter(category=category.capitalize())
+    products = Product.objects.filter(category=category)
 
     if not products:
         messages.error(request, "The category you just searched for does not exist. Try selecting one of the existing categories")
@@ -108,7 +109,7 @@ def detail(request, product_id):
         messages.error(request, "The product you are looking for does not exist. Try searching for the product in another way")
         return redirect(referrer)
 
-    return render(request, 'product_detail.html', {
+    return render(request, 'detail.html', {
         "categories": CATEGORIES,
         "product": product,
         "cart_products": get_cart_products(request),

@@ -9,7 +9,7 @@
         <div class="flex justify-between items-center px-6 py-2 bg-gray-800">
             <a href="{% url 'home' %}" aria-label="Ragusa E-Commerce logo" class="flex items-center gap-2 md:min-w-40">
                 <img src="{% static 'images/logo.webp' %}" alt="Ragusa E-Commerce logo" class="w-16">
-                <h1 class="hidden md:block font-semibold text-white">Ragusa<br>E-Commerce</h1>
+                <p class="hidden md:block font-semibold text-white">Ragusa<br>E-Commerce</p>
             </a>
             <form action="{% url 'search' %}" method="POST" class="hidden md:flex gap-1 bg-white rounded-lg">
                 {% csrf_token %}
@@ -34,16 +34,16 @@
             </div>
         </div>
         <div class="bg-gray-500 mx-auto border-y-1 border-black">
-            <ul class="flex flex-col md:flex-row justify-center items-center gap-1 md:gap-4 text-white font-semibold w-full px-6 py-2">
+            <ul class="flex flex-col items-center gap-2 md:flex-row md:gap-12 md:justify-center text-white font-semibold w-full px-6 py-2">
                 <li>
                     <a href="{% url 'home' %}" aria-label="All products">
-                        <li class="text-color-light">All products</li>
+                        All products
                     </a>
                 </li>
                 {% for categorie in categories %}
                     <li>
                         <a href="{% url 'filter_category' categorie.category|lower %}" aria-label="{{ categorie.category }} section">
-                            <li>{{ categorie.category }}</li>
+                            {{ categorie.category }}
                         </a>
                     </li>
                 {% endfor %}

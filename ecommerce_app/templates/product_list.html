@@ -19,7 +19,7 @@
                         {% else %}
                             <a href="{% url 'manage_favorites' product.id %}" class="p-1 save-scroll" aria-label="Remove from favorites">
                         {% endif %}
-                                <i class="fa-solid fa-xmark text-2xl text-red-500"></i>
+                                <i class="fa-solid fa-xmark text-2xl text-red-500 hover:text-red-600 transition-colors"></i>
                             </a>
                     </div>
                     <div class="space-y-1">
@@ -32,7 +32,7 @@
                         </a>
                     </div>
                     <div class="flex items-center justify-between gap-3">
-                        <p class="text-xl">€ {% if is_cart %}{{ subtotal_dict|dict_key:product.id|floatformat:0 }}{% else %}{{ product.price|floatformat:0 }}{% endif %}</p>
+                        <p class="text-xl font-semibold">€ {% if is_cart %}{{ subtotal_dict|dict_key:product.id|floatformat:0 }}{% else %}{{ product.price|floatformat:0 }}{% endif %}</p>
 
                         {% include 'manage_cart_quantity.html' %}
                     </div>
@@ -47,7 +47,7 @@
             </div>
         {% endif %}
         <div class="w-full max-w-5xl shadow-sm rounded-lg">
-            <div class="flex w-full rounded-lg bg-green-300">
+            <div class="flex w-full rounded-lg bg-green-300 hover:bg-green-400 transition-colors">
                 <a href="{% url is_cart|yesno:'checkout,add_all_favorites_to_cart' %}" aria-label="{{ is_cart|yesno:'Checkout button,Add all favorites to cart button' }}" class="text-xl font-semibold text-center w-full p-2 save-scroll">
                     {{ is_cart|yesno:'Checkout,Add all to cart' }}
                 </a>

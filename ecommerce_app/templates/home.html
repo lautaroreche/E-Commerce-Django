@@ -5,17 +5,11 @@
 {% block title %}Ragusa E-commerce{% endblock %}
 
 {% block content %}
-    <section>
-        <img src="{% static 'images/banner.webp'%}" alt="Banner" class="w-full">
-    </section>
+    {% include 'banner_hero.html' %}
+
     <main class="px-2 md:px-8 py-12 bg-gray-100">
         <h2 class="text-2xl md:text-4xl font-semibold text-center">ALL OUR PRODUCTS</h2>
         
         {% include 'product_cards.html' %}
-    </main>
-
-    {% include 'trending.html' %}
-
-    {% include 'top_of_category.html' %}
     </main>
 {% endblock %}

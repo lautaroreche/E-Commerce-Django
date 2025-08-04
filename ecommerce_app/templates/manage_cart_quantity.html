@@ -1,21 +1,21 @@
 {% if product.id in cart_products %}
     <div class="flex items-center flex-between gap-1">
-        <a href="{% url 'decrement_from_cart' product.id %}" aria-label="Decrement from cart" class="bg-red-300 shadow-sm rounded-lg save-scroll">
+        <a href="{% url 'decrement_from_cart' product.id %}" aria-label="Decrement from cart" class="bg-red-300 hover:bg-red-400 transition-colors shadow-sm rounded-lg save-scroll">
             <i class="fa-solid fa-minus p-2"></i>
         </a>
         <div class="min-w-5">
             {% for key, value in request.session.cart.items %}
                 {% if key == product.id|stringformat:"s" %}
-                    <p class="text-lg text-center">{{ value.quantity }}</p>
+                    <p class="text-lg text-center font-semibold">{{ value.quantity }}</p>
                 {% endif %}
             {% endfor %}
         </div>
-        <a href="{% url 'add_to_cart' product.id %}" aria-label="Add to cart" class="bg-green-300 shadow-sm rounded-lg save-scroll">
+        <a href="{% url 'add_to_cart' product.id %}" aria-label="Add to cart" class="bg-green-300 hover:bg-green-400 transition-colors shadow-sm rounded-lg save-scroll">
             <i class="fa-solid fa-plus p-2"></i>
         </a>
     </div>
 {% else %}
-    <a href="{% url 'add_to_cart' product.id %}" aria-label="Add to cart" class="bg-green-300 shadow-sm rounded-lg save-scroll">
+    <a href="{% url 'add_to_cart' product.id %}" aria-label="Add to cart" class="bg-green-300 hover:bg-green-400 transition-colors shadow-sm rounded-lg save-scroll">
         <i class="fa-solid fa-cart-shopping p-2"></i>
     </a>
 {% endif %}
