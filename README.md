@@ -1,7 +1,7 @@
 # Ragusa - E-Commerce 🌐  
 
 ## Description ℹ️
-This repository contains the code for a **web page built with Python, Django, PostgreSQL, HTML and TailwindCSS**.
+This repository contains the code for a **web page built with Python, Django, PostgreSQL, HTML and Tailwind CSS**, with Stripe as a checkout integration.
 
 ## Features ✨  
 - Clean and modern design.
@@ -27,6 +27,11 @@ To view and edit the project, you only need:
 4. Execute:
    ```bash
    python manage.py runserver
+
+## Checkout Testing 🧪  
+You can test the payment flow of the application using Stripe's test mode.  
+Use the test card numbers provided in the official documentation to simulate different outcomes (successful payments, declines, authentication steps, etc.).  
+- Full list of test cards → [Stripe Testing Docs](https://docs.stripe.com/testing#international-cards)
 
 ## Customization 🎨
 You can modify the styles and structure of the page by editing the following files:
