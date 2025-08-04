@@ -36,10 +36,7 @@ def order_by_criteria(products):
     ordered_list = sorted(products, key=lambda p: p.name)
     return ordered_list
 
-
-
-def home(request):
-    # From checkout
+def comes_from_checkout(request):
     status = request.GET.get('status')
     if status == 'success':
         if 'cart' in request.session:
@@ -48,6 +45,11 @@ def home(request):
         messages.success(request, 'Payment made successfully!')
     elif status == 'cancel':
         messages.error(request, 'Payment has been cancelled')
+
+
+
+def home(request):
+    comes_from_checkout(request)
     
     products = Product.objects.all()
 
@@ -134,6 +136,8 @@ def detail(request, product_id):
 
 
 def cart(request):
+    comes_from_checkout(request)
+
     cart_obj = Cart(request)
     cart_products = get_cart_products(request)
     products = Product.objects.filter(id__in=cart_products)
@@ -219,9 +223,8 @@ def checkout(request):
         except (ValueError, TypeError):
             total = 100  # Security fallback
 
-        home_url = request.build_absolute_uri(reverse('home'))
-        success_url = home_url + '?status=success'
-        cancel_url = home_url + '?status=cancel'
+        success_url = request.build_absolute_uri(reverse('home')) + '?status=success'
+        cancel_url = request.build_absolute_uri(reverse('cart')) + '?status=cancel'
 
         session = stripe.checkout.Session.create(
             payment_method_types=['card'],

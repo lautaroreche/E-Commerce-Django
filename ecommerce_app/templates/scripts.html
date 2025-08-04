@@ -26,3 +26,11 @@
         });
     });
 </script>
+
+<script>
+    const url = new URL(window.location);
+    if (url.searchParams.get("status")) {
+        url.searchParams.delete("status");
+        window.history.replaceState({}, document.title, url.pathname);
+    }
+</script>
