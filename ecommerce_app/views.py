@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 from django.contrib import messages
 from django.db.models import Q
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
 from email.mime.text import MIMEText
 from ecommerce.settings import EMAIL_HOST, EMAIL_PORT, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, EMAIL_SENDER_NAME, BREVO_API_KEY
 from ecommerce_app.models import Product, SuscriptorNewsletter
@@ -9,6 +12,7 @@ from cart.cart import Cart
 from favorites.favorites import Favorites
 from ecommerce_app.forms import FormularioNewsletter
 import sib_api_v3_sdk
+import stripe
 
 
 CATEGORIES = Product.objects.values('category').distinct().order_by('category')
@@ -35,6 +39,16 @@ def order_by_criteria(products):
 
 
 def home(request):
+    # From checkout
+    status = request.GET.get('status')
+    if status == 'success':
+        if 'cart' in request.session:
+            del request.session['cart']
+            request.session.modified = True
+        messages.success(request, 'Payment made successfully!')
+    elif status == 'cancel':
+        messages.error(request, 'Payment has been cancelled')
+    
     products = Product.objects.all()
 
     return render(request, 'home.html', {
@@ -191,7 +205,39 @@ def newsletter(request):
     return redirect(referrer)
 
 
+stripe.api_key = settings.STRIPE_SECRET_KEY
+@csrf_exempt
 def checkout(request):
-    referrer = request.META.get('HTTP_REFERER', '/')
-    messages.warning(request, "This section is under construction")
-    return redirect(referrer)
+    """
+    Is possible to test the checkout with test cards numbers:
+    https://docs.stripe.com/testing#international-cards
+    """
+    
+    if request.method == 'POST':
+        try:
+            total = int(request.POST.get('total')) * 100 # EUR to cents
+        except (ValueError, TypeError):
+            total = 100  # Security fallback
+
+        home_url = request.build_absolute_uri(reverse('home'))
+        success_url = home_url + '?status=success'
+        cancel_url = home_url + '?status=cancel'
+
+        session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price_data': {
+                    'currency': 'eur',
+                    'product_data': {
+                        'name': 'Carrito de compra',
+                    },
+                    'unit_amount': total,
+                },
+                'quantity': 1,
+            }],
+            mode='payment',
+            success_url=success_url,
+            cancel_url=cancel_url,
+        )
+        return redirect(session.url, code=303)
+    return redirect('home')
