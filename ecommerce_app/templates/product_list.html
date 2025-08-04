@@ -45,13 +45,17 @@
                     TOTAL | € {{ total|floatformat:0 }}
                 </p>
             </div>
+            <form action="{% url 'checkout' %}" method="post" class="w-full">
+                {% csrf_token %}
+                <input type="hidden" name="total" value="{{ total|floatformat:0 }}">
+                <button type="submit" class="text-xl font-semibold text-center w-full p-2 cursor-pointer bg-green-300 hover:bg-green-400 transition-colors rounded-lg">
+                    Pay with Stripe
+                </button>
+            </form>
+        {% else %}
+            <a href="{% url 'add_all_favorites_to_cart' %}" class="text-xl font-semibold text-center w-full p-2 bg-green-300 hover:bg-green-400 transition-colors rounded-lg">
+                Add all to cart
+            </a>
         {% endif %}
-        <div class="w-full max-w-5xl shadow-sm rounded-lg">
-            <div class="flex w-full rounded-lg bg-green-300 hover:bg-green-400 transition-colors">
-                <a href="{% url is_cart|yesno:'checkout,add_all_favorites_to_cart' %}" aria-label="{{ is_cart|yesno:'Checkout button,Add all favorites to cart button' }}" class="text-xl font-semibold text-center w-full p-2 save-scroll">
-                    {{ is_cart|yesno:'Checkout,Add all to cart' }}
-                </a>
-            </div>
-        </div>
     </div>
 </div>
