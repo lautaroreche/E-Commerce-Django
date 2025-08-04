@@ -1,6 +1,8 @@
 {% if product.is_trend or product.is_top_of_category %}
-    <div class="flex items-center gap-1 py-1 px-2 font-semibold shadow-sm rounded-lg {% if product.is_top_of_category %}text-blue-800 bg-blue-100{% elif product.is_trend %}text-red-800 bg-red-100{% endif %}">
-        <i class="fa-solid {% if product.is_top_of_category %}fa-medal{% elif product.is_trend %}fa-fire{% endif %}"></i>
-        <p class="text-xs">{% if product.is_top_of_category %}Top of his category{% elif product.is_trend %}Trending{% endif %}</p>
-    </div>
+    <a href="#{% if product.is_top_of_category %}top_of_category{% elif product.is_trend %}trending{% endif %}" aria-label="{% if product.is_top_of_category %}Top of his category{% elif product.is_trend %}Trending{% endif %} button">
+        <div class="flex items-center gap-1 py-1 px-2 font-semibold shadow-sm rounded-lg {% if product.is_top_of_category %}text-blue-800 bg-blue-100{% elif product.is_trend %}text-red-800 bg-red-100{% endif %}">
+            <i class="fa-solid {% if product.is_top_of_category %}fa-medal{% elif product.is_trend %}fa-fire{% endif %}"></i>
+            <p class="text-xs">{% if product.is_top_of_category %}Top of his category{% elif product.is_trend %}Trending{% endif %}</p>
+        </div>
+    </a>
 {% endif %}

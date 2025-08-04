@@ -9,7 +9,7 @@
         <div class="flex justify-between items-center px-6 py-2 bg-gray-800">
             <a href="{% url 'home' %}" aria-label="Ragusa E-Commerce logo" class="flex items-center gap-2 md:min-w-40">
                 <img src="{% static 'images/logo.webp' %}" alt="Ragusa E-Commerce logo" class="w-16">
-                <p class="hidden md:block font-semibold text-white">Ragusa<br>E-Commerce</p>
+                <p class="font-semibold text-white">Ragusa<br>E-Commerce</p>
             </a>
             <form action="{% url 'search' %}" method="POST" class="hidden md:flex gap-1 bg-white rounded-lg">
                 {% csrf_token %}
