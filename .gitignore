@@ -1,17 +1,17 @@
-# Evitar archivos del entorno virtual
+# Virtual environment
+ENTORNOVIRTUAL/
 venv/
+env/
 *.pyc
 *.pyo
 __pycache__/
-ENTORNOVIRTUAL
 
-# Evitar archivos de configuración local
-.env
+# Local configuration
 *.env
 *.sqlite3
 config/settings_local.py
 
-# Evitar archivos de logs y caché
+# Logs and caché
 logfile
 *.log
 *.pot
@@ -21,17 +21,20 @@ logfile
 *.swn
 *.DS_Store
 
-# Evitar claves secretas de Django
+# Django secret keys
 .env
 config/settings.pyc
 
-# Archivos de compilación y estáticos
+# Compilation and static files
 node_modules/
 
-# Archivos de dependencias
+# Dependency files
 Pipfile
 Pipfile.lock
 
-# Archivos de IDEs y editores de texto
+# IDE files and text editors
 .vscode/
 .idea/
+
+# Tailwind CSS and Node
+input.css

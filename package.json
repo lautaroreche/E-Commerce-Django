@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.11",
+    "tailwindcss": "^4.1.11"
+  },
+  "scripts": {
+    "build:css": "npx tailwindcss -i ./ecommerce_app/static/css/input.css -o ./ecommerce_app/static/css/output.css --minify",
+    "watch:css": "npx tailwindcss -i ./ecommerce_app/static/css/input.css -o ./ecommerce_app/static/css/output.css --watch"
+  }
+}
