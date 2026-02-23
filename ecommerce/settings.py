@@ -17,18 +17,11 @@ import dj_database_url
 import cloudinary
 
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Initialize django-environ
-env = environ.Env(
-    DEBUG=(bool, False),
-    SECURE_SSL_REDIRECT=(bool, False),
-    SESSION_COOKIE_SECURE=(bool, False),
-    CSRF_COOKIE_SECURE=(bool, False),
-    ALLOWED_HOSTS=(list, []),
-)
+env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 # Quick-start development settings - unsuitable for production
@@ -38,9 +31,9 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG")
+DEBUG = env.bool("DEBUG", default=False)
 
-ALLOWED_HOSTS = env("ALLOWED_HOSTS")
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=[])
 
 # Application definition
 
@@ -50,51 +43,33 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     'cloudinary_storage',
+    'django.contrib.staticfiles',
     'cloudinary',
     'ecommerce_app',
     'cart',
     'favorites',
 ]
 
-# Configuración de Cloudinary
-cloudinary.config(
-    cloud_name = env("CLOUD_NAME"),
-    api_key = env("API_KEY"),
-    api_secret = env("API_SECRET"),
-    secure = True,
-)
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.getenv('CLOUD_NAME'),
-    'API_KEY': os.getenv('API_KEY'),
-    'API_SECRET': os.getenv('API_SECRET'),
-    'SECURE': True,
+    'CLOUD_NAME': env('CLOUD_NAME'),
+    'API_KEY': env('API_KEY'),
+    'API_SECRET': env('API_SECRET'),
 }
 # Almacenamiento de archivos multimedia
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
-if DEBUG:
-    MIDDLEWARE = [
-        'django.contrib.sessions.middleware.SessionMiddleware',
-        'django.middleware.common.CommonMiddleware',
-        'django.middleware.csrf.CsrfViewMiddleware',
-        'django.contrib.auth.middleware.AuthenticationMiddleware',
-        'django.contrib.messages.middleware.MessageMiddleware',
-        'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    ]
-else:
-    MIDDLEWARE = [
-        'django.middleware.security.SecurityMiddleware',
-        'django.contrib.sessions.middleware.SessionMiddleware',
-        'django.middleware.common.CommonMiddleware',
-        'django.middleware.csrf.CsrfViewMiddleware',
-        'django.contrib.auth.middleware.AuthenticationMiddleware',
-        'django.contrib.messages.middleware.MessageMiddleware',
-        'django.middleware.clickjacking.XFrameOptionsMiddleware',
-        'whitenoise.middleware.WhiteNoiseMiddleware',
-    ]
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
 
 ROOT_URLCONF = 'ecommerce.urls'
 
@@ -126,10 +101,9 @@ DATABASES = {
     'default': dj_database_url.config(
         default=env('DATABASE_URL'),
         conn_max_age=600,
-        conn_health_checks=True,
+        ssl_require=True
     )
 }
-
 
 
 # Password validation
@@ -191,9 +165,9 @@ BREVO_API_KEY = env("BREVO_API_KEY", default="")
 STRIPE_PUBLIC_KEY=env('STRIPE_PUBLIC_KEY')
 STRIPE_SECRET_KEY=env('STRIPE_SECRET_KEY')
 
-SECURE_SSL_REDIRECT = env('SECURE_SSL_REDIRECT')
-SESSION_COOKIE_SECURE = env('SESSION_COOKIE_SECURE')
-CSRF_COOKIE_SECURE = env('CSRF_COOKIE_SECURE')
+SECURE_SSL_REDIRECT = env.bool('SECURE_SSL_REDIRECT', default=False) if not DEBUG else False
+SESSION_COOKIE_SECURE = env.bool('SESSION_COOKIE_SECURE', default=False)
+CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', default=False)
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
