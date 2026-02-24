@@ -6,35 +6,35 @@
         <p class="p-2 bg-orange-400 text-center font-semibold">This week: Argentine products until the stock runs out!</p>
     </div>
     <nav class="flex-col">
-        <div class="flex justify-between items-center px-6 py-2 bg-red">
+        <div class="flex justify-between items-center gap-3 px-6 py-2 border-y-1 border-gray-400">
             <a href="{% url 'home' %}" aria-label="Ragusa ecommerce logo" class="flex items-center gap-1 md:min-w-40">
                 <img src="{% static 'images/logo.webp' %}" alt="Ragusa ecommerce logo" class="w-16">
                 <p class="font-semibold text-orange-400">RAGUSA ECOMMERCE</p>
             </a>
-            <form action="{% url 'search' %}" method="POST" class="hidden md:flex gap-1 bg-gray-100 rounded-sm">
+            <form action="{% url 'search' %}" method="POST" class="hidden md:flex bg-orange-50 rounded-sm">
                 {% csrf_token %}
-                <input type="text" name="input_text" placeholder="SEARCH" class="px-3 md:w-72 lg:w-96 outline-none" maxlength="40" required>
+                <input type="text" name="input_text" placeholder="SEARCH" class="text-sm px-3 w-72 outline-none" maxlength="40" required>
                 <button type="submit" aria-label="Search button">
                     <i class="fa-solid fa-magnifying-glass p-2 text-orange-400 text-xl rounded-r-sm cursor-pointer hover:bg-orange-400 hover:text-white"></i>
                 </button>
             </form>
-            <div class="flex items-center justify-center gap-6 text-white md:min-w-40">
+            <div class="flex items-center justify-center gap-4 text-white md:min-w-40">
                 <a href="{% url 'favorites' %}" aria-label="Favorites section" class="save-scroll">
-                    <div class="flex flex-col justify-center items-center gap-1 text-orange-400">
-                        <i class="fa-solid fa-bookmark text-2xl"></i>
+                    <div class="flex justify-center items-center gap-1 text-orange-400">
+                        <i class="fa-solid fa-bookmark text-xl"></i>
                         <p class="font-semibold">Favorites</p>
                     </div>
                 </a>
                 <a href="{% url 'cart' %}" aria-label="Cart section" class="save-scroll">
-                    <div class="flex flex-col justify-center items-center gap-1 text-orange-400">
-                        <i class="fa-solid {% if has_cart > 0 %}fa-cart-plus{% else %}fa-cart-shopping{% endif %} text-2xl"></i>
+                    <div class="flex justify-center items-center gap-1 text-orange-400">
+                        <i class="fa-solid {% if has_cart > 0 %}fa-cart-plus{% else %}fa-cart-shopping{% endif %} text-xl"></i>
                         <p class="font-semibold">Cart</p>
                     </div>
                 </a>
             </div>
         </div>
-        <div class="bg-gray-500 mx-auto border-y-1 border-black">
-            <ul class="flex flex-col items-center gap-2 md:flex-row md:gap-12 md:justify-center text-white font-semibold w-full px-6 py-2">
+        <div class="mx-auto bg-orange-100 border-b-1 border-gray-400">
+            <ul class="flex flex-col items-center gap-2 md:flex-row md:gap-12 md:justify-center font-semibold w-full px-6 py-2">
                 <li>
                     <a href="{% url 'home' %}" aria-label="All products">
                         All products
@@ -42,7 +42,7 @@
                 </li>
                 {% for categorie in categories %}
                     <li>
-                        <a href="{% url 'filter_category' categorie.category|lower %}" aria-label="{{ categorie.category }} section">
+                        <a href="{% url 'filter_category' categorie.category|upper %}" aria-label="{{ categorie.category }} section">
                             {{ categorie.category }}
                         </a>
                     </li>

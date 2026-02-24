@@ -3,8 +3,8 @@
     <div class="grid md:grid-cols-2 gap-4 m-8">
         {% for categorie in categories %}
             <a href="{% url 'filter_category' categorie.category|lower %}" aria-label="{{ categorie.category }} section button">
-                <div class="flex justify-center items-center h-20 md:h-28 bg-sky-100 rounded-lg shadow-sm hover:bg-sky-200 transition-colors">
-                    <p class="px-4 py-2 text-white text-xl text-center w-40 font-semibold shadow-sm rounded-lg bg-[#76b9f0]">
+                <div class="flex justify-center items-center h-20 md:h-28 bg-orange-100 rounded-lg shadow-sm hover:bg-orange-300 transition-colors">
+                    <p class="px-4 py-2 text-white text-xl text-center w-40 font-semibold shadow-sm rounded-lg bg-orange-400">
                         {{ categorie.category }}
                     </p>
                 </div>

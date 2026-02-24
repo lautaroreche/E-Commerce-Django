@@ -15,12 +15,12 @@
             <hr class="w-full my-3 text-gray-300">
             <div class="flex flex-col justify-between min-h-32">
                 <div class="space-y-1">
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-circle text-xs text-[#76b9f0]"></i>
+                    <div class="flex items-center gap-1">
+                        <i class="fa-solid fa-circle text-xs text-orange-400"></i>
                         <p>{{ product.category }}</p>
                     </div>
                     <a href="{% url 'detail' product.id %}" aria-label="{{ product.name }}">
-                        <p class="text-xl font-semibold leading-tight">{{ product.name|upper }}</p>
+                        <p class="text-lg font-semibold leading-tight">{{ product.name|upper }}</p>
                     </a>
                 </div>
                 <div class="flex items-center justify-between gap-3">
