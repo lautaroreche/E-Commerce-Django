@@ -56,6 +56,12 @@ CLOUDINARY_STORAGE = {
     'API_KEY': env('API_KEY'),
     'API_SECRET': env('API_SECRET'),
 }
+cloudinary.config(
+    cloud_name=env('CLOUD_NAME'),
+    api_key=env('API_KEY'),
+    api_secret=env('API_SECRET'),
+    secure=True
+)
 # Almacenamiento de archivos multimedia
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
