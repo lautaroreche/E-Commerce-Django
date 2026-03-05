@@ -9,6 +9,6 @@
   "scripts": {
     "build:css": "npx tailwindcss -i ./ecommerce_app/static/css/input.css -o ./ecommerce_app/static/css/output.css --minify",
     "watch:css": "npx tailwindcss -i ./ecommerce_app/static/css/input.css -o ./ecommerce_app/static/css/output.css --watch",
-    "dev": "concurrently \"npm run watch:css\" \"python3 manage.py runserver\""
+    "dev": "concurrently \"npm run watch:css\" \"python3 manage.py runserver 8303\""
   }
 }

@@ -93,6 +93,7 @@ TEMPLATES = [
                 'cart.context_processor.has_cart',
                 'favorites.context_processor.has_favorites',
                 'ecommerce_app.context_processors.current_year',
+                'ecommerce_app.context_processors.ecommerce_data',
             ],
         },
     },
