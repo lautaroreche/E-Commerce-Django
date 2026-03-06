@@ -12,7 +12,6 @@ from ecommerce_app.forms import FormularioNewsletter
 import sib_api_v3_sdk
 import stripe
 
-# --- FUNCIONES AUXILIARES ---
 
 def get_cart_products(request):
     cart_obj = Cart(request)
@@ -35,35 +34,22 @@ def comes_from_checkout(request):
     elif status == 'cancel':
         messages.error(request, 'Payment has been cancelled')
 
-# --- VISTAS ---
 
 def home(request):
     comes_from_checkout(request)
-    
-    # Lógica específica para las "Popular Categories" con imagen
-    category_names = Product.objects.values_list('category', flat=True).distinct()
-    categories_data = []
-    
-    for cat_name in category_names:
-        representative_product = Product.objects.filter(category=cat_name).order_by('id').first()
-        if representative_product:
-            categories_data.append({
-                'name': cat_name,
-                'image_url': representative_product.image.url
-            })
-
     products = Product.objects.all()
 
     return render(request, 'home.html', {
-        "categories_data": categories_data,
         "products": order_by_criteria(products),
         "cart_products": get_cart_products(request),
         "favorite_products": get_favorite_products(request),
     })
 
+
 def search(request):
+    referrer = request.META.get('HTTP_REFERER', '/')
+    
     if request.method == "POST":
-        referrer = request.META.get('HTTP_REFERER', '/')
         input_text = request.POST.get("input_text", "").strip()
 
         if not input_text:
@@ -73,8 +59,19 @@ def search(request):
         if len(input_text) > 40:
             messages.error(request, "Product name too long. Try a shorter one")
             return redirect(referrer)
+
+        products_exist = Product.objects.filter(
+            Q(name__icontains=input_text) | 
+            Q(description__icontains=input_text) | 
+            Q(category__icontains=input_text)
+        ).exists()
+
+        if not products_exist:
+            messages.error(request, f"No results found for: '{input_text}'")
+            return redirect(referrer)
         
         request.session["input_text"] = input_text
+        return redirect('search')
     
     input_text = request.session.get('input_text', '')
     products = Product.objects.filter(
@@ -90,13 +87,14 @@ def search(request):
         "query": input_text,
     })
 
+
 def filter_category(request, category):
     category = category.capitalize()
     referrer = request.META.get('HTTP_REFERER', '/')
     products = Product.objects.filter(category=category)
 
     if not products:
-        messages.error(request, "The category you just searched for does not exist.")
+        messages.error(request, "The category you just searched for does not exist")
         return redirect(referrer)
     
     return render(request, "filter.html", {
@@ -106,11 +104,12 @@ def filter_category(request, category):
         "category": category,
     })
 
+
 def detail(request, product_id):
     try:
         product = Product.objects.get(id=product_id)
     except Product.DoesNotExist:
-        messages.error(request, "The product you are looking for does not exist.")
+        messages.error(request, "The product you are looking for does not exist")
         return redirect('home')
 
     return render(request, 'detail.html', {
@@ -119,6 +118,7 @@ def detail(request, product_id):
         "favorite_products": get_favorite_products(request),
     })
 
+
 def cart(request):
     comes_from_checkout(request)
     cart_obj = Cart(request)
@@ -126,7 +126,7 @@ def cart(request):
     products = Product.objects.filter(id__in=cart_ids)
 
     if not products:
-        messages.warning(request, "You don't have any products in your cart yet.")
+        messages.warning(request, "You don't have any products in your cart yet")
         return redirect('home')
 
     return render(request, 'cart.html', {
@@ -137,12 +137,13 @@ def cart(request):
         "total": str(cart_obj.get_total_cart()),
     })
 
+
 def favorites(request):
     fav_ids = get_favorite_products(request)
     products = Product.objects.filter(id__in=fav_ids)
 
     if not products:
-        messages.warning(request, "You don't have any favorites yet.")
+        messages.warning(request, "You don't have any favorites yet")
         return redirect('home')
 
     return render(request, 'favorites.html', {
@@ -151,37 +152,49 @@ def favorites(request):
         "favorite_products": fav_ids,
     })
 
+
 def newsletter(request):
     referrer = request.META.get('HTTP_REFERER', '/')
-    form = FormularioNewsletter(request.POST)
-    if form.is_valid():
-        email_destino = form.cleaned_data["email"]
-        
-        configuration = sib_api_v3_sdk.Configuration()
-        configuration.api_key['api-key'] = settings.BREVO_API_KEY
-        
-        api_client = sib_api_v3_sdk.ApiClient(configuration)
-        api_instance = sib_api_v3_sdk.TransactionalEmailsApi(api_client)
-        
-        html_content = render_to_string("newsletter_message.html", {})
-        
-        send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
-            to=[{"email": email_destino}],
-            sender={"name": "Ragusa E-commerce", "email": "lautaroreche1@gmail.com"},
-            subject="Thank you for subscribing",
-            html_content=html_content,
-        )
-        
-        try:
-            api_instance.send_transac_email(send_smtp_email)
-            messages.success(request, "Subscribed successfully!")
-        except Exception:
-            messages.error(request, "Error sending email.")
-        
-        return redirect(referrer)
-        
-    messages.error(request, "Invalid email.")
+    
+    if request.method == "POST":
+        form = FormularioNewsletter(request.POST)
+        if form.is_valid():
+            email_destino = form.cleaned_data["email"]
+
+            subscriber, created = SuscriptorNewsletter.objects.get_or_create(email=email_destino)
+            
+            if not created:
+                messages.info(request, "You are already subscribed!")
+                return redirect(referrer)
+
+            configuration = sib_api_v3_sdk.Configuration()
+            configuration.api_key['api-key'] = settings.BREVO_API_KEY
+            api_client = sib_api_v3_sdk.ApiClient(configuration)
+            
+            api_instance = sib_api_v3_sdk.TransactionalEmailsApi(api_client)
+            html_content = render_to_string("newsletter_message.html")
+            
+            send_smtp_email = sib_api_v3_sdk.SendSmtpEmail(
+                to=[{"email": email_destino}],
+                sender={"name": "Ragusa E-commerce", "email": "lautaroreche1@gmail.com"},
+                subject="Thank you for subscribing",
+                html_content=html_content,
+            )
+            
+            try:
+                api_instance.send_transac_email(send_smtp_email)
+                messages.success(request, "Subscribed successfully! Check your inbox")
+            except sib_api_v3_sdk.rest.ApiException as e:
+                print(f"Exception when calling TransactionalEmailsApi->send_transac_email: {e}")
+                messages.error(request, "Service temporarily unavailable")
+            except Exception:
+                messages.error(request, "An unexpected error occurred")
+            
+            return redirect(referrer)
+            
+    messages.error(request, "Invalid email address")
     return redirect(referrer)
+
 
 @csrf_exempt
 def checkout(request):

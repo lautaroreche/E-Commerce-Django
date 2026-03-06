@@ -4,7 +4,7 @@
     </h2>
     
     <div class="flex flex-wrap justify-center gap-8 md:gap-16">
-        {% for cat in categories_data %}
+        {% for cat in categories_menu %}
             <a href="{% url 'filter_category' cat.name|lower %}" class="flex flex-col items-center group" aria-label="{{ cat.name }} section button">
                 <div class="relative w-32 h-32 md:w-48 md:h-48 rounded-full flex justify-center items-center overflow-hidden transition-transform duration-300 group-hover:scale-105 border-1 border-orange-100">
                     <img src="{{ cat.image_url }}" alt="{{ cat.name }}" class="w-3/4 h-3/4 object-contain">

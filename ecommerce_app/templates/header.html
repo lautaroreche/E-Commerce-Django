@@ -3,15 +3,15 @@
 
 <header>
     <nav class="flex-col">
-        <div class="flex justify-between items-center gap-3 px-6 pt-2">
+        <div class="flex justify-between items-center gap-3 px-6 pt-2 bg-orange-50">
             <a href="{% url 'home' %}" aria-label="Ragusa ecommerce logo" class="flex items-center gap-1 md:min-w-40 m-1">
                 <img src="{% static 'images/logo.webp' %}" alt="Ragusa ecommerce logo" class="w-40 md:w-60">
             </a>
-            <form action="{% url 'search' %}" method="POST" class="hidden md:flex bg-orange-50 rounded-sm">
+            <form action="{% url 'search' %}" method="POST" class="hidden md:flex rounded-sm">
                 {% csrf_token %}
-                <input type="text" name="input_text" placeholder="Search" class="text-sm px-3 w-72 outline-none" maxlength="40" required>
+                <input type="text" name="input_text" placeholder="Search" class="px-3 w-72 outline-none bg-white rounded-sm" maxlength="40" required>
                 <button type="submit" aria-label="Search button">
-                    <i class="fa-solid fa-magnifying-glass p-2 text-orange-400 text-xl rounded-r-sm cursor-pointer hover:bg-orange-300 hover:text-white transition-colors"></i>
+                    <i class="fa-solid fa-magnifying-glass p-2 text-xl rounded-r-sm cursor-pointer bg-orange-300 hover:bg-orange-200 text-white transition-colors"></i>
                 </button>
             </form>
             <div class="flex items-center justify-center gap-4 text-white md:min-w-40">
