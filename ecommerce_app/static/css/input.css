@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+
+body {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+    box-sizing: border-box;
+}
+a { text-decoration: none; }
+ul { list-style: none; }
