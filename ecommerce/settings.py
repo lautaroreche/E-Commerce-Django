@@ -61,8 +61,6 @@ cloudinary.config(
     api_secret=env('API_SECRET'),
     secure=True
 )
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -186,3 +184,6 @@ CSRF_COOKIE_SECURE = env.bool('CSRF_COOKIE_SECURE', default=False)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 LOGIN_REDIRECT_URL = '/'
+
+STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticCloudinaryStorage'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
