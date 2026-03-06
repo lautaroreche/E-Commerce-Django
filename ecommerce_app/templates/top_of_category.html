@@ -22,8 +22,8 @@
                             <p class="text-sm text-gray-600">{{ product.category }}</p>
                         </div>
                         <a href="{% url 'detail' product.id %}" aria-label="{{ product.name }}">
-                            <p class="text-lg font-semibold leading-tight truncate" title="{{ product.name|upper }}">
-                                {{ product.name|upper }}
+                            <p class="text-lg font-semibold leading-tight truncate" title="{{ product.name }}">
+                                {{ product.name }}
                             </p>
                         </a>
                     </div>
