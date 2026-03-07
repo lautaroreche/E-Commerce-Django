@@ -10,6 +10,6 @@
     "build:css": "tailwindcss -i ./ecommerce_app/static/css/input.css -o ./ecommerce_app/static/css/output.css --minify",
     "watch:css": "tailwindcss -i ./ecommerce_app/static/css/input.css -o ./ecommerce_app/static/css/output.css --watch",
     "collect": "python3 manage.py collectstatic --noinput",
-    "dev": "npm run build:css && npm run collect && concurrently \"npm run watch:css\" \"python3 manage.py runserver 8400\""
+    "dev": "npm run build:css && npm run collect && concurrently \"npm run watch:css\" \"python3 manage.py runserver\""
   }
 }
