@@ -29,7 +29,7 @@
                         <p>{{ product.category }}</p>
                     </div>
                     <a href="{% url 'detail' product.id %}" aria-label="{{ product.name }}">
-                        <h3 class="text-xl md:text-2xl font-semibold leading-tight">{{ product.name|upper }}</h3>
+                        <h3 class="text-xl md:text-2xl font-semibold leading-tight">{{ product.name }}</h3>
                     </a>
                     <p class="text-lg">{{ product.description }}</p>
                 </div>

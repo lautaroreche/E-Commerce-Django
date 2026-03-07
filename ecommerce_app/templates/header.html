@@ -38,7 +38,7 @@
                 </li>
                 {% for categorie in all_categories %}
                     <li>
-                        <a href="{% url 'filter_category' categorie.category|upper %}" aria-label="{{ categorie.category }} section">
+                        <a href="{% url 'filter_category' categorie.category %}" aria-label="{{ categorie.category }} section">
                             {{ categorie.category }}
                         </a>
                     </li>
