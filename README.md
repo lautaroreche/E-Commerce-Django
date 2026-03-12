@@ -16,12 +16,12 @@ To view and edit the project, you only need:
 ## Installation & Usage 🚀  
 1. Clone this repository or download the files manually:  
    ```bash
-   git clone https://github.com/lautaroreche/Portfolio.git
+   git clone https://github.com/lautaroreche/E-Commerce-Django.git
 2. (Recomended) Create a virtual environment:
    ```bash
    python -m venv venv
-   venv\bin\activate
-3. Install all the dependencies in the `requeriments.txt` file:
+   venv/bin/activate
+3. Install all the dependencies in the `requirements.txt` file:
    ```bash
    pip install -r requirements.txt
 4. Execute:
