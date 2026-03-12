@@ -5,7 +5,7 @@
 <div class="flex justify-center">
     <div class="flex flex-col items-center gap-4 m-8 w-full max-w-5xl">
         {% for product in products %}
-            <div class="flex w-full p-4 rounded-lg shadow-sm {% if product.id in cart_products %}shadow-green-300 border-1 border-green-300{% endif %}">
+            <div class="flex w-full p-2 md:p-4 rounded-lg shadow-sm {% if product.id in cart_products %}shadow-green-300 border-1 border-green-300{% endif %} gap-1">
                 <a href="{% url 'detail' product.id %}" aria-label="{{ product.name }}" class="flex justify-center items-center">
                     <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-16 md:size-32 object-cover">
                 </a>
