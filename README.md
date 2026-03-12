@@ -38,7 +38,6 @@ You can modify the styles and structure of the page by editing the following fil
 - Templates in the `templates` folder → Structure of the webpage.
 - Styles in the `styles` → Styling and visual design.
 
-## Contact 📧
-If you have any questions or comments, feel free to contact me:
-- **Email**: lautaroreche1@gmail.com
+## Let's Connect! 📧
+If you have any questions or comments, feel free to contact me. I'm always open to discussing new projects and opportunities.
 - **LinkedIn**: [lautaroreche](https://www.linkedin.com/in/lautaroreche/)
