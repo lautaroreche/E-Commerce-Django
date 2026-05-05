@@ -27,6 +27,7 @@ config/settings.pyc
 
 # Compilation and static files
 node_modules/
+staticfiles/
 
 # Dependency files
 Pipfile
