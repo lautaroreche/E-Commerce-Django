@@ -153,11 +153,10 @@ STORAGES = {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 STATICFILES_STORAGE = STORAGES["staticfiles"]["BACKEND"]
-WHITENOISE_MANIFEST_STRICT = False
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'ecommerce_app/static'),
