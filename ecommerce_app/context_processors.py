@@ -9,9 +9,13 @@ def ecommerce_data(request):
     for cat_name in category_names:
         representative_product = Product.objects.filter(category=cat_name).first()
         if representative_product:
+            try:
+                image_url = representative_product.image.url if representative_product.image else ''
+            except Exception:
+                image_url = ''
             categories_menu.append({
                 'name': cat_name,
-                'image_url': representative_product.image.url
+                'image_url': image_url
             })
 
     return {

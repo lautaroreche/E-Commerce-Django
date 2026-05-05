@@ -156,7 +156,6 @@ STORAGES = {
         "BACKEND": "ecommerce.storage.ForgivingManifestStaticFilesStorage",
     },
 }
-STATICFILES_STORAGE = STORAGES["staticfiles"]["BACKEND"]
 
 STATICFILES_DIRS = []
 
