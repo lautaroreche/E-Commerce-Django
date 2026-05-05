@@ -156,6 +156,7 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
+STATICFILES_STORAGE = STORAGES["staticfiles"]["BACKEND"]
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'ecommerce_app/static'),
