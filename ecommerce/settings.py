@@ -153,14 +153,12 @@ STORAGES = {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        "BACKEND": "ecommerce.storage.ForgivingManifestStaticFilesStorage",
     },
 }
 STATICFILES_STORAGE = STORAGES["staticfiles"]["BACKEND"]
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'ecommerce_app/static'),
-]
+STATICFILES_DIRS = []
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
