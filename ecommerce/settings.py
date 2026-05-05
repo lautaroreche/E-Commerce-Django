@@ -157,6 +157,8 @@ STORAGES = {
     },
 }
 
+STATICFILES_STORAGE = STORAGES["staticfiles"]["BACKEND"]  # requerido por cloudinary_storage
+
 STATICFILES_DIRS = []
 
 # Default primary key field type
