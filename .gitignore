@@ -37,4 +37,4 @@ Pipfile.lock
 .idea/
 
 # Tailwind CSS and Node
-input.css
+output.css
