@@ -3,7 +3,7 @@ services:
     name: ecommerce-django
     env: python
     buildCommand: "./build.sh"
-    startCommand: gunicorn ecommerce.wsgi:application
+    startCommand: gunicorn ecommerce.wsgi:application --bind 0.0.0.0:$PORT
     envVars:
       - key: DEBUG
         value: "False"
