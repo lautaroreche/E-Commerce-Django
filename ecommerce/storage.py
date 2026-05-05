@@ -12,3 +12,9 @@ class ForgivingManifestStaticFilesStorage(ManifestStaticFilesStorage):
             return super().hashed_name(name, content, filename)
         except ValueError:
             return name
+
+    def stored_name(self, name):
+        try:
+            return super().stored_name(name)
+        except ValueError:
+            return name
