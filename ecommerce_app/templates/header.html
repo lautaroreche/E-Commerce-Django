@@ -1,44 +1,47 @@
 {% load static %}
 
 
-<header>
+<header class="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
     <nav class="flex-col">
-        <div class="flex justify-between items-center gap-3 px-2 md:px-6 py-2 bg-orange-50">
-            <a href="{% url 'home' %}" aria-label="Ragusa ecommerce logo" class="flex items-center gap-1 md:min-w-40 m-1">
-                <img src="{% static 'images/logo.webp' %}" alt="Ragusa ecommerce logo" class="w-40 md:w-60">
+        <!-- Top bar -->
+        <div class="flex justify-between items-center gap-3 px-4 md:px-8 py-1 bg-blue-100">
+            <a href="{% url 'home' %}" aria-label="Ragusa ecommerce logo" class="flex items-center gap-1 md:min-w-40">
+                <img src="https://res.cloudinary.com/dbmamjgiv/image/upload/v1777956256/ragusa-logo_znk0ks.webp" alt="Ragusa ecommerce logo" class="w-32 md:w-44">
             </a>
-            <form action="{% url 'search' %}" method="POST" class="hidden md:flex rounded-sm">
+
+            <!-- Search bar -->
+            <form action="{% url 'search' %}" method="POST" class="hidden md:flex flex-1 max-w-xl mx-6 border-2 border-blue-200 rounded-full overflow-hidden shadow-xs">
                 {% csrf_token %}
-                <input type="text" name="input_text" placeholder="Search" class="px-3 w-72 outline-none bg-white rounded-sm" maxlength="40" required>
-                <button type="submit" aria-label="Search button">
-                    <i class="fa-solid fa-magnifying-glass p-2 text-xl rounded-r-sm cursor-pointer bg-orange-300 hover:bg-orange-200 text-white transition-colors"></i>
+                <input type="text" name="input_text" placeholder="Search products..." class="px-4 py-2 w-full outline-none bg-white placeholder-gray-500" maxlength="40" required>
+                <button type="submit" aria-label="Search button" class="px-4 bg-slate-800 hover:bg-slate-700 hover:cursor-pointer transition-colors">
+                    <i class="fa-solid fa-magnifying-glass text-white"></i>
                 </button>
             </form>
-            <div class="flex items-center justify-center gap-4 text-white md:min-w-40">
-                <a href="{% url 'favorites' %}" aria-label="Favorites section" class="save-scroll">
-                    <div class="flex justify-center items-center gap-1 text-orange-400">
-                        <i class="fa-solid fa-bookmark text-xl"></i>
-                        <p class="font-semibold">Favorites</p>
-                    </div>
+
+            <!-- Actions -->
+            <div class="flex items-center justify-end gap-5 md:min-w-40">
+                <a href="{% url 'favorites' %}" aria-label="Favorites section" class="save-scroll flex flex-col items-center gap-0.5 text-slate-800 hover:text-slate-700 transition-colors">
+                    <i class="fa-regular fa-bookmark text-xl"></i>
+                    <span class="font-medium hidden md:block">Saved</span>
                 </a>
-                <a href="{% url 'cart' %}" aria-label="Cart section" class="save-scroll">
-                    <div class="flex justify-center items-center gap-1 text-orange-400">
-                        <i class="fa-solid {% if has_cart > 0 %}fa-cart-plus{% else %}fa-cart-shopping{% endif %} text-xl"></i>
-                        <p class="font-semibold">Cart</p>
-                    </div>
+                <a href="{% url 'cart' %}" aria-label="Cart section" class="save-scroll flex flex-col items-center gap-0.5 text-slate-800 hover:text-slate-700 transition-colors">
+                    <i class="fa-solid {% if has_cart > 0 %}fa-cart-plus text-slate-800{% else %}fa-cart-shopping{% endif %} text-xl"></i>
+                    <span class="font-medium hidden md:block">Cart</span>
                 </a>
             </div>
         </div>
-        <div class="mx-auto">
-            <ul class="flex flex-col items-center md:flex-row gap-2 md:gap-10 md:justify-center font-semibold w-full px-6 py-2 bg-orange-200">
+
+        <!-- Category nav -->
+        <div class="border-t border-gray-100 bg-yellow-100">
+            <ul class="flex items-center gap-1 md:gap-2 px-4 md:px-8 py-2 overflow-x-auto scrollbar-hide font-medium">
                 <li>
-                    <a href="{% url 'home' %}" aria-label="All products">
-                        All products
+                    <a href="{% url 'home' %}" aria-label="All products" class="whitespace-nowrap px-3 py-1.5 rounded-full hover:bg-yellow-200 hover:font-semibold transition-colors">
+                        All
                     </a>
                 </li>
                 {% for categorie in all_categories %}
                     <li>
-                        <a href="{% url 'filter_category' categorie.category %}" aria-label="{{ categorie.category }} section">
+                        <a href="{% url 'filter_category' categorie.category %}" aria-label="{{ categorie.category }} section" class="whitespace-nowrap px-3 py-1.5 rounded-full hover:bg-yellow-200 hover:font-semibold transition-colors capitalize">
                             {{ categorie.category }}
                         </a>
                     </li>

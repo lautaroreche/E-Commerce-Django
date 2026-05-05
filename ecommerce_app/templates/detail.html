@@ -5,47 +5,47 @@
 {% block title %}{{ product.name }} | Ragusa ecommerce{% endblock %}
 
 {% block content %}
-    <main class="px-2 md:px-8 py-12 bg-gray-100">
-        <h2 class="text-2xl md:text-4xl font-semibold text-center">Product detail</h2>
-        <div class="flex flex-col items-center md:flex-row md:justify-center md:items-start gap-4 my-8">
-            <div class="hidden md:flex flex-col gap-4 min-w-20">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-20 shadow-sm rounded-lg {% if product.id in cart_products %}shadow-green-300 border-1 border-green-300{% endif %}">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-20 shadow-sm rounded-lg {% if product.id in cart_products %}shadow-green-300 border-1 border-green-300{% endif %}">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-20 shadow-sm rounded-lg {% if product.id in cart_products %}shadow-green-300 border-1 border-green-300{% endif %}">
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-20 shadow-sm rounded-lg {% if product.id in cart_products %}shadow-green-300 border-1 border-green-300{% endif %}">
+    <main class="px-4 md:px-8 py-10 bg-gray-50 min-h-screen">
+        <p class="text-gray-400 mb-6"><a href="{% url 'home' %}" class="hover:text-slate-700 transition-colors">Home</a> / <span class="text-gray-600">{{ product.name }}</span></p>
+
+        <div class="flex flex-col items-start md:flex-row gap-6 max-w-5xl mx-auto">
+            <!-- Thumbnails -->
+            <div class="hidden md:flex flex-col gap-3">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-20 rounded-xl border border-gray-200 object-contain bg-white p-1 cursor-pointer hover:border-slate-400 transition-colors">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-20 rounded-xl border border-gray-200 object-contain bg-white p-1 cursor-pointer hover:border-slate-400 transition-colors">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="size-20 rounded-xl border border-gray-200 object-contain bg-white p-1 cursor-pointer hover:border-slate-400 transition-colors">
             </div>
-            <div class="p-3 rounded-lg shadow-sm bg-white {% if product.id in cart_products %}shadow-green-300 border-1 border-green-300{% endif %} w-full max-w-80">
-                <div class="flex items-center {% if product.is_trend or product.is_top_of_category %}justify-between{% else%}justify-end{% endif %}">
+
+            <!-- Main image -->
+            <div class="bg-white rounded-2xl border border-gray-100 p-4 flex flex-col items-center w-full md:max-w-sm {% if product.id in cart_products %}ring-2 ring-emerald-400{% endif %}">
+                <div class="flex items-center {% if product.is_trend or product.is_top_of_category %}justify-between{% else %}justify-end{% endif %} w-full mb-3">
                     {% include 'manage_tags.html' %}
-                    
                     {% include 'manage_favorites.html' %}
                 </div>
-                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full max-w-80 mx-auto object-contain">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="w-full max-w-72 mx-auto object-contain h-64">
             </div>
-            <div class="space-y-3 p-4 rounded-lg shadow-sm bg-white {% if product.id in cart_products %}shadow-green-300 border-1 border-green-300{% endif %} w-full max-w-80">
-                <div class="space-y-1">
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-circle text-xs text-[#76b9f0]"></i>
-                        <p>{{ product.category }}</p>
-                    </div>
-                    <a href="{% url 'detail' product.id %}" aria-label="{{ product.name }}">
-                        <h3 class="text-xl md:text-2xl font-semibold leading-tight">{{ product.name }}</h3>
-                    </a>
-                    <p class="text-lg">{{ product.description }}</p>
-                </div>
-                <div>
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-circle text-xs text-green-300"></i>
-                        <p>In stock</p>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-truck text-xs text-red-500"></i>
-                        <p>Free shipping from € 99</p>
-                    </div>
-                </div>
-                <div class="flex items-center justify-between gap-3">
-                    <p class="text-xl font-semibold">€ {{ product.price|floatformat:0 }}</p>
 
+            <!-- Info panel -->
+            <div class="flex flex-col gap-5 bg-white rounded-2xl border border-gray-100 p-6 w-full md:max-w-sm {% if product.id in cart_products %}ring-2 ring-emerald-400{% endif %}">
+                <div>
+                    <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">{{ product.category }}</span>
+                    <h3 class="text-xl md:text-2xl font-bold text-gray-900 mt-1 leading-tight">{{ product.name }}</h3>
+                    <p class="text-gray-500 mt-2 leading-relaxed">{{ product.description }}</p>
+                </div>
+
+                <div class="flex flex-col gap-1.5">
+                    <div class="flex items-center gap-2 text-gray-500">
+                        <i class="fa-solid fa-circle text-emerald-400 text-xs"></i>
+                        <span>In stock</span>
+                    </div>
+                    <div class="flex items-center gap-2 text-gray-500">
+                        <i class="fa-solid fa-truck text-slate-400 text-xs"></i>
+                        <span>Free shipping from €99</span>
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between gap-3 pt-2 border-t border-gray-100">
+                    <p class="text-2xl font-bold text-gray-900">€{{ product.price|floatformat:0 }}</p>
                     {% include 'manage_cart_quantity.html' %}
                 </div>
             </div>

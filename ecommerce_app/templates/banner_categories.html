@@ -1,15 +1,15 @@
-<section class="px-4 md:px-8 py-16 bg-orange-100">
-    <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">
-        Explore Popular Categories
-    </h2>
-    
-    <div class="flex flex-wrap justify-center gap-8 md:gap-16">
+<section class="px-4 md:px-8 py-12 bg-white border-t border-gray-100">
+    <div class="flex items-center justify-between mb-8">
+        <h2 class="text-xl md:text-2xl font-semibold text-gray-800">Explore Categories</h2>
+    </div>
+
+    <div class="flex flex-wrap justify-center gap-6 md:gap-10">
         {% for cat in categories_menu %}
             <a href="{% url 'filter_category' cat.name|lower %}" class="flex flex-col items-center group" aria-label="{{ cat.name }} section button">
-                <div class="relative w-32 h-32 md:w-48 md:h-48 rounded-full flex justify-center items-center bg-white overflow-hidden transition-transform duration-300 group-hover:scale-105 border-1 border-orange-100">
+                <div class="w-24 h-24 md:w-36 md:h-36 rounded-2xl flex justify-center items-center border-2 border-gray-100 overflow-hidden transition-all duration-200 group-hover:border-yellow-300 group-hover:shadow-sm">
                     <img src="{{ cat.image_url }}" alt="{{ cat.name }}" class="w-3/4 h-3/4 object-contain">
                 </div>
-                <p class="mt-4 font-bold tracking-tighter group-hover:text-orange-400 transition-colors capitalize">
+                <p class="mt-3 font-semibold text-gray-600 group-hover:text-slate-800 transition-colors capitalize">
                     {{ cat.name }}
                 </p>
             </a>

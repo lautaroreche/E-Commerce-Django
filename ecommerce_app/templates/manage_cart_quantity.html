@@ -1,21 +1,21 @@
 {% if product.id in cart_products %}
-    <div class="flex items-center flex-between gap-1">
-        <a href="{% url 'decrement_from_cart' product.id %}" aria-label="Decrement from cart" class="bg-red-300 hover:bg-red-400 transition-colors shadow-sm rounded-lg save-scroll">
-            <i class="fa-solid fa-minus p-2"></i>
+    <div class="flex items-center gap-1">
+        <a href="{% url 'decrement_from_cart' product.id %}" aria-label="Decrement from cart" class="w-7 h-7 flex items-center justify-center bg-gray-100 hover:bg-red-300 text-gray-700 rounded-lg transition-colors save-scroll">
+            <i class="fa-solid fa-minus text-sm"></i>
         </a>
-        <div class="min-w-5">
+        <div class="min-w-5 text-center">
             {% for key, value in request.session.cart.items %}
                 {% if key == product.id|stringformat:"s" %}
-                    <p class="text-lg text-center font-semibold">{{ value.quantity }}</p>
+                    <p class="font-bold text-gray-800">{{ value.quantity }}</p>
                 {% endif %}
             {% endfor %}
         </div>
-        <a href="{% url 'add_to_cart' product.id %}" aria-label="Add to cart" class="bg-green-300 hover:bg-green-400 transition-colors shadow-sm rounded-lg save-scroll">
-            <i class="fa-solid fa-plus p-2"></i>
+        <a href="{% url 'add_to_cart' product.id %}" aria-label="Add to cart" class="w-7 h-7 flex items-center justify-center bg-slate-800 hover:bg-green-600 text-white rounded-lg transition-colors save-scroll">
+            <i class="fa-solid fa-plus text-sm"></i>
         </a>
     </div>
 {% else %}
-    <a href="{% url 'add_to_cart' product.id %}" aria-label="Add to cart" class="bg-green-300 hover:bg-green-400 transition-colors shadow-sm rounded-lg save-scroll">
-        <i class="fa-solid fa-cart-shopping p-2"></i>
+    <a href="{% url 'add_to_cart' product.id %}" aria-label="Add to cart" class="w-8 h-8 flex items-center justify-center bg-slate-800 hover:bg-green-600 text-white rounded-lg transition-colors save-scroll">
+        <i class="fa-solid fa-cart-shopping text-sm"></i>
     </a>
 {% endif %}
