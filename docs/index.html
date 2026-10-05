@@ -643,7 +643,7 @@ npm run dev   <span class="tok-c"># Tailwind build + watcher + Django</span></co
 
     /* ============ 1. Wake up the Render server ============ */
     const APP_URL = 'https://ragusa-ecommerce.onrender.com/';
-    const PROBE = APP_URL + 'static/images/logo.webp';
+    const PROBE = APP_URL + 'ping.gif';
     const statusEl = $('#server-status');
     const label = $('#status-label');
     const text = $('#status-text');
@@ -651,7 +651,7 @@ npm run dev   <span class="tok-c"># Tailwind build + watcher + Django</span></co
     const GIVE_UP_MS = 150000;
     const setState = (state, l, t) => { statusEl.dataset.state = state; label.textContent = l; if (t) text.textContent = t; };
 
-    // An <img> only fires "load" when Django/WhiteNoise actually returns the image,
+    // An <img> only fires "load" when Django actually returns the ping.gif image,
     // so it reliably tells us when the app is up (Render's wake-up page is HTML).
     const probe = () => {
       const img = new Image();
