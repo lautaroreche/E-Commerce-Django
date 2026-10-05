@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ragusa · Django e-commerce by Lautaro Reche</title>
+  <meta name="description" content="Ragusa is an e-commerce site built with Python, Django, PostgreSQL and Tailwind CSS: session cart, saved products, search, Stripe Checkout, Cloudinary images and a Brevo newsletter.">
+  <meta name="author" content="Lautaro Reche">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ragusa · Django e-commerce">
+  <meta property="og:description" content="Online shop built with Python, Django, PostgreSQL and Tailwind CSS, with Stripe Checkout.">
+  <meta property="og:image" content="https://lautaroreche.github.io/E-Commerce-Django/assets/og-image.jpg">
+  <meta property="og:url" content="https://lautaroreche.github.io/E-Commerce-Django/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#74abdf">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #74abdf;
+      --blue-dark: #3b78b8;
+      --blue-50: #f1f7fd;
+      --blue-100: #e1eefa;
+      --amber: #feb81c;
+      --amber-dark: #d99600;
+      --amber-50: #fff8e8;
+      --green: #059669;
+      --green-dark: #047857;
+      --rose: #e11d48;
+      --orange: #c2410c;
+      --ink: #0f172a;
+      --ink-2: #334155;
+      --slate: #1e293b;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+      --code-bg: #0f172a;
+      --radius: 12px;
+      --shadow-sm: 0 1px 2px rgba(15, 23, 42, .06), 0 1px 3px rgba(15, 23, 42, .08);
+      --shadow-md: 0 4px 12px rgba(15, 23, 42, .08), 0 2px 4px rgba(15, 23, 42, .05);
+      --shadow-lg: 0 24px 48px -12px rgba(15, 23, 42, .22);
+      --max: 1120px;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 76px; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: var(--ink);
+      background: var(--surface-2);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; }
+    button { font: inherit; color: inherit; }
+    code, pre { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 20px; }
+    :focus-visible { outline: 3px solid color-mix(in srgb, var(--blue) 70%, transparent); outline-offset: 2px; }
+
+    /* ---------- Nav ---------- */
+    .nav {
+      position: sticky; top: 0; z-index: 40;
+      background: rgba(255, 255, 255, .86);
+      backdrop-filter: saturate(160%) blur(10px);
+      -webkit-backdrop-filter: saturate(160%) blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 700; font-size: 1.1rem; white-space: nowrap; }
+    .brand img { height: 36px; width: auto; }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links a { text-decoration: none; color: var(--ink-2); font-size: .95rem; font-weight: 500; }
+    .nav-links a:hover { color: var(--blue-dark); }
+    @media (max-width: 780px) { .nav-links .hide-sm { display: none; } .nav-links { gap: 14px; } }
+
+    /* ---------- Buttons ---------- */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 11px 20px; border-radius: 999px; font-weight: 600; font-size: .98rem;
+      text-decoration: none; border: 1px solid transparent; cursor: pointer;
+      transition: transform .15s ease, background .15s ease, box-shadow .15s ease, border-color .15s ease;
+      white-space: nowrap;
+    }
+    .btn svg { width: 18px; height: 18px; flex: none; }
+    .btn-primary { background: var(--slate); color: #fff; box-shadow: 0 8px 20px -8px rgba(15, 23, 42, .6); }
+    .btn-primary:hover { background: #334155; transform: translateY(-1px); }
+    .btn-ghost { background: #fff; color: var(--ink); border-color: var(--line); box-shadow: var(--shadow-sm); }
+    .btn-ghost:hover { border-color: #cbd5e1; transform: translateY(-1px); }
+    .btn-sm { padding: 7px 13px; font-size: .88rem; }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg, #e1eefa 0%, #f6faff 42%, #fff9ec 75%, #fff1d2 100%);
+      border-bottom: 1px solid var(--line);
+    }
+    .hero::before, .hero::after { content: ""; position: absolute; border-radius: 50%; pointer-events: none; }
+    .hero::before { width: 600px; height: 600px; top: -240px; left: -200px; background: radial-gradient(circle, rgba(116, 171, 223, .28) 0%, transparent 70%); }
+    .hero::after { width: 560px; height: 560px; bottom: -240px; right: -160px; background: radial-gradient(circle, rgba(254, 184, 28, .24) 0%, transparent 70%); }
+    .hero .wrap { position: relative; z-index: 1; padding-top: 72px; padding-bottom: 80px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: .82rem; font-weight: 600; letter-spacing: .02em; color: var(--ink-2);
+      background: rgba(255, 255, 255, .8); border: 1px solid var(--line);
+      padding: 5px 12px; border-radius: 999px;
+    }
+    .dots { display: inline-flex; gap: 3px; }
+    .dots i { width: 6px; height: 6px; border-radius: 50%; display: block; }
+    h1 {
+      font-size: clamp(2.2rem, 5.2vw, 3.6rem); line-height: 1.08; letter-spacing: -.035em;
+      margin: 18px 0 18px; font-weight: 800; max-width: 17ch;
+    }
+    .mark { position: relative; white-space: nowrap; z-index: 0; }
+    .mark::after { content: ""; position: absolute; left: -2px; right: -2px; bottom: .08em; height: .32em; background: color-mix(in srgb, var(--amber) 65%, transparent); border-radius: 4px; transform: rotate(-1deg); z-index: -1; }
+    .lead { font-size: clamp(1.05rem, 1.6vw, 1.2rem); color: var(--ink-2); max-width: 60ch; margin: 0 0 28px; }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+
+    .status { margin-top: 18px; display: flex; align-items: flex-start; gap: 10px; font-size: .9rem; color: var(--muted); max-width: 62ch; }
+    @media (max-width: 600px) { .status { flex-direction: column; gap: 8px; } }
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 8px; flex: none;
+      padding: 4px 10px; border-radius: 999px; font-weight: 600; font-size: .8rem;
+      background: #fff; border: 1px solid var(--line); color: var(--ink-2);
+    }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #9ca3af; }
+    .status[data-state="waking"] .status-dot { background: var(--amber); animation: pulse 1.2s ease-in-out infinite; }
+    .status[data-state="ready"] .status-dot { background: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, .2); }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.75); } }
+
+    .browser { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-lg), 0 0 0 1px rgba(15, 23, 42, .06); }
+    .browser-bar { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: #f1f5f9; border-bottom: 1px solid var(--line); }
+    .browser-bar .lights { display: flex; gap: 6px; }
+    .browser-bar .lights i { width: 11px; height: 11px; border-radius: 50%; display: block; }
+    .browser-bar .url { flex: 1; min-width: 0; font-size: .78rem; color: var(--muted); background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .browser img { width: 100%; height: auto; cursor: zoom-in; }
+    .hero-shot { margin-top: 56px; }
+
+    /* ---------- Sections ---------- */
+    section { padding: 88px 0; }
+    .section-head { max-width: 680px; margin-bottom: 40px; }
+    .kicker { font-size: .8rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--blue-dark); margin: 0 0 10px; }
+    .section-head .kicker { color: var(--blue-dark); }
+    h2 { font-size: clamp(1.7rem, 3.2vw, 2.35rem); line-height: 1.15; letter-spacing: -.025em; margin: 0 0 14px; font-weight: 800; }
+    .section-head p { color: var(--ink-2); margin: 0; font-size: 1.05rem; }
+    .section-head p.kicker { margin: 0 0 10px; font-size: .8rem; }
+    .alt { background: var(--surface); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+    /* ---------- Demo store ---------- */
+    .demo-shell { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow-md); overflow: hidden; position: relative; }
+    .store-top { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: linear-gradient(90deg, var(--blue-100), var(--blue-50), var(--blue-100)); }
+    .store-top img { height: 34px; width: auto; flex: none; }
+    .store-search { flex: 1; min-width: 0; display: flex; align-items: center; gap: 6px; background: #fff; border-radius: 999px; padding: 4px 4px 4px 14px; box-shadow: inset 0 0 0 1px #c4dcf3; }
+    .store-search input { flex: 1; min-width: 0; border: 0; outline: 0; font: inherit; font-size: .9rem; background: transparent; }
+    .store-search button { border: 0; background: var(--slate); color: #fff; font-weight: 600; font-size: .82rem; border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+    .store-icon { position: relative; display: inline-flex; align-items: center; gap: 6px; border: 0; background: transparent; font-weight: 600; font-size: .88rem; padding: 7px 10px; border-radius: 999px; cursor: pointer; flex: none; }
+    .store-icon.is-dark { background: var(--slate); color: #fff; }
+    .store-icon svg { width: 18px; height: 18px; }
+    .badge { position: absolute; top: 0; left: 18px; min-width: 17px; height: 17px; padding: 0 4px; border-radius: 999px; background: var(--amber); color: var(--ink); font-size: 10px; font-weight: 800; display: grid; place-items: center; }
+    .badge[hidden] { display: none; }
+    @media (max-width: 560px) { .store-icon .lbl { display: none; } .store-search button { display: none; } }
+    .store-cats { display: flex; gap: 6px; padding: 7px 14px; background: #fef9c3; border-top: 1px solid #fef08a; overflow-x: auto; scrollbar-width: none; }
+    .store-cats::-webkit-scrollbar { display: none; }
+    .cat { flex: none; border: 0; background: transparent; border-radius: 999px; padding: 5px 12px; font-size: .85rem; font-weight: 500; color: var(--ink-2); cursor: pointer; }
+    .cat:hover { background: #fef08a; }
+    .cat[aria-pressed="true"] { background: var(--amber); color: var(--ink); font-weight: 700; box-shadow: var(--shadow-sm); }
+    .store-body { display: grid; grid-template-columns: minmax(0, 1fr) 290px; min-height: 470px; }
+    @media (max-width: 900px) { .store-body { grid-template-columns: minmax(0, 1fr); } }
+    .grid-wrap { padding: 16px; background: var(--surface-2); }
+    .grid-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
+    .grid-head strong { font-size: 1rem; }
+    .grid-head span { font-size: .8rem; color: var(--muted); font-weight: 600; }
+    .pgrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+    @media (max-width: 1060px) { .pgrid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+    @media (max-width: 560px) { .pgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    .pcard { position: relative; background: #fff; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; display: flex; flex-direction: column; transition: box-shadow .15s ease, transform .15s ease, border-color .15s ease; }
+    .pcard:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .pcard.in-cart { border-color: #6ee7b7; box-shadow: 0 0 0 2px rgba(52, 211, 153, .55); }
+    .pcard .pimg { aspect-ratio: 1; padding: 10px; }
+    .pcard .pimg img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+    .pcard .tag { position: absolute; top: 8px; left: 8px; font-size: 10px; font-weight: 700; padding: 1px 7px; border-radius: 999px; }
+    .tag.top { color: var(--orange); background: #fff7ed; box-shadow: inset 0 0 0 1px #fed7aa; }
+    .tag.trend { color: var(--rose); background: #fff1f2; box-shadow: inset 0 0 0 1px #fecdd3; }
+    .save { position: absolute; top: 6px; right: 6px; width: 30px; height: 30px; border-radius: 50%; border: 0; background: rgba(255, 255, 255, .92); box-shadow: inset 0 0 0 1px var(--line); display: grid; place-items: center; cursor: pointer; color: #94a3b8; }
+    .save svg { width: 15px; height: 15px; }
+    .save[aria-pressed="true"] { color: var(--amber); box-shadow: inset 0 0 0 1px #fcd34d; }
+    .save[aria-pressed="true"] svg path { fill: currentColor; }
+    .pinfo { padding: 2px 10px 10px; display: flex; flex-direction: column; gap: 8px; flex: 1; justify-content: space-between; }
+    .pinfo small { display: block; font-size: 9.5px; letter-spacing: .08em; text-transform: uppercase; color: #94a3b8; font-weight: 700; }
+    .pinfo b { display: block; font-size: .84rem; line-height: 1.3; font-weight: 600; }
+    .prow { display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+    .price { font-weight: 800; font-size: 1rem; font-variant-numeric: tabular-nums; }
+    .add { border: 0; background: var(--slate); color: #fff; border-radius: 999px; height: 28px; padding: 0 10px; font-size: .75rem; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
+    .add:hover { background: var(--green); }
+    .stepper { display: inline-flex; align-items: center; gap: 2px; background: #f1f5f9; border-radius: 999px; padding: 2px; }
+    .stepper button { width: 24px; height: 24px; border-radius: 50%; border: 0; cursor: pointer; font-weight: 700; display: grid; place-items: center; padding: 0; background: transparent; color: var(--ink-2); }
+    .stepper button.plus { background: var(--slate); color: #fff; }
+    .stepper span { min-width: 16px; text-align: center; font-size: .8rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .empty { grid-column: 1 / -1; text-align: center; color: var(--muted); padding: 40px 0; font-size: .92rem; }
+
+    .cart-pane { border-left: 1px solid var(--line); background: #fff; display: flex; flex-direction: column; }
+    @media (max-width: 900px) { .cart-pane { border-left: 0; border-top: 1px solid var(--line); } }
+    .cart-pane header { padding: 14px 16px 10px; display: flex; justify-content: space-between; align-items: baseline; }
+    .cart-pane header strong { font-size: 1rem; }
+    .cart-pane header span { font-size: .8rem; color: var(--muted); }
+    .cart-items { list-style: none; margin: 0; padding: 0 12px; flex: 1; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; max-height: 300px; }
+    .cart-items li { display: flex; gap: 10px; align-items: center; border: 1px solid #d1fae5; border-radius: 12px; padding: 7px; }
+    .cart-items img { width: 42px; height: 42px; object-fit: contain; mix-blend-mode: multiply; flex: none; }
+    .cart-items .ci { flex: 1; min-width: 0; }
+    .cart-items .ci b { display: block; font-size: .8rem; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cart-items .ci span { font-size: .8rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .cart-empty { text-align: center; color: var(--muted); font-size: .88rem; padding: 26px 10px; }
+    .cart-empty svg { width: 34px; height: 34px; margin: 0 auto 8px; color: #cbd5e1; }
+    .summary { padding: 12px 16px 16px; border-top: 1px solid var(--line); }
+    .summary .line { display: flex; justify-content: space-between; font-size: .82rem; color: var(--muted); }
+    .summary .total { display: flex; justify-content: space-between; align-items: baseline; margin: 8px 0 12px; }
+    .summary .total strong { font-size: 1.5rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .pay { width: 100%; border: 0; border-radius: 999px; background: var(--green); color: #fff; font-weight: 700; height: 42px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .pay:hover { background: var(--green-dark); }
+    .pay:disabled { background: #cbd5e1; cursor: not-allowed; }
+    .pay svg { width: 15px; height: 15px; }
+
+    .dtoast { position: absolute; z-index: 5; top: 104px; right: 14px; max-width: min(320px, calc(100% - 28px)); display: flex; gap: 10px; align-items: flex-start; background: #fff; border-radius: 14px; padding: 12px 14px; box-shadow: 0 18px 40px -10px rgba(15, 23, 42, .3); border: 1px solid var(--line); font-size: .86rem; font-weight: 500; animation: tin .25s ease-out both; }
+    .dtoast i { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-style: normal; font-weight: 800; font-size: .8rem; }
+    @keyframes tin { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+    .demo-log { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 16px; border-top: 1px solid var(--line); background: #fafafa; font-size: .8rem; color: var(--muted); }
+    .demo-log code { font-size: .76rem; color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 5px; padding: 2px 8px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .demo-log .flash { animation: flash .8s ease; }
+    @keyframes flash { from { background: #fff1c2; } to { background: #fff; } }
+    .demo-log button { margin-left: auto; background: none; border: 0; color: var(--blue-dark); font-weight: 600; cursor: pointer; padding: 0; }
+
+    /* ---------- Features ---------- */
+    .features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    @media (max-width: 900px) { .features { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 600px) { .features { grid-template-columns: minmax(0, 1fr); } }
+    .feature { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow-sm); }
+    .feature .icon { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; margin-bottom: 14px; }
+    .feature .icon svg { width: 22px; height: 22px; }
+    .feature h3 { margin: 0 0 6px; font-size: 1.05rem; letter-spacing: -.01em; }
+    .feature p { margin: 0; color: var(--ink-2); font-size: .95rem; }
+    .pills { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+    .pills span { display: inline-flex; align-items: center; gap: 5px; font-size: .78rem; font-weight: 600; padding: 3px 9px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); }
+
+    /* ---------- Screenshots ---------- */
+    .tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 18px; scrollbar-width: none; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { flex: none; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line); background: #fff; font-size: .92rem; font-weight: 600; color: var(--ink-2); cursor: pointer; }
+    .tab[aria-selected="true"] { background: var(--slate); border-color: var(--slate); color: #fff; }
+    .shot-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 28px; align-items: start; }
+    @media (max-width: 900px) { .shot-grid { grid-template-columns: minmax(0, 1fr); } }
+    .shot-caption h3 { margin: 4px 0 8px; font-size: 1.2rem; }
+    .shot-caption p { margin: 0 0 12px; color: var(--ink-2); }
+    .shot-caption ul { margin: 0; padding-left: 18px; color: var(--ink-2); font-size: .95rem; }
+    .shot-caption li { margin-bottom: 4px; }
+
+    /* ---------- Under the hood ---------- */
+    .flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: stretch; gap: 10px; }
+    .flow .node, .svc { background: #fff; border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow-sm); }
+    .flow .node small, .svc small { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .flow .node strong, .svc strong { display: block; font-size: 1.02rem; margin-bottom: 6px; }
+    .flow .node span, .svc span { font-size: .88rem; color: var(--ink-2); display: block; }
+    .flow .arrow { display: grid; place-items: center; color: #94a3b8; }
+    .flow .arrow svg { width: 28px; height: 28px; }
+    .services { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 12px 0 36px; }
+    .svc { border-style: dashed; box-shadow: none; background: #fcfdff; }
+    .svc .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 1px; }
+    .connector { text-align: center; font-size: .78rem; color: var(--muted); font-weight: 600; margin-top: 14px; letter-spacing: .02em; }
+    @media (max-width: 820px) {
+      .flow { grid-template-columns: minmax(0, 1fr); }
+      .flow .arrow svg { transform: rotate(90deg); }
+      .services { grid-template-columns: minmax(0, 1fr); }
+    }
+    .code-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    @media (max-width: 900px) { .code-grid { grid-template-columns: minmax(0, 1fr); } }
+    .code-card { background: var(--code-bg); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-md); min-width: 0; }
+    .code-card header { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 14px; border-bottom: 1px solid rgba(255, 255, 255, .08); color: #94a3b8; font-size: .8rem; }
+    .code-card header b { color: #e2e8f0; font-weight: 500; font-family: "JetBrains Mono", ui-monospace, monospace; }
+    .code-card pre { margin: 0; padding: 16px; overflow-x: auto; font-size: .8rem; line-height: 1.65; color: #e2e8f0; }
+    .tok-k { color: #f472b6; } .tok-s { color: #a5d6a7; } .tok-c { color: #64748b; font-style: italic; } .tok-f { color: #7dd3fc; } .tok-n { color: #fbbf24; }
+    .stack { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
+    .chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-size: .9rem; font-weight: 600; box-shadow: var(--shadow-sm); }
+    .chip i { width: 8px; height: 8px; border-radius: 50%; display: block; }
+
+    /* ---------- Run locally ---------- */
+    .run-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 32px; align-items: start; }
+    @media (max-width: 900px) { .run-grid { grid-template-columns: minmax(0, 1fr); } }
+    .note { background: #fff8e6; border: 1px solid #ffe2a3; border-radius: var(--radius); padding: 16px 18px; color: #6b4e00; font-size: .93rem; }
+    .note strong { color: #4a3600; }
+    .steps { margin: 18px 0 0; padding-left: 20px; color: var(--ink-2); }
+    .steps li { margin-bottom: 6px; }
+    .steps code, .note code, p code, .feature code { font-size: .85em; background: rgba(15, 23, 42, .06); padding: 1px 5px; border-radius: 4px; }
+
+    /* ---------- Footer ---------- */
+    footer { padding: 56px 0; background: var(--ink); color: #cbd5e1; }
+    footer .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 24px; }
+    footer h2 { color: #fff; font-size: 1.5rem; margin: 0 0 6px; }
+    footer p { margin: 0; color: #94a3b8; }
+    footer .btn-primary { background: var(--amber); color: var(--ink); box-shadow: none; }
+    footer .btn-primary:hover { background: #ffc94d; }
+    footer .btn-ghost { background: transparent; color: #fff; border-color: #334155; box-shadow: none; }
+    footer .btn-ghost:hover { border-color: #64748b; }
+    .fineprint { border-top: 1px solid #1e293b; margin-top: 40px; padding-top: 20px; width: 100%; font-size: .82rem; color: #64748b; }
+
+    /* ---------- Lightbox ---------- */
+    dialog.lightbox { padding: 0; border: 0; background: transparent; max-width: min(96vw, 1600px); max-height: 94vh; }
+    dialog.lightbox::backdrop { background: rgba(15, 23, 42, .82); }
+    dialog.lightbox img { max-height: 90vh; width: auto; border-radius: 10px; box-shadow: var(--shadow-lg); }
+    dialog.lightbox button { position: fixed; top: 16px; right: 16px; width: 40px; height: 40px; border-radius: 50%; border: 0; background: #fff; cursor: pointer; display: grid; place-items: center; box-shadow: var(--shadow-md); }
+    dialog.lightbox button svg { width: 18px; height: 18px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Reusable SVG symbols -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-github" viewBox="0 0 24 24"><path fill="currentColor" d="M12 .5C5.65.5.5 5.65.5 12a11.5 11.5 0 0 0 7.86 10.92c.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.37-3.87-1.37-.53-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.42-2.7 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"/></symbol>
+    <symbol id="i-linkedin" viewBox="0 0 24 24"><path fill="currentColor" d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.34V9h3.42v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+    <symbol id="i-cart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2.5 3.5h2.7l2.4 11.2a1.6 1.6 0 0 0 1.6 1.3h8.6a1.6 1.6 0 0 0 1.6-1.2L21 7.5H6"/></g></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6 3.5h12a1 1 0 0 1 1 1v16l-7-4.5-7 4.5v-16a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="11" width="15" height="10" rx="2"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/></g></symbol>
+  </svg>
+
+  <!-- ================= NAV ================= -->
+  <nav class="nav" aria-label="Main">
+    <div class="wrap">
+      <a class="brand" href="#top"><img src="assets/logo.webp" alt="" width="472" height="389">Ragusa</a>
+      <div class="nav-links">
+        <a class="hide-sm" href="#demo">Demo</a>
+        <a class="hide-sm" href="#features">Features</a>
+        <a class="hide-sm" href="#screenshots">Screenshots</a>
+        <a class="hide-sm" href="#under-the-hood">Under the hood</a>
+        <a class="btn btn-ghost btn-sm" href="https://github.com/lautaroreche/E-Commerce-Django" target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#i-github"/></svg><span>Source</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ================= HERO ================= -->
+  <header class="hero" id="top">
+    <div class="wrap">
+      <span class="eyebrow">
+        <span class="dots" aria-hidden="true"><i style="background:var(--blue)"></i><i style="background:var(--amber)"></i><i style="background:var(--slate)"></i></span>
+        Personal project · Full-stack e-commerce
+      </span>
+      <h1>An online shop with a <span class="mark">real checkout.</span></h1>
+      <p class="lead">Ragusa is an e-commerce site I built with <strong>Python, Django, PostgreSQL and Tailwind CSS</strong>. It sells Argentine classics (yerba mate, alfajores and dulce de leche) with category browsing, search, saved products, a session-based cart and payments through <strong>Stripe Checkout</strong>.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" id="open-app" href="https://ragusa-ecommerce.onrender.com/" target="_blank" rel="noopener">
+          Open the live store <svg aria-hidden="true"><use href="#i-external"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="https://github.com/lautaroreche/E-Commerce-Django" target="_blank" rel="noopener">
+          <svg aria-hidden="true"><use href="#i-github"/></svg> View source code
+        </a>
+      </div>
+      <div class="status" id="server-status" data-state="checking" role="status" aria-live="polite">
+        <span class="status-pill"><span class="status-dot"></span><span id="status-label">Checking server…</span></span>
+        <span id="status-text">The store runs on Render's free tier, which sleeps when idle, so the first load can take up to a minute. This page has already started waking it up for you.</span>
+      </div>
+
+      <div class="hero-shot">
+        <div class="browser">
+          <div class="browser-bar" aria-hidden="true">
+            <span class="lights"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></span>
+            <span class="url">ragusa-ecommerce.onrender.com</span>
+          </div>
+          <img src="assets/home.webp" width="1440" height="900" alt="Ragusa home page: header with search, category bar, hero banner and the product grid." data-zoom>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ================= DEMO ================= -->
+    <section id="demo">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">Try it here</p>
+          <h2>Shop the demo, no waiting required</h2>
+          <p>A lightweight replica of the store that runs entirely in your browser while the real server wakes up. Add products, save them, search or filter, and see the request the real app would handle. Nothing is charged or saved.</p>
+        </div>
+
+        <div class="demo-shell" id="store">
+          <div class="store-top">
+            <img src="assets/logo.webp" alt="Ragusa" width="472" height="389">
+            <form class="store-search" id="store-search" role="search">
+              <input id="q" type="text" maxlength="40" placeholder="Search products…" aria-label="Search the demo store">
+              <button type="submit">Search</button>
+            </form>
+            <button type="button" class="store-icon" id="saved-btn" aria-label="Saved products"><svg aria-hidden="true"><use href="#i-bookmark"/></svg><span class="badge" id="saved-count" hidden>0</span><span class="lbl">Saved</span></button>
+            <button type="button" class="store-icon" id="cart-btn" aria-label="Cart"><svg aria-hidden="true"><use href="#i-cart"/></svg><span class="badge" id="cart-count" hidden>0</span><span class="lbl">Cart</span></button>
+          </div>
+          <div class="store-cats" id="cats" role="group" aria-label="Categories"></div>
+          <div class="store-body">
+            <div class="grid-wrap">
+              <div class="grid-head"><strong id="grid-title">All Products</strong><span id="grid-count"></span></div>
+              <div class="pgrid" id="pgrid" aria-live="polite"></div>
+            </div>
+            <aside class="cart-pane" aria-label="Demo cart">
+              <header><strong>Cart</strong><span id="cart-sub">0 products</span></header>
+              <ul class="cart-items" id="cart-items"></ul>
+              <div class="summary">
+                <div class="line"><span>Shipping</span><span>Free from €99</span></div>
+                <div class="total"><span style="font-weight:600">Total</span><strong id="cart-total">€0</strong></div>
+                <button type="button" class="pay" id="pay" disabled><svg aria-hidden="true"><use href="#i-lock"/></svg>Pay with Stripe</button>
+              </div>
+            </aside>
+          </div>
+          <div class="demo-log" aria-live="polite">
+            <span>What the real app would handle:</span>
+            <code id="log-line">waiting for an action…</code>
+            <button type="button" id="reset-demo">Reset store</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FEATURES ================= -->
+    <section id="features" class="alt">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">Features</p>
+          <h2>Everything a small shop needs</h2>
+          <p>The full path from browsing to paying, plus the admin side to run the catalogue.</p>
+        </div>
+        <div class="features">
+          <article class="feature">
+            <div class="icon" style="background:#ecfdf5;color:var(--green)"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-cart"/></svg></div>
+            <h3>Session-based cart</h3>
+            <p>Add, increase, decrease or remove products without an account. The cart lives in the Django session, and subtotals and the total are calculated from the database prices.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" style="background:var(--amber-50);color:var(--amber-dark)"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-bookmark"/></svg></div>
+            <h3>Saved products</h3>
+            <p>Bookmark products to come back later, and move every saved product into the cart with a single click.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" style="background:var(--blue-50);color:var(--blue-dark)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg></div>
+            <h3>Search and categories</h3>
+            <p>Search matches the name, description and category with <code>Q</code> objects. Empty, too long or unmatched searches return a clear message instead of an empty page.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" style="background:#eef2ff;color:#635bff"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-lock"/></svg></div>
+            <h3>Stripe Checkout</h3>
+            <p>The cart total creates a Stripe Checkout Session in euros. Success or cancellation comes back to the store, which clears the cart and shows the result.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" style="background:#fff1f2;color:var(--rose)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div>
+            <h3>Newsletter with Brevo</h3>
+            <p>Subscriptions are validated, stored without duplicates and answered with a welcome email sent through Brevo's transactional API.</p>
+          </article>
+          <article class="feature">
+            <div class="icon" style="background:#f1f5f9;color:var(--ink-2)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></div>
+            <h3>Catalogue managed in the admin</h3>
+            <p>Products, prices and up to five Cloudinary images each are managed from the Django admin, with flags that feed the home sections.</p>
+            <div class="pills"><span style="color:var(--orange)">Top by category</span><span style="color:var(--rose)">Trending</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= SCREENSHOTS ================= -->
+    <section id="screenshots">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">Screenshots</p>
+          <h2>A look at the real store</h2>
+          <p>The current design, with the real catalogue. Click any image to enlarge it.</p>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Screens" id="shot-tabs"></div>
+        <div class="shot-grid">
+          <div class="browser" role="tabpanel" id="shot-panel">
+            <div class="browser-bar" aria-hidden="true">
+              <span class="lights"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></span>
+              <span class="url" id="shot-url">ragusa-ecommerce.onrender.com</span>
+            </div>
+            <img id="shot-img" src="assets/home.webp" width="1440" height="900" alt="" data-zoom>
+          </div>
+          <div class="shot-caption" id="shot-caption"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= UNDER THE HOOD ================= -->
+    <section id="under-the-hood" class="alt">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="kicker">Under the hood</p>
+          <h2>Server-rendered Django with managed services</h2>
+          <p>Django templates styled with Tailwind CSS, deployed on Render, with media, payments and email handled by external services.</p>
+        </div>
+
+        <div class="flow">
+          <div class="node">
+            <small>Client</small>
+            <strong>Browser</strong>
+            <span>Django templates styled with Tailwind CSS v4 and a few lines of vanilla JavaScript.</span>
+          </div>
+          <div class="arrow" aria-hidden="true"><svg><use href="#i-arrow"/></svg></div>
+          <div class="node">
+            <small>Render · Web service</small>
+            <strong>Gunicorn + Django 5.2</strong>
+            <span>Views, session cart and favourites, context processors and CSRF protection. WhiteNoise serves the static files.</span>
+          </div>
+          <div class="arrow" aria-hidden="true"><svg><use href="#i-arrow"/></svg></div>
+          <div class="node">
+            <small>Neon · Database</small>
+            <strong>PostgreSQL</strong>
+            <span>Products, orders, payments and newsletter subscribers, connected through <code>DATABASE_URL</code>.</span>
+          </div>
+        </div>
+        <p class="connector">Django also talks to</p>
+        <div class="services">
+          <div class="svc"><small>Media</small><strong><span class="dot" style="background:#3448c5"></span>Cloudinary</strong><span>Product images uploaded from the admin and served from Cloudinary's CDN.</span></div>
+          <div class="svc"><small>Payments</small><strong><span class="dot" style="background:#635bff"></span>Stripe</strong><span>Checkout Sessions created server-side, so card details never touch the app.</span></div>
+          <div class="svc"><small>Email</small><strong><span class="dot" style="background:#0b996e"></span>Brevo</strong><span>Transactional welcome email for new newsletter subscribers.</span></div>
+        </div>
+
+        <div class="code-grid">
+          <div class="code-card">
+            <header><b>cart/cart.py</b><span>Session cart · simplified</span></header>
+<pre><code><span class="tok-k">class</span> <span class="tok-f">Cart</span>():
+    <span class="tok-k">def</span> <span class="tok-f">__init__</span>(self, request):
+        self.session = request.session
+        self.cart = self.session.setdefault(<span class="tok-s">"cart"</span>, {})
+
+    <span class="tok-k">def</span> <span class="tok-f">add</span>(self, product_id):
+        product_id = str(product_id)
+        <span class="tok-k">if</span> product_id <span class="tok-k">not in</span> self.cart:
+            self.cart[product_id] = {<span class="tok-s">"quantity"</span>: <span class="tok-n">1</span>}
+        <span class="tok-k">else</span>:
+            self.cart[product_id][<span class="tok-s">"quantity"</span>] += <span class="tok-n">1</span>
+        self.session.modified = <span class="tok-k">True</span>  <span class="tok-c"># persist the change</span></code></pre>
+          </div>
+          <div class="code-card">
+            <header><b>ecommerce_app/views.py</b><span>Stripe Checkout · simplified</span></header>
+<pre><code><span class="tok-k">def</span> <span class="tok-f">checkout</span>(request):
+    stripe.api_key = settings.STRIPE_SECRET_KEY
+    total = int(float(request.POST.get(<span class="tok-s">'total'</span>))) * <span class="tok-n">100</span>
+
+    session = stripe.checkout.Session.<span class="tok-f">create</span>(
+        payment_method_types=[<span class="tok-s">'card'</span>],
+        line_items=[{<span class="tok-s">'price_data'</span>: {
+            <span class="tok-s">'currency'</span>: <span class="tok-s">'eur'</span>,
+            <span class="tok-s">'unit_amount'</span>: total,
+            ...}, <span class="tok-s">'quantity'</span>: <span class="tok-n">1</span>}],
+        mode=<span class="tok-s">'payment'</span>,
+        success_url=home_url + <span class="tok-s">'?status=success'</span>,
+        cancel_url=cart_url + <span class="tok-s">'?status=cancel'</span>,
+    )
+    <span class="tok-k">return</span> redirect(session.url, code=<span class="tok-n">303</span>)</code></pre>
+          </div>
+        </div>
+
+        <div class="stack" aria-label="Tech stack">
+          <span class="chip"><i style="background:#3776ab"></i>Python</span>
+          <span class="chip"><i style="background:#0c4b33"></i>Django 5.2</span>
+          <span class="chip"><i style="background:#336791"></i>PostgreSQL · Neon</span>
+          <span class="chip"><i style="background:#38bdf8"></i>Tailwind CSS 4</span>
+          <span class="chip"><i style="background:#e5c100"></i>JavaScript</span>
+          <span class="chip"><i style="background:#635bff"></i>Stripe</span>
+          <span class="chip"><i style="background:#3448c5"></i>Cloudinary</span>
+          <span class="chip"><i style="background:#0b996e"></i>Brevo</span>
+          <span class="chip"><i style="background:#499848"></i>Gunicorn</span>
+          <span class="chip"><i style="background:#9ca3af"></i>WhiteNoise</span>
+          <span class="chip"><i style="background:#6d28d9"></i>Render</span>
+          <span class="chip"><i style="background:#f05033"></i>Git</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= RUN LOCALLY ================= -->
+    <section id="run">
+      <div class="wrap run-grid">
+        <div>
+          <p class="kicker">Run it yourself</p>
+          <h2>Local setup</h2>
+          <p style="color:var(--ink-2)">You need Python 3, Node.js (for the Tailwind CLI), a PostgreSQL database such as a free Neon instance, and Cloudinary and Stripe accounts in test mode.</p>
+          <ol class="steps">
+            <li>Create a <code>.env</code> file with <code>SECRET_KEY</code>, <code>DATABASE_URL</code>, <code>CLOUD_NAME</code>, <code>API_KEY</code>, <code>API_SECRET</code>, <code>STRIPE_PUBLIC_KEY</code>, <code>STRIPE_SECRET_KEY</code> and, for the newsletter, <code>BREVO_API_KEY</code>.</li>
+            <li>Run the migrations and create an admin user to load products.</li>
+            <li>Run <code>npm run dev</code> to build the CSS and start Django and the Tailwind watcher together.</li>
+          </ol>
+          <div class="note" style="margin-top:20px">
+            <strong>Testing the checkout?</strong> With Stripe in test mode, pay with the test card <code>4242 4242 4242 4242</code>, any future expiry date and any CVC. More cases are in <a href="https://docs.stripe.com/testing" target="_blank" rel="noopener">Stripe's testing docs</a>.
+          </div>
+        </div>
+        <div class="code-card">
+          <header><b>terminal</b><span>bash</span></header>
+<pre><code>git clone https://github.com/lautaroreche/E-Commerce-Django.git
+<span class="tok-k">cd</span> E-Commerce-Django
+
+python -m venv venv
+<span class="tok-k">source</span> venv/bin/activate
+pip install -r requirements.txt
+npm install
+
+python manage.py migrate
+python manage.py createsuperuser
+
+npm run dev   <span class="tok-c"># Tailwind build + watcher + Django</span></code></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <div class="wrap">
+      <div>
+        <h2>Built by Lautaro Reche</h2>
+        <p>IT Support &amp; Incident Management · Python · SQL · Dublin</p>
+      </div>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://www.linkedin.com/in/lautaroreche/" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-linkedin"/></svg>LinkedIn</a>
+        <a class="btn btn-ghost" href="https://github.com/lautaroreche" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-github"/></svg>GitHub</a>
+      </div>
+      <div class="fineprint">Ragusa is a personal portfolio project, not a real shop. Product names and images belong to their respective brands.</div>
+    </div>
+  </footer>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Enlarged screenshot">
+    <button type="button" id="lightbox-close" aria-label="Close"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+    <img id="lightbox-img" src="" alt="">
+  </dialog>
+
+  <script>
+  (() => {
+    const $ = s => document.querySelector(s);
+
+    /* ============ 1. Wake up the Render server ============ */
+    const APP_URL = 'https://ragusa-ecommerce.onrender.com/';
+    const PROBE = APP_URL + 'static/images/logo.webp';
+    const statusEl = $('#server-status');
+    const label = $('#status-label');
+    const text = $('#status-text');
+    const started = Date.now();
+    const GIVE_UP_MS = 150000;
+    const setState = (state, l, t) => { statusEl.dataset.state = state; label.textContent = l; if (t) text.textContent = t; };
+
+    // An <img> only fires "load" when Django/WhiteNoise actually returns the image,
+    // so it reliably tells us when the app is up (Render's wake-up page is HTML).
+    const probe = () => {
+      const img = new Image();
+      const timer = setTimeout(() => { img.onload = img.onerror = null; img.src = ''; retry(); }, 20000);
+      img.onload = () => { clearTimeout(timer); setState('ready', 'Live store is ready', 'The server is awake, so the store will open instantly. Payments run in Stripe test mode.'); };
+      img.onerror = () => { clearTimeout(timer); retry(); };
+      img.src = PROBE + '?ping=' + Date.now();
+    };
+    const retry = () => {
+      const elapsed = Date.now() - started;
+      if (elapsed > GIVE_UP_MS) { setState('down', 'Server not responding', 'The live store did not respond this time. The demo and screenshots below show how it works.'); return; }
+      setState('waking', `Waking up the server… ${Math.round(elapsed / 1000)}s`);
+      setTimeout(probe, 3000);
+    };
+    setTimeout(() => { if (statusEl.dataset.state === 'checking') setState('waking', 'Waking up the server…'); }, 1500);
+    const tick = setInterval(() => {
+      if (statusEl.dataset.state !== 'waking') { if (statusEl.dataset.state !== 'checking') clearInterval(tick); return; }
+      label.textContent = `Waking up the server… ${Math.round((Date.now() - started) / 1000)}s`;
+    }, 1000);
+    probe();
+
+    /* ============ 2. Demo store ============ */
+    const PRODUCTS = [
+      { id: 11, name: 'Alfajor Milka triple', cat: 'Alfajor', price: 5, tag: 'top' },
+      { id: 12, name: 'Alfajor Oreo triple', cat: 'Alfajor', price: 5, tag: 'trend' },
+      { id: 13, name: 'Alfajor Shot triple', cat: 'Alfajor', price: 6, tag: 'trend' },
+      { id: 15, name: 'Alfajor Tita doble', cat: 'Alfajor', price: 4 },
+      { id: 9, name: 'Dulce de leche Milkaut', cat: 'Dulce de leche', price: 7, tag: 'top' },
+      { id: 8, name: 'Dulce de leche San Ignacio', cat: 'Dulce de leche', price: 6, tag: 'trend' },
+      { id: 1, name: 'Yerba Playadito 500 g', cat: 'Yerba', price: 4, tag: 'top' },
+      { id: 6, name: 'Yerba Cbsé 1 kg', cat: 'Yerba', price: 9, tag: 'trend' },
+    ];
+    const CATS = ['All', 'Alfajor', 'Dulce de leche', 'Yerba'];
+    const byId = id => PRODUCTS.find(p => p.id === id);
+    const esc = s => s.replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+    let state;
+    const reset = () => { state = { cart: {}, saved: [], cat: 'All', query: '', view: 'all' }; };
+    reset();
+
+    const grid = $('#pgrid'), logLine = $('#log-line'), store = $('#store');
+    const log = t => { logLine.textContent = t; logLine.classList.remove('flash'); void logLine.offsetWidth; logLine.classList.add('flash'); };
+    const toast = (msg, kind = 'error') => {
+      store.querySelectorAll('.dtoast').forEach(t => t.remove());
+      const colors = { success: '#10b981', error: '#ef4444', warning: '#f59e0b' };
+      const icon = { success: '✓', error: '✕', warning: '!' };
+      const el = document.createElement('div');
+      el.className = 'dtoast'; el.setAttribute('role', 'status');
+      el.innerHTML = `<i style="background:${colors[kind]}">${icon[kind]}</i><span>${esc(msg)}</span>`;
+      store.appendChild(el);
+      setTimeout(() => el.remove(), 3500);
+    };
+
+    $('#cats').innerHTML = CATS.map(c => `<button type="button" class="cat" data-cat="${c}" aria-pressed="${c === 'All'}">${c}</button>`).join('');
+
+    function visible() {
+      if (state.view === 'saved') return PRODUCTS.filter(p => state.saved.includes(p.id));
+      let list = PRODUCTS;
+      if (state.cat !== 'All') list = list.filter(p => p.cat === state.cat);
+      if (state.query) { const q = state.query.toLowerCase(); list = list.filter(p => (p.name + ' ' + p.cat).toLowerCase().includes(q)); }
+      return [...list].sort((a, b) => a.name.localeCompare(b.name));
+    }
+
+    function render() {
+      const list = visible();
+      $('#grid-title').textContent = state.view === 'saved' ? 'Saved' : state.query ? `Results for "${state.query}"` : state.cat === 'All' ? 'All Products' : state.cat;
+      $('#grid-count').textContent = `${list.length} item${list.length === 1 ? '' : 's'}`;
+      document.querySelectorAll('.cat').forEach(b => b.setAttribute('aria-pressed', state.view === 'all' && !state.query && b.dataset.cat === state.cat));
+      grid.innerHTML = list.length ? list.map(p => {
+        const qty = state.cart[p.id] || 0, saved = state.saved.includes(p.id);
+        return `<article class="pcard ${qty ? 'in-cart' : ''}">
+          <div class="pimg"><img src="assets/products/${p.id}.webp" alt="${esc(p.name)}" width="280" height="280" loading="lazy"></div>
+          ${p.tag ? `<span class="tag ${p.tag}">${p.tag === 'top' ? 'Top' : 'Trending'}</span>` : ''}
+          <button type="button" class="save" data-save="${p.id}" aria-pressed="${saved}" aria-label="${saved ? 'Remove from saved' : 'Save'} ${esc(p.name)}"><svg><use href="#i-bookmark"/></svg></button>
+          <div class="pinfo">
+            <div><small>${p.cat}</small><b>${esc(p.name)}</b></div>
+            <div class="prow"><span class="price">€${p.price}</span>
+              ${qty ? `<span class="stepper"><button type="button" data-dec="${p.id}" aria-label="One less">−</button><span>${qty}</span><button type="button" class="plus" data-add="${p.id}" aria-label="One more">+</button></span>`
+                    : `<button type="button" class="add" data-add="${p.id}" aria-label="Add ${esc(p.name)} to cart">+ Add</button>`}
+            </div>
+          </div>
+        </article>`;
+      }).join('') : `<p class="empty">${state.view === 'saved' ? 'Nothing saved yet. Tap the bookmark on a product.' : 'No products here.'}</p>`;
+
+      const ids = Object.keys(state.cart).map(Number).sort((a, b) => byId(a).name.localeCompare(byId(b).name));
+      const count = ids.reduce((n, id) => n + state.cart[id], 0);
+      const total = ids.reduce((n, id) => n + state.cart[id] * byId(id).price, 0);
+      const cc = $('#cart-count'); cc.textContent = count; cc.hidden = !count;
+      const sc = $('#saved-count'); sc.textContent = state.saved.length; sc.hidden = !state.saved.length;
+      $('#cart-btn').classList.toggle('is-dark', count > 0);
+      $('#cart-sub').textContent = `${count} product${count === 1 ? '' : 's'}`;
+      $('#cart-total').textContent = `€${total}`;
+      $('#pay').disabled = !count;
+      $('#cart-items').innerHTML = ids.length ? ids.map(id => {
+        const p = byId(id);
+        return `<li><img src="assets/products/${id}.webp" alt=""><div class="ci"><b>${esc(p.name)}</b><span>€${p.price * state.cart[id]}</span></div>
+          <span class="stepper"><button type="button" data-dec="${id}" aria-label="One less ${esc(p.name)}">−</button><span>${state.cart[id]}</span><button type="button" class="plus" data-add="${id}" aria-label="One more ${esc(p.name)}">+</button></span></li>`;
+      }).join('') : `<li style="border:0;display:block" class="cart-empty"><svg><use href="#i-cart"/></svg>Your cart is empty.<br>Add a product to see it here.</li>`;
+    }
+
+    store.addEventListener('click', e => {
+      const add = e.target.closest('[data-add]'), dec = e.target.closest('[data-dec]'), save = e.target.closest('[data-save]'), cat = e.target.closest('[data-cat]');
+      if (add) {
+        const id = +add.dataset.add; state.cart[id] = (state.cart[id] || 0) + 1;
+        log(`GET /add_to_cart/${id}/  →  session["cart"]["${id}"] = {"quantity": ${state.cart[id]}}`);
+      } else if (dec) {
+        const id = +dec.dataset.dec; state.cart[id]--;
+        if (state.cart[id] <= 0) { delete state.cart[id]; log(`GET /decrement_from_cart/${id}/  →  removed from session["cart"]`); }
+        else log(`GET /decrement_from_cart/${id}/  →  session["cart"]["${id}"] = {"quantity": ${state.cart[id]}}`);
+      } else if (save) {
+        const id = +save.dataset.save, i = state.saved.indexOf(id);
+        i === -1 ? state.saved.push(id) : state.saved.splice(i, 1);
+        log(`GET /manage_favorites/${id}/  →  session["favorites"] = [${state.saved.join(', ')}]`);
+      } else if (cat) {
+        state.view = 'all'; state.cat = cat.dataset.cat; state.query = ''; $('#q').value = '';
+        log(cat.dataset.cat === 'All' ? 'GET /  →  Product.objects.all()' : `GET /filter_category/${cat.dataset.cat.toLowerCase()}/  →  Product.objects.filter(category="${cat.dataset.cat}")`);
+      } else if (e.target.closest('#saved-btn')) {
+        if (!state.saved.length) { toast("You don't have any favorites yet", 'warning'); log('GET /favorites/  →  redirect("home") with a warning'); return; }
+        state.view = 'saved'; log(`GET /favorites/  →  ${state.saved.length} saved product${state.saved.length === 1 ? '' : 's'}`);
+      } else if (e.target.closest('#cart-btn')) {
+        if (!Object.keys(state.cart).length) { toast("You don't have any products in your cart yet", 'warning'); log('GET /cart/  →  redirect("home") with a warning'); return; }
+        $('.cart-pane').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        log('GET /cart/  →  Cart(request).get_total_cart()');
+        return;
+      } else if (e.target.closest('#pay')) {
+        const total = Object.keys(state.cart).reduce((n, id) => n + state.cart[id] * byId(+id).price, 0);
+        log(`POST /checkout/ total=${total}  →  stripe.checkout.Session.create(eur ${total}.00)  →  303 to Stripe`);
+        const btn = $('#pay'); btn.disabled = true; btn.textContent = 'Redirecting to Stripe…';
+        setTimeout(() => {
+          state.cart = {}; render();
+          btn.innerHTML = '<svg aria-hidden="true"><use href="#i-lock"/></svg>Pay with Stripe';
+          toast('Payment made successfully! (demo: no card was charged)', 'success');
+          log('GET /?status=success  →  session["cart"] cleared');
+        }, 1300);
+        return;
+      } else return;
+      render();
+    });
+
+    $('#store-search').addEventListener('submit', e => {
+      e.preventDefault();
+      const q = $('#q').value.trim();
+      if (!q) { toast('You have not searched for any product. Try writing something'); log('POST /search/ input_text=""  →  redirect with an error'); return; }
+      const hits = PRODUCTS.filter(p => (p.name + ' ' + p.cat).toLowerCase().includes(q.toLowerCase()));
+      if (!hits.length) { toast(`No results found for: '${q}'`); log(`POST /search/ input_text="${q}"  →  no matches, redirect with an error`); return; }
+      state.view = 'all'; state.cat = 'All'; state.query = q;
+      log(`POST /search/ input_text="${q}"  →  ${hits.length} result${hits.length === 1 ? '' : 's'} (name, description or category)`);
+      render();
+    });
+
+    $('#reset-demo').addEventListener('click', () => { reset(); $('#q').value = ''; logLine.textContent = 'waiting for an action…'; render(); });
+    render();
+
+    /* ============ 3. Screenshot tabs ============ */
+    const SHOTS = [
+      { id: 'home', tab: 'Home', src: 'assets/home.webp', w: 1440, h: 900, url: 'ragusa-ecommerce.onrender.com',
+        alt: 'Home page with header, category bar, hero and product grid.',
+        title: 'Home', text: 'A sticky header with search, saved products and cart counters, a category bar and the full catalogue sorted by name.',
+        points: ['Top and Trending tags on the cards', 'Cards in the cart are highlighted with their quantity', 'Explore Categories, Top by Category and Trending sections below'] },
+      { id: 'product', tab: 'Product', src: 'assets/product.webp', w: 1440, h: 900, url: 'ragusa-ecommerce.onrender.com/detail/11/',
+        alt: 'Product page with image gallery, price and cart controls.',
+        title: 'Product page', text: 'A large image with a gallery for up to five Cloudinary images, plus price, stock, shipping and the cart controls.',
+        points: ['Breadcrumb back to the category', 'Quantity stepper once the product is in the cart', 'Save it for later from the image'] },
+      { id: 'cart', tab: 'Cart', src: 'assets/cart.webp', w: 1440, h: 900, url: 'ragusa-ecommerce.onrender.com/cart/',
+        alt: 'Cart with two products and an order summary with the Pay with Stripe button.',
+        title: 'Cart and checkout', text: 'Line subtotals calculated from the database, an order summary and the button that opens Stripe Checkout.',
+        points: ['Change quantities or remove products', 'Total sent to Stripe in euros', 'Cart cleared after a successful payment'] },
+      { id: 'saved', tab: 'Saved', src: 'assets/saved.webp', w: 1440, h: 900, url: 'ragusa-ecommerce.onrender.com/favorites/',
+        alt: 'Saved products list with the Add all to cart button.',
+        title: 'Saved products', text: 'Everything bookmarked during the visit, ready to move into the cart in one go.',
+        points: ['Stored in the session, no account needed', 'Remove items individually', '"Add all to cart" in one click'] },
+      { id: 'search', tab: 'Search', src: 'assets/search.webp', w: 1440, h: 900, url: 'ragusa-ecommerce.onrender.com/search/',
+        alt: 'Search results for yerba.',
+        title: 'Search', text: 'Results for the name, description or category, using the same card grid as the rest of the store.',
+        points: ['Validates empty and too-long queries', 'Clear message when nothing matches', 'Query kept in the session'] },
+      { id: 'mobile', tab: 'Mobile', src: 'assets/mobile.webp', w: 1440, h: 900, url: 'Mobile view',
+        alt: 'Three phone screens: home, product page and cart.',
+        title: 'Mobile', text: 'The same store on a phone: search under the logo, a scrollable category bar and a two-column product grid.',
+        points: ['Top and Trending rows scroll sideways', 'Order summary below the cart items', 'Large tap targets for the cart controls'] },
+    ];
+    const tabs = $('#shot-tabs'), shotImg = $('#shot-img'), shotUrl = $('#shot-url'), caption = $('#shot-caption');
+    tabs.innerHTML = SHOTS.map((s, i) => `<button class="tab" role="tab" id="tab-${s.id}" aria-controls="shot-panel" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}" data-i="${i}">${s.tab}</button>`).join('');
+    let preloaded = false;
+    function showShot(i, focus) {
+      const s = SHOTS[i];
+      tabs.querySelectorAll('.tab').forEach((t, j) => { t.setAttribute('aria-selected', j === i); t.tabIndex = j === i ? 0 : -1; });
+      shotImg.src = s.src; shotImg.alt = s.alt; shotUrl.textContent = s.url;
+      $('#shot-panel').setAttribute('aria-labelledby', 'tab-' + s.id);
+      caption.innerHTML = `<p class="kicker">${String(i + 1).padStart(2, '0')} / ${String(SHOTS.length).padStart(2, '0')}</p><h3>${s.title}</h3><p>${s.text}</p><ul>${s.points.map(p => `<li>${p}</li>`).join('')}</ul>`;
+      if (focus) tabs.children[i].focus();
+      if (!preloaded) { preloaded = true; SHOTS.forEach(x => { const im = new Image(); im.src = x.src; }); }
+    }
+    tabs.addEventListener('click', e => { const b = e.target.closest('.tab'); if (b) showShot(+b.dataset.i); });
+    tabs.addEventListener('keydown', e => {
+      const cur = [...tabs.children].findIndex(t => t.getAttribute('aria-selected') === 'true');
+      if (e.key === 'ArrowRight') showShot((cur + 1) % SHOTS.length, true);
+      if (e.key === 'ArrowLeft') showShot((cur - 1 + SHOTS.length) % SHOTS.length, true);
+    });
+    showShot(0);
+
+    /* ============ 4. Lightbox ============ */
+    const lb = $('#lightbox'), lbImg = $('#lightbox-img');
+    document.addEventListener('click', e => {
+      const img = e.target.closest('img[data-zoom]');
+      if (!img || typeof lb.showModal !== 'function') return;
+      lbImg.src = img.currentSrc || img.src; lbImg.alt = img.alt;
+      lb.showModal();
+    });
+    $('#lightbox-close').addEventListener('click', () => lb.close());
+    lb.addEventListener('click', e => { if (e.target === lb) lb.close(); });
+  })();
+  </script>
+</body>
+</html>

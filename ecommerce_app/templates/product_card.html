@@ -1,0 +1,33 @@
+<article class="group relative flex flex-col h-full bg-white rounded-2xl border overflow-hidden transition duration-200 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-slate-900/[.06] {% if product.id in cart_products %}border-emerald-300 ring-2 ring-emerald-400/70{% else %}border-slate-200/80 hover:border-slate-300{% endif %}">
+    <!-- Image -->
+    <div class="relative">
+        <a href="{% url 'detail' product.id %}" aria-label="{{ product.name }}" class="block aspect-square bg-linear-to-b from-slate-50 to-white">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy" class="w-full h-full object-contain p-3 md:p-4 mix-blend-multiply transition-transform duration-300 group-hover:scale-105">
+        </a>
+        <div class="absolute top-2.5 left-2.5">
+            {% include 'manage_tags.html' %}
+        </div>
+        <div class="absolute top-2 right-2">
+            {% include 'manage_favorites.html' %}
+        </div>
+        {% if product.id in cart_products %}
+            <span class="absolute bottom-2 left-2.5 inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[11px] font-semibold ring-1 ring-emerald-200">
+                <i class="fa-solid fa-check text-[9px]"></i> In cart
+            </span>
+        {% endif %}
+    </div>
+
+    <!-- Info -->
+    <div class="flex flex-col flex-1 justify-between gap-3 p-3 md:p-4 pt-2 md:pt-2">
+        <div>
+            <p class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">{{ product.category }}</p>
+            <a href="{% url 'detail' product.id %}" aria-label="{{ product.name }}">
+                <h3 class="mt-0.5 font-semibold text-slate-800 leading-snug line-clamp-2 min-h-[2.75em] hover:text-slate-950" title="{{ product.name }}">{{ product.name }}</h3>
+            </a>
+        </div>
+        <div class="flex items-center justify-between gap-2">
+            <p class="text-lg font-bold text-slate-900 tabular-nums">€{{ product.price|floatformat:0 }}</p>
+            {% include 'manage_cart_quantity.html' %}
+        </div>
+    </div>
+</article>

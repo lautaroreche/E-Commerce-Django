@@ -1,59 +1,61 @@
 {% load static %}
 
 
-<footer class="bg-white border-t border-gray-100">
-    <!-- Back to top -->
-    <a href="#" class="flex justify-center items-center py-3 w-full bg-gray-50 hover:bg-gray-100 transition-colors font-medium text-gray-500 border-b border-gray-100">
-        <i class="fa-solid fa-chevron-up mr-2 text-xs"></i> Back to top
-    </a>
-
-    <div class="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-4 gap-10">
-        <div>
-            <img src="{% static 'images/logo.webp' %}" alt="Ragusa ecommerce logo" class="w-28 mb-4">
-            <p class="text-gray-500 leading-relaxed">
-                Ragusa ecommerce is your go-to online shop for high-quality products. Fast delivery and unbeatable deals.
-            </p>
-        </div>
-        <div>
-            <p class="font-semibold text-gray-800 uppercase tracking-wider mb-4">Quick Links</p>
-            <ul class="space-y-2 text-gray-500">
-                <li><a href="{% url 'home' %}" class="hover:text-slate-800 transition-colors">Home</a></li>
-                <li><a href="{% url 'favorites' %}" class="hover:text-slate-800 transition-colors">Favorites</a></li>
-                <li><a href="{% url 'cart' %}" class="hover:text-slate-800 transition-colors">Cart</a></li>
-            </ul>
-        </div>
-        <div>
-            <p class="font-semibold text-gray-800 uppercase tracking-wider mb-4">Contact</p>
-            <ul class="space-y-2 text-gray-500">
-                <li>mail@mail.com</li>
-                <li>+353 123 456 789</li>
-                <li>123 Main St, Dublin, Ireland</li>
-            </ul>
-        </div>
-        <div>
-            <p class="font-semibold text-gray-800 uppercase tracking-wider mb-4">Newsletter</p>
-            <form action="{% url 'newsletter' %}" method="POST" class="flex flex-col gap-2 max-w-72">
-                {% csrf_token %}
-                <input type="email" name="email" placeholder="Your email address" class="px-3 py-2 rounded-lg bg-gray-50 border border-gray-200 outline-none placeholder-gray-400 focus:border-slate-400 transition-colors" maxlength="40" required>
-                <button type="submit" class="cursor-pointer bg-slate-800 hover:bg-slate-700 transition-colors text-white font-medium py-2 rounded-lg">Subscribe</button>
-            </form>
-            <div class="flex gap-4 mt-5 text-lg text-gray-400">
-                <a href="https://www.instagram.com/" rel="noopener noreferrer" class="hover:text-slate-700 transition-colors" aria-label="Instagram button">
-                    <i class="fa-brands fa-instagram"></i>
-                </a>
-                <a href="https://www.facebook.com/" rel="noopener noreferrer" class="hover:text-slate-700 transition-colors" aria-label="Facebook button">
-                    <i class="fa-brands fa-facebook"></i>
-                </a>
-                <a href="https://x.com/" rel="noopener noreferrer" class="hover:text-slate-700 transition-colors" aria-label="X / Twitter button">
-                    <i class="fa-brands fa-twitter"></i>
-                </a>
-                <a href="https://www.tiktok.com/" rel="noopener noreferrer" class="hover:text-slate-700 transition-colors" aria-label="TikTok button">
-                    <i class="fa-brands fa-tiktok"></i>
-                </a>
+<footer class="bg-white border-t border-slate-200/70">
+    <div class="max-w-7xl mx-auto px-4 md:px-8 pt-12 pb-8">
+        <div class="grid grid-cols-2 md:grid-cols-12 gap-8 md:gap-10">
+            <div class="col-span-2 md:col-span-4">
+                <img src="{% static 'images/logo-mark.webp' %}" alt="Ragusa ecommerce logo" width="472" height="389" class="h-14 w-auto mb-4">
+                <p class="text-sm text-slate-500 leading-relaxed max-w-xs">
+                    Ragusa ecommerce is your go-to online shop for high-quality products. Fast delivery and unbeatable deals.
+                </p>
+                <div class="flex gap-2 mt-5">
+                    <a href="https://www.instagram.com/" rel="noopener noreferrer" class="w-9 h-9 grid place-items-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-800 hover:text-white transition-colors" aria-label="Instagram button">
+                        <i class="fa-brands fa-instagram"></i>
+                    </a>
+                    <a href="https://www.facebook.com/" rel="noopener noreferrer" class="w-9 h-9 grid place-items-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-800 hover:text-white transition-colors" aria-label="Facebook button">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </a>
+                    <a href="https://x.com/" rel="noopener noreferrer" class="w-9 h-9 grid place-items-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-800 hover:text-white transition-colors" aria-label="X / Twitter button">
+                        <i class="fa-brands fa-x-twitter"></i>
+                    </a>
+                    <a href="https://www.tiktok.com/" rel="noopener noreferrer" class="w-9 h-9 grid place-items-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-800 hover:text-white transition-colors" aria-label="TikTok button">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="md:col-span-2">
+                <p class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-4">Quick Links</p>
+                <ul class="space-y-2.5 text-sm text-slate-500">
+                    <li><a href="{% url 'home' %}" class="hover:text-slate-900 transition-colors">Home</a></li>
+                    <li><a href="{% url 'favorites' %}" class="hover:text-slate-900 transition-colors">Favorites</a></li>
+                    <li><a href="{% url 'cart' %}" class="hover:text-slate-900 transition-colors">Cart</a></li>
+                </ul>
+            </div>
+            <div class="md:col-span-3">
+                <p class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-4">Contact</p>
+                <ul class="space-y-2.5 text-sm text-slate-500">
+                    <li class="flex items-center gap-2"><i class="fa-regular fa-envelope w-4 text-slate-400"></i>mail@mail.com</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-phone w-4 text-slate-400 text-xs"></i>+353 123 456 789</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-location-dot w-4 text-slate-400"></i>123 Main St, Dublin, Ireland</li>
+                </ul>
+            </div>
+            <div class="col-span-2 md:col-span-3">
+                <p class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-4">Newsletter</p>
+                <p class="text-sm text-slate-500 mb-3">New arrivals and offers, straight to your inbox.</p>
+                <form action="{% url 'newsletter' %}" method="POST" class="flex items-center gap-1.5 p-1.5 rounded-full bg-slate-50 ring-1 ring-slate-200 focus-within:ring-2 focus-within:ring-brand-blue transition">
+                    {% csrf_token %}
+                    <input type="email" name="email" placeholder="Your email address" aria-label="Email address" class="flex-1 min-w-0 pl-3 bg-transparent text-sm outline-none placeholder-slate-400" maxlength="40" required>
+                    <button type="submit" class="shrink-0 cursor-pointer bg-slate-800 hover:bg-slate-700 transition-colors text-white text-sm font-semibold h-9 px-4 rounded-full">Subscribe</button>
+                </form>
             </div>
         </div>
-    </div>
-    <div class="text-center text-xs text-gray-400 py-4 border-t border-gray-100">
-        &copy; {{ current_year }} Ragusa ecommerce. All rights reserved.
+
+        <div class="mt-10 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+            <p>&copy; {{ current_year }} Ragusa ecommerce. All rights reserved.</p>
+            <a href="#" class="inline-flex items-center gap-1.5 font-semibold text-slate-500 hover:text-slate-800 transition-colors">
+                <i class="fa-solid fa-arrow-up text-[10px]"></i> Back to top
+            </a>
+        </div>
     </div>
 </footer>

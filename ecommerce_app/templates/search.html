@@ -5,9 +5,15 @@
 {% block title %}Search | Ragusa ecommerce{% endblock %}
 
 {% block content %}
-    <main class="px-2 md:px-8 py-12 bg-gray-100">
-        <h2 class="text-2xl md:text-4xl font-semibold text-center">Results for "{{ query }}"</h2>
-        
-        {% include 'product_cards.html' %}
+    <main class="bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 py-8 md:py-12">
+            <p class="text-sm font-semibold text-slate-400 uppercase tracking-wider">Search results</p>
+            <div class="flex items-end justify-between gap-4 mt-1 mb-6 md:mb-8">
+                <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight text-slate-900">"{{ query }}"</h1>
+                <span class="px-3 py-1 rounded-full bg-white ring-1 ring-slate-200 text-sm font-semibold text-slate-500">{{ products|length }} found</span>
+            </div>
+
+            {% include 'product_cards.html' %}
+        </div>
     </main>
 {% endblock %}

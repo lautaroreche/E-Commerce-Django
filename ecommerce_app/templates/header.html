@@ -1,47 +1,67 @@
 {% load static %}
 
 
-<header class="sticky top-0 z-50 bg-white border-b border-gray-100 shadow-sm">
-    <nav class="flex-col">
+<header class="sticky top-0 z-50 shadow-[0_1px_0_rgba(15,23,42,.06),0_8px_24px_-18px_rgba(15,23,42,.35)]">
+    <nav>
         <!-- Top bar -->
-        <div class="flex justify-between items-center gap-3 px-4 md:px-8 py-1 bg-blue-100">
-            <a href="{% url 'home' %}" aria-label="Ragusa ecommerce logo" class="flex items-center gap-1 md:min-w-40">
-                <img src="{% static 'images/logo.webp' %}" alt="Ragusa ecommerce logo" class="w-32 md:w-44">
-            </a>
-
-            <!-- Search bar -->
-            <form action="{% url 'search' %}" method="POST" class="hidden md:flex flex-1 max-w-xl mx-6 border-2 border-blue-200 rounded-full overflow-hidden shadow-xs">
-                {% csrf_token %}
-                <input type="text" name="input_text" placeholder="Search products..." class="px-4 py-2 w-full outline-none bg-white placeholder-gray-500" maxlength="40" required>
-                <button type="submit" aria-label="Search button" class="px-4 bg-slate-800 hover:bg-slate-700 hover:cursor-pointer transition-colors">
-                    <i class="fa-solid fa-magnifying-glass text-white"></i>
-                </button>
-            </form>
-
-            <!-- Actions -->
-            <div class="flex items-center justify-end gap-5 md:min-w-40">
-                <a href="{% url 'favorites' %}" aria-label="Favorites section" class="save-scroll flex flex-col items-center gap-0.5 text-slate-800 hover:text-slate-700 transition-colors">
-                    <i class="fa-regular fa-bookmark text-xl"></i>
-                    <span class="font-medium hidden md:block">Saved</span>
+        <div class="bg-linear-to-r from-brand-blue-100 via-brand-blue-50 to-brand-blue-100">
+            <div class="max-w-7xl mx-auto flex items-center justify-between gap-4 px-4 md:px-8 h-16 md:h-20">
+                <a href="{% url 'home' %}" aria-label="Ragusa ecommerce home" class="flex items-center shrink-0 transition-transform hover:scale-[1.02]">
+                    <img src="{% static 'images/logo-mark.webp' %}" alt="Ragusa ecommerce logo" width="472" height="389" class="h-12 md:h-16 w-auto">
                 </a>
-                <a href="{% url 'cart' %}" aria-label="Cart section" class="save-scroll flex flex-col items-center gap-0.5 text-slate-800 hover:text-slate-700 transition-colors">
-                    <i class="fa-solid {% if has_cart > 0 %}fa-cart-plus text-slate-800{% else %}fa-cart-shopping{% endif %} text-xl"></i>
-                    <span class="font-medium hidden md:block">Cart</span>
-                </a>
+
+                <!-- Search bar (desktop) -->
+                <form action="{% url 'search' %}" method="POST" role="search" class="hidden md:block relative flex-1 max-w-xl">
+                    {% csrf_token %}
+                    <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm pointer-events-none"></i>
+                    <input type="text" name="input_text" placeholder="Search yerba, alfajores, dulce de leche..." aria-label="Search products" class="w-full h-11 pl-11 pr-28 rounded-full bg-white ring-1 ring-brand-blue-200 shadow-sm outline-none placeholder-slate-400 focus:ring-2 focus:ring-brand-blue transition" maxlength="40" required>
+                    <button type="submit" class="absolute right-1.5 top-1/2 -translate-y-1/2 h-8 px-4 rounded-full bg-slate-800 hover:bg-slate-700 text-white text-sm font-semibold cursor-pointer transition-colors">
+                        Search
+                    </button>
+                </form>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-1 md:gap-2">
+                    <a href="{% url 'favorites' %}" aria-label="Saved products" class="save-scroll relative flex items-center gap-2 md:gap-3 h-10 px-2.5 md:px-3.5 rounded-full text-slate-800 hover:bg-white/80 transition-colors">
+                        <span class="relative">
+                            <i class="fa-{% if has_favorites %}solid{% else %}regular{% endif %} fa-bookmark text-lg"></i>
+                            {% if favorites_count %}
+                                <span class="absolute -top-2 -right-2.5 min-w-[18px] h-[18px] px-1 rounded-full bg-brand-amber text-slate-900 text-[10px] font-bold grid place-items-center ring-2 ring-brand-blue-50">{{ favorites_count }}</span>
+                            {% endif %}
+                        </span>
+                        <span class="font-semibold text-sm hidden md:block">Saved</span>
+                    </a>
+                    <a href="{% url 'cart' %}" aria-label="Cart" class="save-scroll relative flex items-center gap-2 md:gap-3 h-10 px-2.5 md:px-3.5 rounded-full {% if has_cart %}bg-slate-800 text-white hover:bg-slate-700{% else %}text-slate-800 hover:bg-white/80{% endif %} transition-colors">
+                        <span class="relative">
+                            <i class="fa-solid fa-cart-shopping text-lg"></i>
+                            {% if cart_count %}
+                                <span class="absolute -top-2 -right-2.5 min-w-[18px] h-[18px] px-1 rounded-full bg-brand-amber text-slate-900 text-[10px] font-bold grid place-items-center ring-2 ring-slate-800">{{ cart_count }}</span>
+                            {% endif %}
+                        </span>
+                        <span class="font-semibold text-sm hidden md:block">Cart</span>
+                    </a>
+                </div>
             </div>
+
+            <!-- Search bar (mobile) -->
+            <form action="{% url 'search' %}" method="POST" role="search" class="md:hidden relative px-4 pb-3">
+                {% csrf_token %}
+                <i class="fa-solid fa-magnifying-glass absolute left-8 top-[calc(50%-6px)] -translate-y-1/2 text-slate-400 text-sm pointer-events-none"></i>
+                <input type="text" name="input_text" placeholder="Search products..." aria-label="Search products" class="w-full h-10 pl-11 pr-4 rounded-full bg-white ring-1 ring-brand-blue-200 outline-none placeholder-slate-400 focus:ring-2 focus:ring-brand-blue transition" maxlength="40" required>
+            </form>
         </div>
 
         <!-- Category nav -->
-        <div class="border-t border-gray-100 bg-yellow-100">
-            <ul class="flex items-center gap-1 md:gap-2 px-4 md:px-8 py-2 overflow-x-auto scrollbar-hide font-medium">
+        <div class="bg-yellow-100/95 backdrop-blur border-t border-yellow-200/70">
+            <ul class="max-w-7xl mx-auto flex items-center gap-1.5 px-4 md:px-8 py-2 overflow-x-auto scrollbar-hide text-sm font-medium">
                 <li>
-                    <a href="{% url 'home' %}" aria-label="All products" class="whitespace-nowrap px-3 py-1.5 rounded-full hover:bg-yellow-200 hover:font-semibold transition-colors">
-                        All
+                    <a href="{% url 'home' %}" aria-label="All products" class="flex items-center gap-1.5 whitespace-nowrap px-3.5 py-1.5 rounded-full transition-colors {% if request.resolver_match.url_name == 'home' %}bg-brand-amber text-slate-900 font-semibold shadow-sm{% else %}text-slate-700 hover:bg-yellow-200/80{% endif %}">
+                        <i class="fa-solid fa-store text-xs"></i> All
                     </a>
                 </li>
                 {% for categorie in all_categories %}
                     <li>
-                        <a href="{% url 'filter_category' categorie.category %}" aria-label="{{ categorie.category }} section" class="whitespace-nowrap px-3 py-1.5 rounded-full hover:bg-yellow-200 hover:font-semibold transition-colors capitalize">
+                        <a href="{% url 'filter_category' categorie.category %}" aria-label="{{ categorie.category }} section" class="block whitespace-nowrap px-3.5 py-1.5 rounded-full transition-colors capitalize {% if category and category|lower == categorie.category|lower %}bg-brand-amber text-slate-900 font-semibold shadow-sm{% else %}text-slate-700 hover:bg-yellow-200/80{% endif %}">
                             {{ categorie.category }}
                         </a>
                     </li>

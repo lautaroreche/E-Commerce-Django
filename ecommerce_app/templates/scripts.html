@@ -10,7 +10,9 @@
     document.addEventListener('DOMContentLoaded', function() {
         const scrollPosition = localStorage.getItem('scrollPosition');
         if (scrollPosition) {
+            document.documentElement.style.scrollBehavior = 'auto';
             window.scrollTo(0, parseInt(scrollPosition));
+            document.documentElement.style.scrollBehavior = '';
             localStorage.removeItem('scrollPosition');
         }
     });
@@ -18,11 +20,28 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const toasts = document.querySelectorAll(".toast");
-        toasts.forEach(toast => {
-            setTimeout(() => {
-                toast.remove();
-            }, 5000);
+        const dismiss = toast => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 500);
+        };
+        document.querySelectorAll(".toast").forEach(toast => {
+            setTimeout(() => dismiss(toast), 5000);
+            toast.querySelector('.toast-close')?.addEventListener('click', () => dismiss(toast));
+        });
+    });
+</script>
+
+<script>
+    // Product detail gallery: swap the main image when a thumbnail is clicked
+    document.querySelectorAll('[data-gallery]').forEach(thumb => {
+        thumb.addEventListener('click', () => {
+            const main = document.getElementById('main-image');
+            if (!main) return;
+            main.src = thumb.dataset.gallery;
+            document.querySelectorAll('[data-gallery]').forEach(t => {
+                t.classList.toggle('border-slate-800', t === thumb);
+                t.classList.toggle('border-slate-200', t !== thumb);
+            });
         });
     });
 </script>
@@ -40,4 +59,3 @@
         document.body.style.opacity = '1';
     });
 </script>
-

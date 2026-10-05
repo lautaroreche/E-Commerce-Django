@@ -1,3 +1,3 @@
-<a href="{% url 'manage_favorites' product.id %}" aria-label="Manage favorites button" class="p-1 save-scroll">
-    <i class="fa-{% if product.id in favorite_products %}solid{% else %}regular{% endif %} fa-bookmark text-xl hover:text-yellow-300 transition-colors {% if product.id in favorite_products %}text-yellow-300{% else %}text-gray-500{% endif %}"></i>
+<a href="{% url 'manage_favorites' product.id %}" aria-label="{% if product.id in favorite_products %}Remove from saved{% else %}Save product{% endif %}" title="{% if product.id in favorite_products %}Saved{% else %}Save for later{% endif %}" class="save-scroll grid place-items-center w-9 h-9 rounded-full bg-white/90 backdrop-blur shadow-sm ring-1 transition {% if product.id in favorite_products %}ring-brand-amber/60 text-brand-amber{% else %}ring-slate-200 text-slate-400 hover:text-brand-amber hover:ring-brand-amber/60{% endif %}">
+    <i class="fa-{% if product.id in favorite_products %}solid{% else %}regular{% endif %} fa-bookmark"></i>
 </a>

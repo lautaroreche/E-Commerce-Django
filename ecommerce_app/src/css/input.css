@@ -1,15 +1,42 @@
 @import "tailwindcss";
 @source "../../../**/*.html";
 @source "../../../**/*.py";
+@source not "../../../docs";
 
+/* Brand colours taken from the Ragusa logo */
+@theme {
+    --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+    --color-brand-blue: #74abdf;
+    --color-brand-blue-50: #f1f7fd;
+    --color-brand-blue-100: #e1eefa;
+    --color-brand-blue-200: #c4dcf3;
+    --color-brand-amber: #feb81c;
+    --color-brand-amber-50: #fff8e8;
+    --color-brand-amber-100: #ffefc7;
+    --color-ink: #0f172a;
+}
 
 body {
     font-family: "Inter", sans-serif;
     font-optical-sizing: auto;
-    font-weight: 300;
+    font-weight: 400;
     font-style: normal;
     font-display: swap;
     box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
 }
 a { text-decoration: none; }
 ul { list-style: none; }
+
+.scrollbar-hide { scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+
+@keyframes toast-in {
+    from { opacity: 0; transform: translateY(-8px) scale(.98); }
+    to { opacity: 1; transform: none; }
+}
+.toast { animation: toast-in .25s ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}

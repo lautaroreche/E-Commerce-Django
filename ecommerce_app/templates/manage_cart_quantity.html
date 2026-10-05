@@ -1,21 +1,22 @@
 {% if product.id in cart_products %}
-    <div class="flex items-center gap-1">
-        <a href="{% url 'decrement_from_cart' product.id %}" aria-label="Decrement from cart" class="w-7 h-7 flex items-center justify-center bg-gray-100 hover:bg-red-300 text-gray-700 rounded-lg transition-colors save-scroll">
-            <i class="fa-solid fa-minus text-sm"></i>
+    <div class="flex items-center gap-0.5 rounded-full bg-slate-100 p-0.5">
+        <a href="{% url 'decrement_from_cart' product.id %}" aria-label="Decrement from cart" class="w-7 h-7 grid place-items-center rounded-full text-slate-700 hover:bg-white hover:text-red-500 transition-colors save-scroll">
+            <i class="fa-solid fa-minus text-xs"></i>
         </a>
         <div class="min-w-5 text-center">
             {% for key, value in request.session.cart.items %}
                 {% if key == product.id|stringformat:"s" %}
-                    <p class="font-bold text-gray-800">{{ value.quantity }}</p>
+                    <p class="font-bold text-sm text-slate-800 tabular-nums">{{ value.quantity }}</p>
                 {% endif %}
             {% endfor %}
         </div>
-        <a href="{% url 'add_to_cart' product.id %}" aria-label="Add to cart" class="w-7 h-7 flex items-center justify-center bg-slate-800 hover:bg-green-600 text-white rounded-lg transition-colors save-scroll">
-            <i class="fa-solid fa-plus text-sm"></i>
+        <a href="{% url 'add_to_cart' product.id %}" aria-label="Add one more to cart" class="w-7 h-7 grid place-items-center rounded-full bg-slate-800 hover:bg-emerald-600 text-white transition-colors save-scroll">
+            <i class="fa-solid fa-plus text-xs"></i>
         </a>
     </div>
 {% else %}
-    <a href="{% url 'add_to_cart' product.id %}" aria-label="Add to cart" class="w-8 h-8 flex items-center justify-center bg-slate-800 hover:bg-green-600 text-white rounded-lg transition-colors save-scroll">
-        <i class="fa-solid fa-cart-shopping text-sm"></i>
+    <a href="{% url 'add_to_cart' product.id %}" aria-label="Add {{ product.name }} to cart" class="inline-flex items-center justify-center gap-1.5 h-9 min-w-9 px-2.5 sm:px-3.5 rounded-full bg-slate-800 hover:bg-emerald-600 text-white text-sm font-semibold shadow-sm transition-colors save-scroll">
+        <i class="fa-solid fa-cart-plus text-xs"></i>
+        <span class="hidden sm:inline">Add</span>
     </a>
 {% endif %}

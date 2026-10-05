@@ -5,12 +5,59 @@
 {% block title %}Ragusa ecommerce{% endblock %}
 
 {% block content %}
-    <main class="px-4 md:px-8 py-10 bg-gray-50">
-        <div class="flex items-center justify-between mb-6">
-            <h2 class="text-xl md:text-2xl font-semibold text-gray-800">All Products</h2>
-            <span class="text-gray-400 font-medium">{{ products|length }} items</span>
-        </div>
+    <!-- Hero -->
+    <section class="relative overflow-hidden bg-linear-to-br from-brand-blue-50 via-white to-brand-amber-50 border-b border-slate-200/70">
+        <div class="pointer-events-none absolute -top-32 -left-24 w-96 h-96 rounded-full bg-brand-blue/20 blur-3xl"></div>
+        <div class="pointer-events-none absolute -bottom-40 -right-20 w-[28rem] h-[28rem] rounded-full bg-brand-amber/20 blur-3xl"></div>
 
-        {% include 'product_cards.html' %}
+        <div class="relative max-w-7xl mx-auto px-4 md:px-8 py-10 md:py-16 grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <div>
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 ring-1 ring-slate-200 text-xs font-semibold text-slate-600">
+                    <span class="flex gap-0.5"><i class="w-1.5 h-1.5 rounded-full bg-sky-300"></i><i class="w-1.5 h-1.5 rounded-full bg-white ring-1 ring-slate-200"></i><i class="w-1.5 h-1.5 rounded-full bg-sky-300"></i></span>
+                    Argentine classics, delivered
+                </span>
+                <h1 class="mt-4 text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.08]">
+                    A taste of home, <span class="relative whitespace-nowrap"><span class="relative z-10">one click away.</span><span class="absolute left-0 right-0 bottom-1 h-3 md:h-4 bg-brand-amber/60 -rotate-1 rounded"></span></span>
+                </h1>
+                <p class="mt-4 text-base md:text-lg text-slate-600 max-w-lg">Yerba mate, alfajores and dulce de leche from the brands you know. Save your favourites, fill your cart and pay securely with Stripe.</p>
+                <div class="mt-6 flex flex-wrap items-center gap-3">
+                    <a href="#products" class="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-slate-800 hover:bg-slate-700 text-white font-semibold shadow-lg shadow-slate-900/15 transition">
+                        Shop all products <i class="fa-solid fa-arrow-down text-xs"></i>
+                    </a>
+                    <a href="#trending" class="inline-flex items-center gap-2 h-11 px-5 rounded-full bg-white hover:bg-slate-50 ring-1 ring-slate-200 font-semibold text-slate-800 transition">
+                        <i class="fa-solid fa-fire text-rose-500 text-sm"></i> Trending
+                    </a>
+                </div>
+                <ul class="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-500">
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-truck-fast text-slate-400"></i> Free shipping from €99</li>
+                    <li class="flex items-center gap-2"><i class="fa-solid fa-lock text-slate-400"></i> Secure checkout</li>
+                </ul>
+            </div>
+
+            <div class="hidden md:grid grid-cols-3 gap-4 items-end">
+                {% for cat in categories_menu|slice:":3" %}
+                    <a href="{% url 'filter_category' cat.name|lower %}" class="group rounded-3xl bg-white/80 backdrop-blur ring-1 ring-slate-200/80 shadow-xl shadow-slate-900/5 p-4 transition hover:-translate-y-1 {% cycle 'translate-y-6' '-translate-y-2' 'translate-y-10' %}">
+                        <div class="aspect-[4/5] grid place-items-center overflow-hidden rounded-2xl bg-linear-to-b from-slate-50 to-white">
+                            <img src="{{ cat.image_url }}" alt="{{ cat.name }}" class="w-full h-full object-contain mix-blend-multiply scale-[1.3] transition-transform duration-300 group-hover:scale-[1.4]">
+                        </div>
+                        <p class="mt-2 text-center text-sm font-semibold text-slate-700 capitalize">{{ cat.name }}</p>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <main id="products" class="bg-slate-50 scroll-mt-28">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 py-10 md:py-14">
+            <div class="flex items-end justify-between gap-4 mb-6 md:mb-8">
+                <div>
+                    <h2 class="text-xl md:text-2xl font-bold tracking-tight text-slate-900">All Products</h2>
+                    <p class="text-sm text-slate-500">Sorted alphabetically</p>
+                </div>
+                <span class="px-3 py-1 rounded-full bg-white ring-1 ring-slate-200 text-sm font-semibold text-slate-500">{{ products|length }} items</span>
+            </div>
+
+            {% include 'product_cards.html' %}
+        </div>
     </main>
 {% endblock %}
