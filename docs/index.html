@@ -132,13 +132,23 @@
     .status[data-state="ready"] .status-dot { background: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, .2); }
     @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.75); } }
 
+    /* Status messages are stacked in one grid cell: the box always fits the longest one */
+    .swap { display: grid; }
+    .swap > * { grid-area: 1 / 1; opacity: 0; visibility: hidden; transition: opacity .25s ease, visibility 0s linear .25s; }
+    .status[data-state="checking"] .swap > [data-for~="checking"],
+    .status[data-state="waking"] .swap > [data-for~="waking"],
+    .status[data-state="ready"] .swap > [data-for~="ready"],
+    .status[data-state="down"] .swap > [data-for~="down"] { opacity: 1; visibility: visible; transition: opacity .25s ease; }
+    .status-pill .swap { white-space: nowrap; }
+    .timer { display: inline-block; min-width: 4ch; text-align: right; font-variant-numeric: tabular-nums; color: var(--muted); }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
     .browser { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow-lg), 0 0 0 1px rgba(15, 23, 42, .06); }
     .browser-bar { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: #f1f5f9; border-bottom: 1px solid var(--line); }
     .browser-bar .lights { display: flex; gap: 6px; }
     .browser-bar .lights i { width: 11px; height: 11px; border-radius: 50%; display: block; }
     .browser-bar .url { flex: 1; min-width: 0; font-size: .78rem; color: var(--muted); background: #fff; border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .browser img { width: 100%; height: auto; cursor: zoom-in; }
-    .hero-shot { margin-top: 56px; }
 
     /* ---------- Sections ---------- */
     section { padding: 88px 0; }
@@ -365,19 +375,10 @@
           <svg aria-hidden="true"><use href="#i-github"/></svg> View source code
         </a>
       </div>
-      <div class="status" id="server-status" data-state="checking" role="status" aria-live="polite">
-        <span class="status-pill"><span class="status-dot"></span><span id="status-label">Checking server…</span></span>
-        <span id="status-text">The store runs on Render's free tier, which sleeps when idle, so the first load can take up to a minute. This page has already started waking it up for you.</span>
-      </div>
-
-      <div class="hero-shot">
-        <div class="browser">
-          <div class="browser-bar" aria-hidden="true">
-            <span class="lights"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></span>
-            <span class="url">ragusa-ecommerce.onrender.com</span>
-          </div>
-          <img src="assets/home.webp" width="1440" height="900" alt="Ragusa home page: header with search, category bar, hero banner and the product grid." data-zoom>
-        </div>
+      <div class="status" id="server-status" data-state="checking">
+        <span class="status-pill"><span class="status-dot" aria-hidden="true"></span><span class="swap" aria-hidden="true"><span data-for="checking">Checking server…</span><span data-for="waking">Waking up… <span class="timer" id="status-timer">0s</span></span><span data-for="ready">Live store is ready</span><span data-for="down">Server not responding</span></span></span>
+        <span class="swap status-copy" aria-hidden="true"><span data-for="checking waking">The store runs on Render's free tier, which sleeps when idle, so the first load can take up to a minute. This page has already started waking it up for you.</span><span data-for="ready">The server is awake, so the store will open instantly. Payments run in Stripe test mode.</span><span data-for="down">The live store did not respond this time. The demo and screenshots below show how it works.</span></span>
+        <span class="sr-only" id="status-live" role="status" aria-live="polite">Checking whether the server is awake.</span>
       </div>
     </div>
   </header>
@@ -645,32 +646,40 @@ npm run dev   <span class="tok-c"># Tailwind build + watcher + Django</span></co
     const APP_URL = 'https://ragusa-ecommerce.onrender.com/';
     const PROBE = APP_URL + 'ping.gif';
     const statusEl = $('#server-status');
-    const label = $('#status-label');
-    const text = $('#status-text');
+    const timerEl = $('#status-timer');
+    const liveEl = $('#status-live');
     const started = Date.now();
     const GIVE_UP_MS = 150000;
-    const setState = (state, l, t) => { statusEl.dataset.state = state; label.textContent = l; if (t) text.textContent = t; };
+    const MESSAGES = {
+      waking: 'Waking up the server. The first load can take up to a minute.',
+      ready: 'Live store is ready. The server is awake, so the store will open instantly. Payments run in Stripe test mode.',
+      down: 'Server not responding. The live store did not respond this time. The demo and screenshots below show how it works.',
+    };
+    // Only the state changes; the text for every state is already on the page.
+    const setState = state => {
+      if (statusEl.dataset.state === state) return;
+      statusEl.dataset.state = state;
+      liveEl.textContent = MESSAGES[state] || '';
+    };
+    const seconds = () => Math.round((Date.now() - started) / 1000);
 
-    // An <img> only fires "load" when Django actually returns the ping.gif image,
-    // so it reliably tells us when the app is up (Render's wake-up page is HTML).
+    // An <img> only fires "load" when the app itself returns the image,
+    // so it reliably tells us when the server is up (Render's wake-up page is HTML).
     const probe = () => {
       const img = new Image();
       const timer = setTimeout(() => { img.onload = img.onerror = null; img.src = ''; retry(); }, 20000);
-      img.onload = () => { clearTimeout(timer); setState('ready', 'Live store is ready', 'The server is awake, so the store will open instantly. Payments run in Stripe test mode.'); };
+      img.onload = () => { clearTimeout(timer); clearInterval(tick); setState('ready'); };
       img.onerror = () => { clearTimeout(timer); retry(); };
       img.src = PROBE + '?ping=' + Date.now();
     };
     const retry = () => {
-      const elapsed = Date.now() - started;
-      if (elapsed > GIVE_UP_MS) { setState('down', 'Server not responding', 'The live store did not respond this time. The demo and screenshots below show how it works.'); return; }
-      setState('waking', `Waking up the server… ${Math.round(elapsed / 1000)}s`);
+      if (Date.now() - started > GIVE_UP_MS) { clearInterval(tick); setState('down'); return; }
+      setState('waking');
       setTimeout(probe, 3000);
     };
-    setTimeout(() => { if (statusEl.dataset.state === 'checking') setState('waking', 'Waking up the server…'); }, 1500);
-    const tick = setInterval(() => {
-      if (statusEl.dataset.state !== 'waking') { if (statusEl.dataset.state !== 'checking') clearInterval(tick); return; }
-      label.textContent = `Waking up the server… ${Math.round((Date.now() - started) / 1000)}s`;
-    }, 1000);
+    // Show "waking" if the first probe takes longer than 1.5s
+    setTimeout(() => { if (statusEl.dataset.state === 'checking') setState('waking'); }, 1500);
+    const tick = setInterval(() => { timerEl.textContent = seconds() + 's'; }, 1000);
     probe();
 
     /* ============ 2. Demo store ============ */
