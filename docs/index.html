@@ -285,19 +285,13 @@
       .flow .arrow svg { transform: rotate(90deg); }
       .services { grid-template-columns: minmax(0, 1fr); }
     }
-    .code-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-    @media (max-width: 900px) { .code-grid { grid-template-columns: minmax(0, 1fr); } }
-    .code-card { background: var(--code-bg); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-md); min-width: 0; }
-    .code-card header { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 14px; border-bottom: 1px solid rgba(255, 255, 255, .08); color: #94a3b8; font-size: .8rem; }
-    .code-card header b { color: #e2e8f0; font-weight: 500; font-family: "JetBrains Mono", ui-monospace, monospace; }
-    .code-card pre { margin: 0; padding: 16px; overflow-x: auto; font-size: .8rem; line-height: 1.65; color: #e2e8f0; }
-    .tok-k { color: #f472b6; } .tok-s { color: #a5d6a7; } .tok-c { color: #64748b; font-style: italic; } .tok-f { color: #7dd3fc; } .tok-n { color: #fbbf24; }
     .stack { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 36px; }
     .chip { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: #fff; border: 1px solid var(--line); font-size: .9rem; font-weight: 600; box-shadow: var(--shadow-sm); }
     .chip i { width: 8px; height: 8px; border-radius: 50%; display: block; }
 
     /* ---------- Run locally ---------- */
-    .run-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 32px; align-items: start; }
+    .run-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; align-items: start; }
+    .run-grid > div { max-width: 760px; }
     @media (max-width: 900px) { .run-grid { grid-template-columns: minmax(0, 1fr); } }
     .note { background: #fff8e6; border: 1px solid #ffe2a3; border-radius: var(--radius); padding: 16px 18px; color: #6b4e00; font-size: .93rem; }
     .note strong { color: #4a3600; }
@@ -530,41 +524,6 @@
           <div class="svc"><small>Email</small><strong><span class="dot" style="background:#0b996e"></span>Brevo</strong><span>Transactional welcome email for new newsletter subscribers.</span></div>
         </div>
 
-        <div class="code-grid">
-          <div class="code-card">
-            <header><b>cart/cart.py</b><span>Session cart · simplified</span></header>
-<pre><code><span class="tok-k">class</span> <span class="tok-f">Cart</span>():
-    <span class="tok-k">def</span> <span class="tok-f">__init__</span>(self, request):
-        self.session = request.session
-        self.cart = self.session.setdefault(<span class="tok-s">"cart"</span>, {})
-
-    <span class="tok-k">def</span> <span class="tok-f">add</span>(self, product_id):
-        product_id = str(product_id)
-        <span class="tok-k">if</span> product_id <span class="tok-k">not in</span> self.cart:
-            self.cart[product_id] = {<span class="tok-s">"quantity"</span>: <span class="tok-n">1</span>}
-        <span class="tok-k">else</span>:
-            self.cart[product_id][<span class="tok-s">"quantity"</span>] += <span class="tok-n">1</span>
-        self.session.modified = <span class="tok-k">True</span>  <span class="tok-c"># persist the change</span></code></pre>
-          </div>
-          <div class="code-card">
-            <header><b>ecommerce_app/views.py</b><span>Stripe Checkout · simplified</span></header>
-<pre><code><span class="tok-k">def</span> <span class="tok-f">checkout</span>(request):
-    stripe.api_key = settings.STRIPE_SECRET_KEY
-    total = int(float(request.POST.get(<span class="tok-s">'total'</span>))) * <span class="tok-n">100</span>
-
-    session = stripe.checkout.Session.<span class="tok-f">create</span>(
-        payment_method_types=[<span class="tok-s">'card'</span>],
-        line_items=[{<span class="tok-s">'price_data'</span>: {
-            <span class="tok-s">'currency'</span>: <span class="tok-s">'eur'</span>,
-            <span class="tok-s">'unit_amount'</span>: total,
-            ...}, <span class="tok-s">'quantity'</span>: <span class="tok-n">1</span>}],
-        mode=<span class="tok-s">'payment'</span>,
-        success_url=home_url + <span class="tok-s">'?status=success'</span>,
-        cancel_url=cart_url + <span class="tok-s">'?status=cancel'</span>,
-    )
-    <span class="tok-k">return</span> redirect(session.url, code=<span class="tok-n">303</span>)</code></pre>
-          </div>
-        </div>
 
         <div class="stack" aria-label="Tech stack">
           <span class="chip"><i style="background:#3776ab"></i>Python</span>
@@ -598,21 +557,6 @@
           <div class="note" style="margin-top:20px">
             <strong>Testing the checkout?</strong> With Stripe in test mode, pay with the test card <code>4242 4242 4242 4242</code>, any future expiry date and any CVC. More cases are in <a href="https://docs.stripe.com/testing" target="_blank" rel="noopener">Stripe's testing docs</a>.
           </div>
-        </div>
-        <div class="code-card">
-          <header><b>terminal</b><span>bash</span></header>
-<pre><code>git clone https://github.com/lautaroreche/E-Commerce-Django.git
-<span class="tok-k">cd</span> E-Commerce-Django
-
-python -m venv venv
-<span class="tok-k">source</span> venv/bin/activate
-pip install -r requirements.txt
-npm install
-
-python manage.py migrate
-python manage.py createsuperuser
-
-npm run dev   <span class="tok-c"># Tailwind build + watcher + Django</span></code></pre>
         </div>
       </div>
     </section>
