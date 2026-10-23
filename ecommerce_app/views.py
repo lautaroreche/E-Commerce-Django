@@ -11,6 +11,10 @@ from favorites.favorites import Favorites
 from ecommerce_app.forms import FormularioNewsletter
 import sib_api_v3_sdk
 import stripe
+import certifi
+
+# Use certifi's CA bundle instead of the one bundled with stripe (outdated, still trusts eMudhra roots)
+stripe.ca_bundle_path = certifi.where()
 
 
 def get_cart_products(request):
